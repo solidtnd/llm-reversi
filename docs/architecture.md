@@ -62,7 +62,7 @@ llm-reversi/
 - [ ] web内部の構成(ページ構成・ビルド設定)を要件確定後に決定
 - [ ] `data/`をwebがどう取り込むか(fetch / ビルド時コピー等の具体的な実装方法)を決定
 - [ ] GitHub Pagesへのデプロイ方法(GitHub Actions等)を決定
-- [x] 棋譜JSONスキーマの定義 → [`docs/log-schema.md`](log-schema.md)(一部未決定事項あり)
+- [x] 棋譜JSONスキーマの定義 → [`docs/log-schema.md`](log-schema.md)
 - [x] モデル呼び出しAdapter IFの標準化 → [`docs/adapter-interface.md`](adapter-interface.md)(一部未決定事項あり)
-- [x] 対戦ルール詳細: 持ち時間・パス・エラー時処理 → [`docs/rules.md`](rules.md)(一部未決定事項あり)
-- [x] 集計指標: 勝率・先手後手別・平均応答時間など → [`docs/metrics.md`](metrics.md)(一部未決定事項あり)
+- [x] 対戦ルール詳細: 持ち時間・パス・エラー時処理 → [`docs/rules.md`](rules.md)
+- [x] 集計指標: 勝率・先手後手別・平均応答時間など → [`docs/metrics.md`](metrics.md)

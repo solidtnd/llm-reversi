@@ -15,12 +15,14 @@
   "game_id": "string",
   "players": {
     "black": {
+      "id": "string",
       "model": "string",
       "provider": "string",
       "display_name": "string",
       "config": { "temperature": 0.0, "thinking_effort": "..." }
     },
     "white": {
+      "id": "string",
       "model": "string",
       "provider": "string",
       "display_name": "string",
@@ -38,6 +40,7 @@
 }
 ```
 
+- `id`は、[docs/adapter-interface.md](adapter-interface.md)の`models.yaml`で定義したプレイヤー識別子をそのまま転記する。同じ`model`でも`config`違い(thinkingあり/なし等)を別プレイヤーとして対戦させる運用のため、集計時にモデルの同一性を判定する一意なキーとして`model`ではなく`id`を使う([docs/metrics.md](metrics.md#ランキング指標)のBradley-Terry推定・リーグ結果JSONの集計で使用)。
 - `provider`は、[docs/adapter-interface.md](adapter-interface.md)のAdapterがラップするAPI/SDKの識別名をそのまま使う(例: `"openai"`, `"anthropic"`, `"gemini"`)。APIリクエスト時に指定する値と同一にすることで、変換表を別途持たずに済む。
 - `display_name`は、[docs/adapter-interface.md](adapter-interface.md#未決定事項)の`models.yaml`に定義した表示用文字列(例: `"Claude Opus 4.1 (Thinkあり)"`)をそのまま転記する。Web側はこの値をそのまま表示に使い、`models.yaml`自体には依存しない([docs/architecture.md](architecture.md)のengine/web分離方針)。
 - `config`は、対局に使ったモデル固有の設定値をそのまま記録する自由形式のオブジェクト(thinkingモードの有無・reasoning effort・temperature等)。モデル間で項目名を統一・正規化することはしない。将来的にプロバイダ側でパラメータが追加・廃止されても、本スキーマ側の変更なしに追従できるようにするため、キーはモデル/Adapter依存のまま素通しする。実験の再現性を担保するための情報であり、[docs/adapter-interface.md](adapter-interface.md)の設定ファイル(モデル一覧)の値をそのまま転記する想定。
