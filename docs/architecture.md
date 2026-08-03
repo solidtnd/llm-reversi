@@ -72,15 +72,76 @@ engine/
 ## web (フロントエンド)
 
 責務:
-- ランキング表示
-- モデル間対戦成績表
-- 棋譜リプレイ(手順再生)
-- 生ログ閲覧(反則理由・LLMの生応答など、`data/`が持つ診断情報を必要に応じて見られる機能)
+- モデルランキング表示(勝点方式・Bradley-Terry方式を併記)・対戦表(総当たりマトリクス)表示
+- モデル詳細(個別指標・対局履歴)表示
+- 棋譜リプレイ(手順再生)・生ログ閲覧(反則理由・LLMの生応答・トークン数など、`data/`が持つ診断情報を必要に応じて見られる機能)
 
 技術方針:
-- ビルドツールチェイン(Vite等)を使用。
+- **React + Vite**を採用する。素のTypeScriptだと棋譜リプレイのような状態を伴うUIでコード量が増えがちなため避け、Vue/Svelteよりも情報量・実績が多くAI駆動開発(コード生成)と相性が良いReactを選ぶ。
+- ルーティングは`react-router`の**`HashRouter`**を使う(例: `#/models/<id>`)。GitHub Pagesは素の静的ホスティングのため、パス型ルーティング(`BrowserRouter`)は直接アクセス・リロード時に404になる問題があり、回避には`404.html`にリダイレクトを仕込む工夫が必要になる。この工夫を丸ごと不要にするため`HashRouter`を選ぶ。
+- 状態管理ライブラリ(Redux/Zustand等)は導入しない。表示専用アプリで、扱う状態は「fetchしてきたJSONをそのまま表示する」程度のため、Reactの標準的な`useState`/`useEffect`で十分。
 - `data/`のJSONを表示専用で読み込む。engine側のロジックには依存しない。
-- **GitHub Pagesでデプロイできる静的ファイル構成**を維持する(ビルド成果物のみで完結し、サーバーサイド処理を持たない)。ビルド時、リポジトリにコミットされている`data/`をそのままビルド成果物に取り込む(キュレーションや絞り込みは行わない)。
+- **GitHub Pagesでデプロイできる静的ファイル構成**を維持する(ビルド成果物のみで完結し、サーバーサイド処理を持たない)。キュレーションや絞り込みは行わず、`data/`の全量をそのままビルド成果物に取り込む。
+- レスポンシブはCSS(flexbox/grid + メディアクエリ)のみで対応し、PC/スマホ専用の別コンポーネント・別ルートには分岐しない。対戦表のような横に長い表は、スマホでは横スクロールさせる。
+
+### 画面構成
+
+1. **トップ**: モデルランキング表(勝点方式/Bradley-Terry方式でソート切替、モデル名・provider名で検索/絞り込み可) + 対戦表(総当たりマトリクス)
+2. **モデル詳細**(`#/models/<id>`): そのモデルの指標(勝率・先手後手別勝率・反則負け率とその内訳・平均応答時間・リトライ発生率) + 対局履歴(相手モデル・勝敗等で絞り込み可、対局詳細へのリンク付き)
+3. **対局詳細**(`#/games/<game_id>`): 棋譜リプレイ(盤面 + 手送り操作、その時点の`legal_moves`のうち選ばれなかった手も盤面上に薄く表示) + 手ごとの生ログパネル(`llm_raw_response`・反則理由・トークン数・応答時間)
+
+モデル名を表示する箇所(ランキング表・モデル詳細・対局詳細の対局者表示など)では、provider(OpenAI/Anthropic/Gemini)ごとのバッジを共通して表示する。
+
+対局への導線は「モデル詳細ページの対局履歴」に統一する。対戦表のセルは、相手モデルで絞り込み済みの状態でモデル詳細ページ(例: `#/models/<id>?opponent=<other_id>`)へ遷移する形にし、「全対局を時系列で並べた一覧」のような独立ページは持たない。対局は常に「どのモデルの対局か」という文脈と共に閲覧する想定のため。
+
+### モジュール構成
+
+```
+web/
+├── package.json
+├── vite.config.ts
+├── tsconfig.json
+├── index.html
+├── scripts/
+│   └── copy-data.mjs        # data/をweb/public/data/へコピーするビルド前処理
+├── public/
+│   └── data/                 # copy-data.mjsの出力先(gitignore対象、ビルド時に生成)
+└── src/
+    ├── main.tsx               # エントリポイント(HashRouterのセットアップ)
+    ├── App.tsx                # ルーティング定義(3ルート)
+    ├── pages/
+    │   ├── RankingPage.tsx        # トップ: ランキング表 + 対戦表
+    │   ├── ModelDetailPage.tsx    # モデル指標 + 対局履歴
+    │   └── GameDetailPage.tsx     # 棋譜リプレイ + 生ログパネル
+    ├── components/
+    │   ├── RankingTable.tsx
+    │   ├── ModelSearchBox.tsx     # モデル名・provider名での検索/絞り込み(RankingTableで使用)
+    │   ├── ProviderBadge.tsx      # provider(OpenAI/Anthropic/Gemini)ごとのバッジ表示
+    │   ├── HeadToHeadMatrix.tsx
+    │   ├── GameHistoryTable.tsx   # モデル詳細内の対局履歴(相手モデルで絞り込み可能)
+    │   ├── Board.tsx              # 64文字盤面文字列→盤面グリッド描画。選ばれなかったlegal_movesの薄い表示も担当
+    │   ├── ReplayControls.tsx     # 手送り・自動再生の操作
+    │   └── MoveLogPanel.tsx       # 生ログ・反則理由・トークン数・応答時間の表示
+    └── lib/
+        ├── types.ts               # ranking.json・対局JSONの型定義([docs/log-schema.md](log-schema.md)・[docs/metrics.md](metrics.md)に対応)
+        └── api.ts                 # ranking.jsonの取得・対局JSON個別取得のラッパ
+```
+
+### データ取り込み方式
+
+- ビルド前処理(`scripts/copy-data.mjs`)で、リポジトリ直下の`data/`を丸ごと`web/public/data/`へ**コピー**する。シンボリックリンクはOS間の差異・CI環境での扱いが面倒なため避ける。
+- `ranking.json`はアプリ起動時に1回fetchし、全画面(トップ・モデル詳細)で共有する。
+- 個別対局JSON(`data/games/<game_id>.json`)は対局詳細ページを開いたときに初めてfetchする(全件の事前ロードはしない)。[docs/metrics.md](metrics.md)の`ranking.json`が`games`配列(軽量インデックス)を持つ設計は、この遅延fetchを支えるためのもの。
+
+### デプロイ
+
+GitHub Actionsで以下を1ワークフローとして実行する。
+
+1. リポジトリをcheckout
+2. Node.jsセットアップ・`web/`で依存関係インストール
+3. `data/`を`web/public/data/`へコピー(`copy-data.mjs`)
+4. `npm run build`
+5. ビルド成果物をGitHub Pagesへ公開
 
 ## data (受け渡しデータ)
 
@@ -101,10 +162,4 @@ engine/
 
 ## 未決定事項
 
-- [ ] web内部の構成(ページ構成・ビルド設定)を要件確定後に決定
-- [ ] `data/`をwebがどう取り込むか(fetch / ビルド時コピー等の具体的な実装方法)を決定
-- [ ] GitHub Pagesへのデプロイ方法(GitHub Actions等)を決定
-- [x] 棋譜JSONスキーマの定義 → [`docs/log-schema.md`](log-schema.md)
-- [x] モデル呼び出しAdapter IFの標準化 → [`docs/adapter-interface.md`](adapter-interface.md)(一部未決定事項あり)
-- [x] 対戦ルール詳細: 持ち時間・パス・エラー時処理 → [`docs/rules.md`](rules.md)
-- [x] 集計指標: 勝率・先手後手別・平均応答時間など → [`docs/metrics.md`](metrics.md)
+- [ ] フロントエンド実装を進めるためのスキル(何を使って実装するか)を検討する
