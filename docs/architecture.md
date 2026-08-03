@@ -30,7 +30,7 @@ llm-reversi/
 技術方針:
 - LLM呼び出しの抽象化はLangChain等のフレームワークを使わず、**薄い自作Adapter層**で行う。1手ごとのシンプルな推論呼び出しには自作の方が開発速度・保守性で有利なため。フレームワーク導入はモデル追加や要件複雑化が進んだ場合に再検討する。
 - 依存関係管理は `uv` を使用。
-- 内部のモジュール構成(board/game/players/adapters等)は要件を詰めてから決定する([TODO](#todo)参照)。
+- 内部のモジュール構成(board/game/players/adapters等)は要件を詰めてから決定する([未決定事項](#未決定事項)参照)。
 
 ### 最低限のガード(信頼性確保のため)
 
@@ -56,12 +56,15 @@ llm-reversi/
 - 棋譜JSON、リーグ集計結果を格納。**リポジトリにコミットする。**
 - スキーマは別途 `docs/log-schema.md` で定義する。
 
-## TODO
+## 未決定事項
 
 - [ ] engine内部のモジュール構成(board/game/players/adapters等)を要件確定後に決定
 - [ ] web内部の構成(ページ構成・ビルド設定)を要件確定後に決定
 - [ ] `data/`をwebがどう取り込むか(fetch / ビルド時コピー等の具体的な実装方法)を決定
 - [ ] GitHub Pagesへのデプロイ方法(GitHub Actions等)を決定
+- [ ] `data/`配下の具体的なディレクトリ構成・ファイル命名規則(棋譜JSON1件ごとのファイルパス、集計元JSONL、`ranking.json`の配置場所など)。[docs/log-schema.md](log-schema.md)はファイル形式(JSON/JSONL)のみ規定しており、実際のパス構造は未定。
+- [ ] リーグ実行の並列度。対局を逐次実行するか並列実行するか、並列実行する場合のレート制限・JSONL追記の同時書き込み制御をどうするか。
+- [ ] 集計(`ranking.json`生成)をリーグ実行のどのタイミングで行うか(対局ごとに都度再生成/リーグ実行完了後に1回/別コマンドとして独立実行、等)。
 - [x] 棋譜JSONスキーマの定義 → [`docs/log-schema.md`](log-schema.md)
 - [x] モデル呼び出しAdapter IFの標準化 → [`docs/adapter-interface.md`](adapter-interface.md)(一部未決定事項あり)
 - [x] 対戦ルール詳細: 持ち時間・パス・エラー時処理 → [`docs/rules.md`](rules.md)
