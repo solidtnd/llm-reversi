@@ -17,11 +17,13 @@
     "black": {
       "model": "string",
       "provider": "string",
+      "display_name": "string",
       "config": { "temperature": 0.0, "thinking_effort": "..." }
     },
     "white": {
       "model": "string",
       "provider": "string",
+      "display_name": "string",
       "config": { "...": "..." }
     }
   },
@@ -36,7 +38,9 @@
 }
 ```
 
-- `config`は、対局に使ったモデル固有の設定値をそのまま記録する自由形式のオブジェクト(thinkingモードの有無・reasoning effort・temperature等)。モデルごとに項目が異なるため、キーはモデル/Adapter依存とする。実験の再現性を担保するための情報であり、[docs/adapter-interface.md](adapter-interface.md)の設定ファイル(モデル一覧)の値をそのまま転記する想定。
+- `provider`は、[docs/adapter-interface.md](adapter-interface.md)のAdapterがラップするAPI/SDKの識別名をそのまま使う(例: `"openai"`, `"anthropic"`, `"gemini"`)。APIリクエスト時に指定する値と同一にすることで、変換表を別途持たずに済む。
+- `display_name`は、[docs/adapter-interface.md](adapter-interface.md#未決定事項)の`models.yaml`に定義した表示用文字列(例: `"Claude Opus 4.1 (Thinkあり)"`)をそのまま転記する。Web側はこの値をそのまま表示に使い、`models.yaml`自体には依存しない([docs/architecture.md](architecture.md)のengine/web分離方針)。
+- `config`は、対局に使ったモデル固有の設定値をそのまま記録する自由形式のオブジェクト(thinkingモードの有無・reasoning effort・temperature等)。モデル間で項目名を統一・正規化することはしない。将来的にプロバイダ側でパラメータが追加・廃止されても、本スキーマ側の変更なしに追従できるようにするため、キーはモデル/Adapter依存のまま素通しする。実験の再現性を担保するための情報であり、[docs/adapter-interface.md](adapter-interface.md)の設定ファイル(モデル一覧)の値をそのまま転記する想定。
 
 ## Move(1手ごとの記録)
 
@@ -51,22 +55,21 @@
   "llm_raw_response": "string | null",
   "retried": false,
   "response_time_ms": 1234,
-  "forfeit_reason": "illegal_move | timeout | parse_failure | null"
+  "forfeit_reason": "illegal_move | timeout | parse_failure | null",
+  "usage": { "prompt_tokens": 123, "completion_tokens": 45 }
 }
 ```
 
 - `type: "pass"` の場合、`position`はnull(LLMに問い合わせないため)。
 - `type: "forfeit"` の場合、`forfeit_reason`に理由を記録し、その手で対局は終了する。
 - `retried`は、パース失敗によるリトライが発生したかどうか。
-- **`llm_raw_response`は常に記録する**(成功・失敗を問わない)。各モデルの思考内容の分析に使えるため。thinkingモード等で生応答が肥大化する可能性はあるが、`data/`は全量そのままリポジトリにコミットし公開する方針([docs/architecture.md](architecture.md)参照)のため、リポジトリサイズの増加は許容する。
+- **`llm_raw_response`は、リトライがあった場合も最終的なレスポンス1件のみを記録する**(成功した場合はその成功レスポンス、リトライしても最後まで失敗した場合は最後の失敗レスポンス)。リトライ前の失敗レスポンスは保持しない。何回リトライが発生したか自体は`retried`で分かれば十分なため。
+- `usage`は、LLMのAPIレスポンスに含まれるトークン数(input/output)をそのまま記録する。ほとんどのプロバイダのレスポンスに標準で含まれており記録の手間がないため。**コスト(金額)はここには記録しない**。プロバイダによってはレスポンスに金額が含まれず、含める場合は別途モデル別の単価テーブルをどこかに持つ必要が生じ、単価改定のたびにドキュメント・コードの更新が必要になる。金額が必要な場合は`data/`集計時に`usage`とモデル別単価表から都度算出する(単価表自体は本スキーマの対象外、集計スクリプト側の関心事)。レスポンスにトークン数が含まれないプロバイダの場合は`usage`全体を`null`とする。
 - `board_before`は持たない。前の手の`board_after`(1手目の場合は標準初期配置)と常に同一で冗長なため。Web側では`board_after`を先頭から並べるだけで盤面推移を再現でき、独自にリバーシの反転ロジックを実装する必要がない。
 
 ## 未決定事項
 
-- [ ] モデルのトークン数・コストを記録するか
-- [ ] リトライ発生時、1回目の失敗レスポンスも記録するか(現状は最終的な`llm_raw_response`のみ)
-- [ ] `provider`(openai/anthropic/gemini等)の命名規則
-- [ ] `config`オブジェクトの項目名の統一方針(モデル間で共通化できる項目とモデル固有項目の切り分け)
+(現時点でなし)
 
 ## 既存フォーマットとの関係
 
