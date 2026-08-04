@@ -1,6 +1,6 @@
 # 集計指標
 
-[docs/log-schema.md](log-schema.md) の棋譜JSON群から算出する、モデル比較のための指標。
+[log-schema.md](log-schema.md) の棋譜JSON群から算出する、モデル比較のための指標。
 
 ## モデル単位の指標
 
@@ -24,8 +24,8 @@
   - 実装はスクラッチではなく既存ライブラリ`choix`を使う。`choix.ilsr_pairwise(n_items, data, alpha=0.01)`で強さパラメータ(対数スケール)を推定する。`ilsr_pairwise`は反復法による近似最尤推定で、`opt_pairwise`(勾配法による厳密最尤推定)よりライブラリ内で高速・軽量なため採用する(対局数の規模であればどちらでも精度上の実用的な差はない想定だが、実装のシンプルさを優先する)。
   - `alpha`は正則化項。全勝または全敗のモデルが1体でもいると正則化なしのBradley-Terry推定は強さが無限大(または0)に発散するため、小さな正則化を入れて有限の値に収める。
   - `n_items`はリーグに参加した全モデルの数、`data`は`(winner_idx, loser_idx)`のタプルのリスト。モデルは識別子でソートした順に`0`始まりのindexを割り当てる。
-  - モデルの識別には`players.model`(モデル名文字列)ではなく、[docs/adapter-interface.md](adapter-interface.md)の`models.yaml`で定義する`id`を使う。同じ`model`でも`config`違い(thinkingあり/なし等)を別プレイヤーとして対戦させる運用のため、`model`文字列だけでは同一モデルの別variantを区別できない。この識別のため、**棋譜JSONの`players`オブジェクトに`id`フィールドを追加する**([docs/log-schema.md](log-schema.md)を参照、集計スクリプトが`model`文字列とconfigの組み合わせから同一性を推測するような曖昧な実装を避けるため)。
-  - 集計元は`data/`配下の各対局JSONの`result.winner`と`players[].id`から、勝者側の`id`→敗者側の`id`のタプルを1件生成する。引き分けは上述の通り両者に半勝ちを1回ずつ追加する(`(a, b)`と`(b, a)`を1回ずつdataに追加する)。反則負けも通常の負けと同様に1勝1敗として扱う(反則負けを集計対象から除外しない方針は[docs/rules.md](rules.md)と同じ)。
+  - モデルの識別には`players.model`(モデル名文字列)ではなく、[../engine/adapter-interface.md](../engine/adapter-interface.md)の`models.yaml`で定義する`id`を使う。同じ`model`でも`config`違い(thinkingあり/なし等)を別プレイヤーとして対戦させる運用のため、`model`文字列だけでは同一モデルの別variantを区別できない。この識別のため、**棋譜JSONの`players`オブジェクトに`id`フィールドを追加する**([log-schema.md](log-schema.md)を参照、集計スクリプトが`model`文字列とconfigの組み合わせから同一性を推測するような曖昧な実装を避けるため)。
+  - 集計元は`data/`配下の各対局JSONの`result.winner`と`players[].id`から、勝者側の`id`→敗者側の`id`のタプルを1件生成する。引き分けは上述の通り両者に半勝ちを1回ずつ追加する(`(a, b)`と`(b, a)`を1回ずつdataに追加する)。反則負けも通常の負けと同様に1勝1敗として扱う(反則負けを集計対象から除外しない方針は[../engine/rules.md](../engine/rules.md)と同じ)。
   - `choix.ilsr_pairwise`が返す値は対数スケールの強さパラメータで、そのままでは大小関係はわかっても値の意味が直感的でない。Web表示用には`ranking.json`格納時に`exp()`を取り全モデル合計が1になるよう正規化した値(相対的な強さの割合)を`bt_strength`として持たせる(詳細は下記スキーマ節)。
 
 ## 安定性の指標
@@ -34,7 +34,7 @@
 
 ## リーグ結果JSON(`ranking.json`)スキーマ
 
-[docs/log-schema.md](log-schema.md#リーグ結果json)で「別ファイルとする」とした集計結果の具体的な構造。集計スクリプトが`data/`配下の全対局JSONを読み込むたびに**全量を再生成する**(差分更新は行わない。モデル数・対局数に比例するサマリ情報のみのため、再生成コストは現実的な範囲に収まる想定)。
+[log-schema.md](log-schema.md#リーグ結果json)で「別ファイルとする」とした集計結果の具体的な構造。集計スクリプトが`data/`配下の全対局JSONを読み込むたびに**全量を再生成する**(差分更新は行わない。モデル数・対局数に比例するサマリ情報のみのため、再生成コストは現実的な範囲に収まる想定)。
 
 ```json
 {

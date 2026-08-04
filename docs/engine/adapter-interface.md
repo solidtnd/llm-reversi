@@ -1,6 +1,6 @@
 # モデル呼び出しAdapter IF
 
-LLMごとの差異を吸収する薄い自作Adapter層のインターフェース定義。LangChain等のフレームワークは使わない([docs/architecture.md](architecture.md)参照)。
+LLMごとの差異を吸収する薄い自作Adapter層のインターフェース定義。LangChain等のフレームワークは使わない([engine-architecture.md](engine-architecture.md)参照)。
 
 ## 方針
 
@@ -32,8 +32,8 @@ models:
 ```
 
 - `id`はモデル名と1対1とは限らない(同じ`model`でも`config`違いのvariant、例えばthinkingあり/なしを別プレイヤーとして対戦させたい場合を想定し、`id`を分ける)。
-- 新モデル追加はリスト末尾に1エントリ追記するだけでよく、[docs/rules.md](rules.md#リーグ運営)の「未実施カードのみ実行する」差分実行の運用と整合する。
-- `display_name`は対局実行時に棋譜JSON側にもコピーする([docs/log-schema.md](log-schema.md)の`players`オブジェクト参照)。Webは`data/`のJSONのみを読み、`models.yaml`自体には依存しない([docs/architecture.md](architecture.md)の方針)。
+- 新モデル追加はリスト末尾に1エントリ追記するだけでよく、[rules.md](rules.md#リーグ運営)の「未実施カードのみ実行する」差分実行の運用と整合する。
+- `display_name`は対局実行時に棋譜JSON側にもコピーする([../shared/log-schema.md](../shared/log-schema.md)の`players`オブジェクト参照)。Webは`data/`のJSONのみを読み、`models.yaml`自体には依存しない([../shared/architecture.md](../shared/architecture.md)の方針)。
 - 具体的にどのモデルを何個登録するか(実際のモデル名一覧)は運用開始時に決定する(コード・スキーマ側はモデル数・名称に依存しないため、実装のブロッカーにはならない)。
 
 ## シークレット管理
@@ -57,7 +57,7 @@ class LLMAdapter(Protocol):
 ```
 
 - `request_move`は同期呼び出しとする(1手ごとに逐次進行するゲームのため、非同期化のメリットが薄い)。
-- タイムアウト・リトライは[docs/rules.md](rules.md)の規定に従い、Adapterの外側(呼び出し元)で制御する。Adapter自体はプロバイダAPIの呼び出しとレスポンスのパースに専念する。
+- タイムアウト・リトライは[rules.md](rules.md)の規定に従い、Adapterの外側(呼び出し元)で制御する。Adapter自体はプロバイダAPIの呼び出しとレスポンスのパースに専念する。
 
 ## 入出力
 
@@ -74,7 +74,7 @@ class LLMAdapter(Protocol):
 
 - 出力の`position`が合法手に含まれるかの検証は呼び出し元(engine側)が行う。Adapterはパース済みの値を返すのみ。
 - パースに失敗した場合、Adapterは例外を送出し、呼び出し元がリトライ制御を行う。
-- `position`/`legal_moves`の表記は[docs/log-schema.md](log-schema.md#既存フォーマットとの関係)と同じ代数記法(`d3`等)で統一する。
+- `position`/`legal_moves`の表記は[../shared/log-schema.md](../shared/log-schema.md#既存フォーマットとの関係)と同じ代数記法(`d3`等)で統一する。
 - `raw_response`には、構造化出力部分(`position`)だけでなくAPIレスポンス全体(thinkingモード使用時は思考過程のブロック/パートを含む)を格納する。各社ともthinkingの思考過程は構造化出力とは別要素として返る(Claude: `content`配列内の別ブロック、Gemini: `thought: true`が付いた別パート)ため、構造化出力のスキーマ自体に思考用の項目を追加する必要はない。
 
 ### 出力フォーマットの強制
@@ -90,7 +90,7 @@ class LLMAdapter(Protocol):
 }
 ```
 
-`BoardState`は[docs/log-schema.md](log-schema.md)の`board_after`と同じ64文字文字列(`.`=空/`b`=黒/`w`=白)をそのまま内部表現として使う(独自の2次元配列やFEN風文字列は作らない)。プロンプトへ渡す際のみ、Adapter層でLLMが読みやすい列(a-h)・行(1-8)ラベル付きのグリッド表記に変換する。この変換はプロンプト整形の関心事であり、`BoardState`自体のデータ形式には影響しない。
+`BoardState`は[../shared/log-schema.md](../shared/log-schema.md)の`board_after`と同じ64文字文字列(`.`=空/`b`=黒/`w`=白)をそのまま内部表現として使う(独自の2次元配列やFEN風文字列は作らない)。プロンプトへ渡す際のみ、Adapter層でLLMが読みやすい列(a-h)・行(1-8)ラベル付きのグリッド表記に変換する。この変換はプロンプト整形の関心事であり、`BoardState`自体のデータ形式には影響しない。
 
 ## プロンプト
 

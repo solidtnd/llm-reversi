@@ -13,7 +13,7 @@
 | [`data/`](data/) | `engine/`が書き出し`web/`が読み込む棋譜JSON・リーグ結果(受け渡し用)。 |
 | [`docs/`](docs/) | 設計・仕様ドキュメント。 |
 
-詳細な設計方針は [`docs/architecture.md`](docs/architecture.md) を参照。
+詳細な設計方針は [`docs/`](docs/) を参照(読むべきファイルの索引は [`docs/README.md`](docs/README.md))。
 
 ## セットアップ
 
