@@ -6,7 +6,7 @@
 
 - **1対局分の棋譜ファイル自体は素のJSON**とする(1ファイル1オブジェクト)。Webは対局ごとにまるごとfetchして`JSON.parse`するだけで済むため。
 - **リーグ実行中にengineが逐次書き出す結果ログはJSONL**(1行1対局の要約)とする。対局が完了するたびに1行追記するだけで済み、巨大なJSON配列を毎回書き直すより壊れにくいため。
-- このJSONLはengine内部の実行ログであり、Webはこれを直接読まない。集計スクリプトがJSONLを読み込み、[metrics.md](metrics.md)の指標を計算した上で、Web用の`ranking.json`等の読みやすいJSONへ変換する。
+- このJSONLはengine内部の実行ログであり、Webはこれを直接読まない。**集計スクリプト(`aggregate.py`)はこのJSONLのみを読み込み**、[metrics.md](metrics.md)の指標を計算した上で、Web用の`ranking.json`等の読みやすいJSONへ変換する(対局ごとの完全な棋譜JSON本体は集計時に読まない。行スキーマは[対局結果ログ(`data/results.jsonl`)](#対局結果ログdataresultsjsonl)を参照)。[../engine/rules.md](../engine/rules.md#リーグ運営)の差分実行判定(対戦済みモデル組み合わせの判定)にも、このJSONLの`black.id`/`white.id`を使う。
 
 ## トップレベル構造
 
@@ -58,7 +58,7 @@
   "board_after": "64文字の盤面文字列(例: '.'=空, 'b'=黒, 'w'=白)",
   "legal_moves": ["d3", "c4", "..."],
   "llm_raw_response": "string | null",
-  "retried": false,
+  "retried": "none | parse_failure | api_error",
   "response_time_ms": 1234,
   "forfeit_reason": "illegal_move | timeout | parse_failure | api_error | null",
   "error_detail": "string | null",
@@ -68,11 +68,36 @@
 
 - `type: "pass"` の場合、`position`はnull(LLMに問い合わせないため)。
 - `type: "forfeit"` の場合、`forfeit_reason`に理由を記録し、その手で対局は終了する。
-- `retried`は、パース失敗によるリトライが発生したかどうか。
-- **`llm_raw_response`は、リトライがあった場合も最終的なレスポンス1件のみを記録する**(成功した場合はその成功レスポンス、リトライしても最後まで失敗した場合は最後の失敗レスポンス)。リトライ前の失敗レスポンスは保持しない。何回リトライが発生したか自体は`retried`で分かれば十分なため。
-- `error_detail`は、`forfeit_reason`が`api_error`の場合、またはAPIエラーが原因で`timeout`になった場合に、例外メッセージ等のデバッグ情報を記録する([../engine/rules.md](../engine/rules.md#api呼び出しエラーの扱い)参照)。それ以外の場合はnull。モデルの応答内容である`llm_raw_response`とは区別する(APIエラー時はモデルからの応答自体が存在しないため)。
+- `retried`は、この手でリトライが発生したかどうかと、発生した場合の原因を表す([../engine/rules.md](../engine/rules.md#1手ごとの処理)参照)。**1手あたりのリトライは原因(パース失敗/APIエラー)を問わず通算1回までなので、`retried`は「リトライ有無」と「その1回の原因」をまとめて表現できるenumとし、`parse_failure`と`api_error`が同時に発生したことを表す値(`"both"`のような)は持たない**。値は以下の3つ。
+  - `"none"`: リトライは発生しなかった(1回目の応答で成功、またはリトライ前に反則負けが確定した)。
+  - `"parse_failure"`: パース失敗が原因でリトライが発生した。
+  - `"api_error"`: APIエラーが原因でリトライが発生した。
+  - リトライ後に(原因を問わず)再度失敗した場合、その最終結果は`forfeit_reason`に記録される。`retried`はあくまで「リトライを使ったか・何が引き金だったか」を示すフィールドであり、`forfeit_reason`とは独立している(例: `api_error`でリトライ後、2回目はパース失敗で反則負けした場合、`retried: "api_error"`かつ`forfeit_reason: "parse_failure"`になる)。
+- **`llm_raw_response`は、リトライがあった場合も最終的なレスポンス1件のみを記録する**(成功した場合はその成功レスポンス、リトライしても最後まで失敗した場合は最後の失敗レスポンス)。リトライ前の失敗レスポンスは保持しない。リトライが発生したこと自体は`retried`で分かれば十分なため。
+- `error_detail`は、`forfeit_reason`が`api_error`の場合、またはAPIエラーが原因で`timeout`になった場合に、例外メッセージ等のデバッグ情報を記録する([../engine/rules.md](../engine/rules.md#エラー種別とadapterの例外設計)参照)。それ以外の場合はnull。モデルの応答内容である`llm_raw_response`とは区別する(APIエラー時はモデルからの応答自体が存在しないため)。
 - `usage`は、LLMのAPIレスポンスに含まれるトークン数(input/output)をそのまま記録する。ほとんどのプロバイダのレスポンスに標準で含まれており記録の手間がないため。**コスト(金額)はここには記録しない**。プロバイダによってはレスポンスに金額が含まれず、含める場合は別途モデル別の単価テーブルをどこかに持つ必要が生じ、単価改定のたびにドキュメント・コードの更新が必要になる。金額が必要な場合は`data/`集計時に`usage`とモデル別単価表から都度算出する(単価表自体は本スキーマの対象外、集計スクリプト側の関心事)。レスポンスにトークン数が含まれないプロバイダの場合は`usage`全体を`null`とする。
 - `board_before`は持たない。前の手の`board_after`(1手目の場合は標準初期配置)と常に同一で冗長なため。Web側では`board_after`を先頭から並べるだけで盤面推移を再現でき、独自にリバーシの反転ロジックを実装する必要がない。
+
+## 対局結果ログ(`data/results.jsonl`)
+
+1行1対局の要約。集計スクリプト(`aggregate.py`)の唯一の入力であり、[../engine/rules.md](../engine/rules.md#リーグ運営)の差分実行判定(対戦済みモデル組み合わせの判定)にも使う。
+
+```json
+{
+  "game_id": "string",
+  "black": { "id": "string", "avg_response_time_ms": 1234 },
+  "white": { "id": "string", "avg_response_time_ms": 1500 },
+  "winner": "black | white | draw",
+  "reason": "score | forfeit",
+  "forfeit_reason": "illegal_move | timeout | parse_failure | api_error | null",
+  "ended_at": "ISO8601 string"
+}
+```
+
+- 対局本体の棋譜JSON(上記[トップレベル構造](#トップレベル構造))から、[metrics.md](metrics.md)の指標計算に必要な値だけを抜き出した要約。`black`/`white`はそれぞれ`players`の`id`と、その対局における平均応答時間(`Move.response_time_ms`の単純平均)を持つ。手数による加重平均は行わない(平均応答時間は[metrics.md](metrics.md#安定性の指標)の通り参考情報の位置づけであり、そこまでの精度を必要としないと判断したため)。
+- `Move.retried`(リトライ)に関する集計値は持たない。リトライは最終的に成功すれば対局結果に影響しない一時的な事象であり、モデルの安定性は`forfeit_reason`の集計だけで測れると判断したため([metrics.md](metrics.md#安定性の指標)参照)。特定の対局でリトライが起きたかどうかを確認したい場合は、棋譜JSON本体の`Move.retried`を見る(この要約には出てこない)。
+- `score`(石数)は持たない。[metrics.md](metrics.md)で定義する指標に石数差は含まれないため。
+- この1行は、そのまま`ranking.json`の`games`配列の要素(の一部)になる([metrics.md](metrics.md)参照)。
 
 ## 未決定事項
 

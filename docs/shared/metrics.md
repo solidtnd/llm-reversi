@@ -1,14 +1,13 @@
 # 集計指標
 
-[log-schema.md](log-schema.md) の棋譜JSON群から算出する、モデル比較のための指標。
+[log-schema.md](log-schema.md#対局結果ログdataresultsjsonl) の`data/results.jsonl`から算出する、モデル比較のための指標(対局ごとの完全な棋譜JSON本体は集計時に読まない)。
 
 ## モデル単位の指標
 
 - 勝率(全体)
 - 勝率(先手時 / 後手時、それぞれ別集計)
-- 反則負け率、および反則理由(非合法手/タイムアウト/パース失敗)ごとの内訳
+- 反則負け率、および反則理由(非合法手/タイムアウト/パース失敗/APIエラー)ごとの内訳
 - 平均応答時間(1手あたり)
-- リトライ発生率(パース失敗によるリトライがどれだけ起きたか)
 
 ## モデル間(対戦カード)の指標
 
@@ -30,11 +29,13 @@
 
 ## 安定性の指標
 
-「安定性」を測る指標としては**反則負け率のみを採用し、応答時間のばらつきは指標としない**。応答時間はモデルのAPI応答特性(推論の深さ・サーバ側の混雑等)に左右される要素が大きく、モデルの対局における「安定性」(=ルールを守って対局を成立させ続けられるか)とは性質が異なるため。平均応答時間自体は(モデル単位の指標)に既にあるが、これは参考情報であり安定性の指標としては扱わない。
+「安定性」を測る指標としては**反則負け率のみを採用し、応答時間のばらつき・リトライ発生率は指標としない**。応答時間はモデルのAPI応答特性(推論の深さ・サーバ側の混雑等)に左右される要素が大きく、モデルの対局における「安定性」(=ルールを守って対局を成立させ続けられるか)とは性質が異なるため。平均応答時間自体は(モデル単位の指標)に既にあるが、これは参考情報であり安定性の指標としては扱わない。
+
+リトライ(`Move.retried`、[log-schema.md](log-schema.md)参照)についても同様の理由で指標化しない。リトライは最終的に成功すれば対局結果に影響しない一時的な事象であり、それ自体を安定性指標に含める必要はなく、実害があったかどうかは反則負け率(特に`parse_failure`/`api_error`理由の内訳)で十分測れると判断したため。個々の対局でリトライが起きたかどうかは棋譜JSON本体の`Move.retried`に残るが、`data/results.jsonl`・`ranking.json`には集計しない。
 
 ## リーグ結果JSON(`ranking.json`)スキーマ
 
-[log-schema.md](log-schema.md#リーグ結果json)で「別ファイルとする」とした集計結果の具体的な構造。集計スクリプトが`data/`配下の全対局JSONを読み込むたびに**全量を再生成する**(差分更新は行わない。モデル数・対局数に比例するサマリ情報のみのため、再生成コストは現実的な範囲に収まる想定)。
+[log-schema.md](log-schema.md#リーグ結果json)で「別ファイルとする」とした集計結果の具体的な構造。集計スクリプトが`data/results.jsonl`を読み込むたびに**全量を再生成する**(差分更新は行わない。モデル数・対局数に比例するサマリ情報のみのため、再生成コストは現実的な範囲に収まる想定)。
 
 ```json
 {
@@ -52,8 +53,7 @@
       "win_rate_as_black": 0.6,
       "win_rate_as_white": 0.5,
       "forfeit_loss_rate": 0.1,
-      "forfeit_reasons": { "illegal_move": 1, "timeout": 0, "parse_failure": 1 },
-      "retry_rate": 0.05,
+      "forfeit_reasons": { "illegal_move": 1, "timeout": 0, "parse_failure": 1, "api_error": 0 },
       "avg_response_time_ms": 1234,
       "points": 10.5,
       "bt_strength": 0.28
@@ -76,7 +76,7 @@
       "white": "string (id)",
       "winner": "black | white | draw",
       "reason": "score | forfeit",
-      "forfeit_reason": "illegal_move | timeout | parse_failure | null",
+      "forfeit_reason": "illegal_move | timeout | parse_failure | api_error | null",
       "ended_at": "ISO8601 string"
     }
   ]

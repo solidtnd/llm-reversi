@@ -73,9 +73,17 @@ class LLMAdapter(Protocol):
 ```
 
 - 出力の`position`が合法手に含まれるかの検証は呼び出し元(engine側)が行う。Adapterはパース済みの値を返すのみ。
-- パースに失敗した場合、Adapterは例外を送出し、呼び出し元がリトライ制御を行う。
 - `position`/`legal_moves`の表記は[../shared/log-schema.md](../shared/log-schema.md#既存フォーマットとの関係)と同じ代数記法(`d3`等)で統一する。
 - `raw_response`には、構造化出力部分(`position`)だけでなくAPIレスポンス全体(thinkingモード使用時は思考過程のブロック/パートを含む)を格納する。各社ともthinkingの思考過程は構造化出力とは別要素として返る(Claude: `content`配列内の別ブロック、Gemini: `thought: true`が付いた別パート)ため、構造化出力のスキーマ自体に思考用の項目を追加する必要はない。
+
+## エラー通知
+
+Adapterが送出する例外は、以下の2種類に限定する。OpenAI/Anthropic/Gemini各社のSDKはそれぞれ独自の例外クラス体系を持つため、Adapter内部でこの2種類のどちらかにラップして送出し、呼び出し元(engine側)には各社SDKの例外を露出させない。
+
+- `AdapterParseError`: APIレスポンス自体は受信できたが、構造化出力の内容が期待する形式(JSON Schema準拠)でパースできなかった場合(レスポンス欠落・refusal応答など)。
+- `AdapterAPIError`: APIへのリクエスト自体が失敗した場合(レート制限・5xxエラー・ネットワークエラー等)。元の例外(SDK例外)は`error_detail`用に保持する。
+
+呼び出し元(engine側)は、この2つの例外の型を見て[rules.md](rules.md#1手ごとの処理)のリトライ制御・`forfeit_reason`(`parse_failure`/`api_error`)の判定を行う。一方、合法手検証(→`illegal_move`)とタイムアウト判定(→`timeout`)はAdapterの関知するところではなく、呼び出し元(engine側)のロジックで行う([rules.md](rules.md#エラー種別とadapterの例外設計)参照)。
 
 ### 出力フォーマットの強制
 
