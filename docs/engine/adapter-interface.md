@@ -52,38 +52,70 @@ class LLMAdapter(Protocol):
         board: BoardState,
         legal_moves: list[str],
         player: Literal["black", "white"],
+        retry_reason: str | None = None,
     ) -> MoveResponse:
         ...
 ```
 
 - `request_move`は同期呼び出しとする(1手ごとに逐次進行するゲームのため、非同期化のメリットが薄い)。
 - タイムアウト・リトライは[rules.md](rules.md)の規定に従い、Adapterの外側(呼び出し元)で制御する。Adapter自体はプロバイダAPIの呼び出しとレスポンスのパースに専念する。
+- `retry_reason`は、[rules.md](rules.md#1手ごとの処理)のパース失敗による再試行(1手あたり1回まで)でのみ使う。初回呼び出しおよびAPIエラーによる再試行(同一内容で再送するため)では常に`None`を渡す。呼び出し元(engine側)は、直前に送出された`AdapterParseError.message`をそのまま`retry_reason`に渡して再試行する。Adapterはこれをプロンプトに追記し、モデルに前回の失敗を伝える(具体的な文言は[プロンプト](#プロンプト)節の未決定事項に含む)。
 
 ## 入出力
 
-**入力**: 盤面状態、合法手一覧、手番(黒/白)
+**入力**: 盤面状態、合法手一覧、手番(黒/白)、`retry_reason`(パース失敗による再試行時のみ、詳細は[共通インターフェース](#共通インターフェースイメージ)参照)
 
 **出力(`MoveResponse`)**:
 
 ```json
 {
   "position": "d3",
-  "raw_response": "モデルの生応答(ログ用)"
+  "llm_raw_response": "モデルの生応答(ログ用)",
+  "usage": { "prompt_tokens": 123, "completion_tokens": 45 }
 }
 ```
 
 - 出力の`position`が合法手に含まれるかの検証は呼び出し元(engine側)が行う。Adapterはパース済みの値を返すのみ。
 - `position`/`legal_moves`の表記は[../shared/log-schema.md](../shared/log-schema.md#既存フォーマットとの関係)と同じ代数記法(`d3`等)で統一する。
-- `raw_response`には、構造化出力部分(`position`)だけでなくAPIレスポンス全体(thinkingモード使用時は思考過程のブロック/パートを含む)を格納する。各社ともthinkingの思考過程は構造化出力とは別要素として返る(Claude: `content`配列内の別ブロック、Gemini: `thought: true`が付いた別パート)ため、構造化出力のスキーマ自体に思考用の項目を追加する必要はない。
+- `llm_raw_response`には、構造化出力部分(`position`)だけでなくAPIレスポンス全体(thinkingモード使用時は思考過程のブロック/パートを含む)を格納する。各社ともthinkingの思考過程は構造化出力とは別要素として返る(Claude: `content`配列内の別ブロック、Gemini: `thought: true`が付いた別パート)ため、構造化出力のスキーマ自体に思考用の項目を追加する必要はない。フィールド名は[../shared/log-schema.md](../shared/log-schema.md#move1手ごとの記録)の`Move.llm_raw_response`とそのまま対応させ、engine側で書き出す際に名称変換が不要なようにする。
+- `usage`には、APIレスポンスに含まれるプロンプト/completionトークン数を`{"prompt_tokens": int, "completion_tokens": int}`の形で格納する。レスポンスにトークン数が含まれないプロバイダの場合は`usage`全体を`None`とする([../shared/log-schema.md](../shared/log-schema.md#move1手ごとの記録)の`Move.usage`にそのまま転記される)。
 
 ## エラー通知
 
 Adapterが送出する例外は、以下の2種類に限定する。OpenAI/Anthropic/Gemini各社のSDKはそれぞれ独自の例外クラス体系を持つため、Adapter内部でこの2種類のどちらかにラップして送出し、呼び出し元(engine側)には各社SDKの例外を露出させない。
 
 - `AdapterParseError`: APIレスポンス自体は受信できたが、構造化出力の内容が期待する形式(JSON Schema準拠)でパースできなかった場合(レスポンス欠落・refusal応答など)。
-- `AdapterAPIError`: APIへのリクエスト自体が失敗した場合(レート制限・5xxエラー・ネットワークエラー等)。元の例外(SDK例外)は`error_detail`用に保持する。
+  - `message: str`: パースに失敗した理由の説明。再試行時に`request_move`の`retry_reason`へそのまま渡され、モデルへのフィードバックに使われる。反則負けが`parse_failure`または`timeout`として確定した場合は、棋譜の`error_detail`にもそのまま記録される([../shared/log-schema.md](../shared/log-schema.md#move1手ごとの記録)参照)。
+  - `llm_raw_response: str`: パースできなかった生レスポンス文字列。棋譜の`llm_raw_response`用に保持する。
+- `AdapterAPIError`: APIへのリクエスト自体が失敗した場合(レート制限・5xxエラー・ネットワークエラー等)。
+  - `message: str`: 失敗理由の説明。反則負けが`api_error`または`timeout`として確定した場合、棋譜の`error_detail`にそのまま記録される。
+  - `original_exception: Exception`: 元の例外(SDK例外)。`error_detail`用に保持する。
 
 呼び出し元(engine側)は、この2つの例外の型を見て[rules.md](rules.md#1手ごとの処理)のリトライ制御・`forfeit_reason`(`parse_failure`/`api_error`)の判定を行う。一方、合法手検証(→`illegal_move`)とタイムアウト判定(→`timeout`)はAdapterの関知するところではなく、呼び出し元(engine側)のロジックで行う([rules.md](rules.md#エラー種別とadapterの例外設計)参照)。
+
+### `message`文言の叩き台
+
+`message`は`retry_reason`(モデルへのフィードバック)と`error_detail`(棋譜上でのデバッグ用)の両方に使われるため、その文言が実質的な決定事項になる。以下は方向性を確認するための叩き台であり、**実装時に実際の失敗パターン・応答内容を見ながら調整することを前提とする**(未決定事項として残す)。
+
+**`AdapterParseError.message`**(`retry_reason`としてそのままモデルに渡るため、モデルに向けた自然な文章にする):
+
+| 失敗パターン | `message`の例 |
+|---|---|
+| refusal応答(モデルが応答を拒否) | モデルが応答を拒否しました |
+| 空応答・構造化出力なし | 応答に有効な構造化出力が含まれていませんでした |
+| max_tokens到達による途中切断 | 応答が途中で切断され、有効なJSONになりませんでした |
+| 構造化出力機能を使っていてもなお形式が不一致(防御的なケース) | 応答が期待する形式(`position`を含むJSON)と一致しませんでした |
+
+**`AdapterAPIError.message`**(モデルには渡らず、人間が棋譜を見て原因を把握するためのものなので、日本語での簡潔な要約でよい):
+
+| 失敗パターン | `message`の例 |
+|---|---|
+| レート制限(429) | レート制限に達しました |
+| サーバーエラー(5xx) | APIサーバーエラーが発生しました(HTTP {status}) |
+| ネットワークエラー | ネットワークエラーが発生しました |
+| その他(想定外のSDK例外) | {SDK例外のクラス名}: {メッセージ} |
+
+- どちらの例外も、`message`だけでは分からない詳細(HTTPステータスの生値・SDK例外そのもの)は別属性(`AdapterParseError`は`llm_raw_response`、`AdapterAPIError`は`original_exception`)で保持する。`message`は失敗の種類を一言で伝える短い説明にとどめる。
 
 ### 出力フォーマットの強制
 
@@ -137,6 +169,31 @@ Adapterが送出する例外は、以下の2種類に限定する。OpenAI/Anthr
 - 盤面のグリッド表記は[共通インターフェース](#共通インターフェース イメージ)節の`BoardState`→プロンプト変換の説明に対応する。
 - 合法手一覧の書式(カンマ区切り等)、指示文の詳細な言い回し、システムプロンプト/ユーザープロンプトの分割方法などは、実際にモデルへ投げて応答の質を見ながら詰める。
 
+### `retry_reason`挿入時の叩き台
+
+`retry_reason`が渡された場合(パース失敗による再試行時、[共通インターフェース](#共通インターフェースイメージ)参照)は、上記の叩き台の`## 合法手`と`## 指示`の間に「## 前回の応答について」節を追加する。盤面・合法手一覧など他の内容は初回呼び出しと同一のまま追加するだけで、置き換えない([rules.md](rules.md#1手ごとの処理)の「単純な同一プロンプトの再送はしない」に対応)。
+
+```
+あなたはリバーシ(オセロ)の対局者です。あなたは{color}(黒 | 白)です。
+
+## 盤面
+(...初回と同一...)
+
+## 合法手
+あなたが打てる合法手は以下の通りです: d3, c4, f5, e6
+
+## 前回の応答について
+前回の応答は次の理由により受け付けられませんでした: {retry_reason}
+上記の合法手の中から、有効な形式で選び直してください。
+
+## 指示
+上記の合法手の中から1つを選び、着手位置を指定してください。
+```
+
+- `{retry_reason}`には`AdapterParseError.message`の内容がそのまま入る。
+- この節の文言・挿入位置も、上記の叩き台本体と同じく未決定事項に含む(実装時に実際の失敗メッセージの内容を見ながら調整する)。
+
 ## 未決定事項
 
-- [ ] 共通プロンプトテンプレートの具体的な文面(叩き台は上記「プロンプト」節に記載。実装時に精度・安定性を見ながら調整する前提で、まだ確定ではない)
+- [ ] 共通プロンプトテンプレートの具体的な文面(叩き台は上記「プロンプト」節に記載。実装時に精度・安定性を見ながら調整する前提で、まだ確定ではない)。`retry_reason`をプロンプトへ追記する際の具体的な文言・挿入位置もここに含む。
+- [ ] `AdapterParseError`/`AdapterAPIError`の`message`の具体的な文言(叩き台は上記「[`message`文言の叩き台](#message文言の叩き台)」節に記載。実装時に実際の失敗パターンを見ながら調整する前提で、まだ確定ではない)。

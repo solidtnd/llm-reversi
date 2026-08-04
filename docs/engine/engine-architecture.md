@@ -22,22 +22,40 @@ engine/
 ├── models.yaml
 ├── league.yaml
 ├── .env.example
-└── reversi_engine/
-    ├── board.py       # 盤面表現・合法手判定・着手・終局判定
-    ├── game.py         # 1対局の進行(1手ごとの処理、パス/反則負け判定、タイムアウト)
-    ├── adapters/
-    │   ├── base.py      # LLMAdapter Protocol / MoveResponse
-    │   ├── openai.py
-    │   ├── anthropic.py
-    │   └── gemini.py
-    ├── league.py        # 総当たり組み合わせ生成・差分実行判定・並列実行制御
-    ├── storage.py       # data/への棋譜JSON書き出し・JSONL追記(スレッドセーフ)
-    ├── aggregate.py     # JSONL→ranking.json集計(../shared/metrics.md参照)
-    ├── config.py        # models.yaml / league.yaml 読み込み
-    └── cli.py           # 試合実行(run-league)/集計実行(aggregate)の2コマンドのエントリポイント
+├── reversi_engine/
+│   ├── board.py       # 盤面表現・合法手判定・着手・終局判定
+│   ├── game.py         # 1対局の進行(1手ごとの処理、パス/反則負け判定、タイムアウト)
+│   ├── adapters/
+│   │   ├── base.py      # LLMAdapter Protocol / MoveResponse
+│   │   ├── openai.py
+│   │   ├── anthropic.py
+│   │   └── gemini.py
+│   ├── league.py        # 総当たり組み合わせ生成・差分実行判定・並列実行制御
+│   ├── storage.py       # data/への棋譜JSON書き出し・JSONL追記(スレッドセーフ)
+│   ├── aggregate.py     # JSONL→ranking.json集計(../shared/metrics.md参照)
+│   ├── config.py        # models.yaml / league.yaml 読み込み
+│   └── cli.py           # 試合実行(run-league)/集計実行(aggregate)の2コマンドのエントリポイント
+└── tests/
+    ├── fakes.py          # LLMAdapter Protocolを実装したFakeAdapter(テストダブル)
+    ├── test_board.py
+    ├── test_game.py
+    ├── test_league.py
+    ├── adapters/         # 各プロバイダAdapterのプロンプト整形・パース処理の単体テスト
+    │   ├── test_openai.py
+    │   ├── test_anthropic.py
+    │   └── test_gemini.py
+    └── live/             # 実APIに接続して動作確認するテスト(下記「テスト方針」参照)
 ```
 
 薄いAdapter層の方針(1ファイル1プロバイダ)に合わせ、フラットな構成にする。
+
+## テスト方針
+
+- `game.py`・`league.py`の単体テストは、実プロバイダのSDKを呼ばず、`LLMAdapter` Protocol([adapter-interface.md](adapter-interface.md#共通インターフェースイメージ))を実装した`tests/fakes.py`の`FakeAdapter`を注入して行う。反則負け判定・タイムアウト処理・リトライ制御([rules.md](rules.md#1手ごとの処理))を、実際にAPIを呼ばずに検証できるようにするため([rules.md](rules.md)で未決定事項だった項目)。SDKを`unittest.mock`でpatchするのではなく、Protocolを満たす専用のテストダブルを使うことで、テストがプロバイダの違いに依存しなくなる。
+  - `FakeAdapter`は、呼び出しごとに異なる応答/例外を返せる(例: 1回目は`AdapterParseError`、2回目は成功)、応答を遅延させられる(タイムアウト検証用)、呼び出し引数(`retry_reason`を含む)を記録できる、という機能を持つ。
+  - タイムアウト検証では、実際に30秒待つのではなく、テスト実行時の`league.yaml`相当の設定(`timeout_seconds`)を短い値に差し替えて使う。
+- `adapters/*.py`(各プロバイダ実装)の単体テストは、プロバイダSDKのレスポンスを模したオブジェクトをテスト内で構築し、プロンプト整形・レスポンスのパース・`AdapterParseError`/`AdapterAPIError`への例外変換を検証する。実APIは呼ばない。
+- 実際のプロバイダAPIに接続して動作確認するテストは`tests/live/`に分離し、通常の単体テスト実行には含めない(開発中に不要なAPI費用を発生させないため)。少数モデル・少数手数での手動実行を想定する。
 
 ## 並列実行
 
@@ -46,8 +64,3 @@ engine/
 - `data/results.jsonl`への追記は複数スレッドから発生するため、書き込みをロックで直列化し、行の破損・競合を防ぐ。
 - **試合実行と集計実行は別コマンドとする。** 集計(`ranking.json`生成)は対局が完了するたびに自動実行するのではなく、全対局が終わった後に利用者が任意のタイミングで`aggregate`コマンドを実行する想定(../shared/metrics.mdで決定済みの「集計スクリプトが全量を再生成する」方式と整合)。
 
-## 最低限のガード(信頼性確保のため)
-
-- LLM応答のJSONパース失敗時は1回リトライする。
-- 非合法手を指した場合は失格、または当該試合を無効化する。
-- 1手あたりの最大待ち時間を設ける。

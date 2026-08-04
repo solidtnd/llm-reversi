@@ -25,7 +25,7 @@ docs/
 
 | ファイル | 内容 |
 | --- | --- |
-| [engine/engine-architecture.md](engine/engine-architecture.md) | engineのモジュール構成・並列実行方針・最低限のガード |
+| [engine/engine-architecture.md](engine/engine-architecture.md) | engineのモジュール構成・並列実行方針・テスト方針 |
 | [engine/rules.md](engine/rules.md) | リバーシの対戦ルール、1手ごとの処理・反則負けの扱い、リーグ運営方針 |
 | [engine/adapter-interface.md](engine/adapter-interface.md) | LLMごとの差異を吸収するAdapter層のインターフェース定義、`models.yaml`の形式 |
 
