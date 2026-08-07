@@ -60,6 +60,10 @@ web/
         └── api.ts                 # ranking.jsonの取得・対局JSON個別取得のラッパ
 ```
 
+## テスト方針
+
+自動テスト(unit/component/e2eいずれも)は導入しない。表示専用で、扱う状態も「fetchしてきたJSONをそのまま表示する」程度のため、自動テストのメンテナンスコストがロジックの複雑さに見合わない。動作確認は、[engine/engine-architecture.md#ダミーデータ生成](../engine/engine-architecture.md#ダミーデータ生成)で`data/`に生成したダミーデータを使い、`npm run dev`で人間が画面を目視確認する方法で行う。このため実装順としては、`data/`にダミーデータが存在する状態でweb実装に着手する(engine実装・ダミーデータ生成 → web実装の順)。
+
 ## データ取り込み方式
 
 - ビルド前処理(`scripts/copy-data.mjs`)で、リポジトリ直下の`data/`を丸ごと`web/public/data/`へ**コピー**する。シンボリックリンクはOS間の差異・CI環境での扱いが面倒なため避ける。

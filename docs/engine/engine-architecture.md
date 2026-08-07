@@ -44,7 +44,8 @@ engine/
     │   ├── test_openai.py
     │   ├── test_anthropic.py
     │   └── test_gemini.py
-    └── live/             # 実APIに接続して動作確認するテスト(下記「テスト方針」参照)
+    ├── live/             # 実APIに接続して動作確認するテスト(下記「テスト方針」参照)
+    └── generate_dummy_data.py  # FakeAdapterを使いdata/へダミー対局データを生成するスクリプト(下記「ダミーデータ生成」参照。`test_`接頭辞を付けずpytestの収集対象外にする)
 ```
 
 薄いAdapter層の方針(1ファイル1プロバイダ)に合わせ、フラットな構成にする。
@@ -54,8 +55,17 @@ engine/
 - `game.py`・`league.py`の単体テストは、実プロバイダのSDKを呼ばず、`LLMAdapter` Protocol([adapter-interface.md](adapter-interface.md#共通インターフェースイメージ))を実装した`tests/fakes.py`の`FakeAdapter`を注入して行う。反則負け判定・タイムアウト処理・リトライ制御([rules.md](rules.md#1手ごとの処理))を、実際にAPIを呼ばずに検証できるようにするため([rules.md](rules.md)で未決定事項だった項目)。SDKを`unittest.mock`でpatchするのではなく、Protocolを満たす専用のテストダブルを使うことで、テストがプロバイダの違いに依存しなくなる。
   - `FakeAdapter`は、呼び出しごとに異なる応答/例外を返せる(例: 1回目は`AdapterParseError`、2回目は成功)、応答を遅延させられる(タイムアウト検証用)、呼び出し引数(`retry_reason`を含む)を記録できる、という機能を持つ。
   - タイムアウト検証では、実際に30秒待つのではなく、テスト実行時の`league.yaml`相当の設定(`timeout_seconds`)を短い値に差し替えて使う。
+  - 加えて、`legal_moves`からランダムに1つ選んで返す「ランダムモード」も持つ。単体テストの決定的な検証には使わないが、[ダミーデータ生成](#ダミーデータ生成)で1手ごとに合法手を選び続けて対局を最後まで進めるために使う。LLMAdapter Protocolを満たす実装をテスト用・データ生成用で二重に持たないための選択。
 - `adapters/*.py`(各プロバイダ実装)の単体テストは、プロバイダSDKのレスポンスを模したオブジェクトをテスト内で構築し、プロンプト整形・レスポンスのパース・`AdapterParseError`/`AdapterAPIError`への例外変換を検証する。実APIは呼ばない。
 - 実際のプロバイダAPIに接続して動作確認するテストは`tests/live/`に分離し、通常の単体テスト実行には含めない(開発中に不要なAPI費用を発生させないため)。少数モデル・少数手数での手動実行を想定する。
+
+## ダミーデータ生成
+
+web実装(表示確認)には実際のAPI呼び出しなしで`data/`にスキーマ準拠のデータが必要になる。手書きのJSONは64文字の`board_after`や着手履歴の整合性を壊しやすいため、`tests/generate_dummy_data.py`から`FakeAdapter`のランダムモードを使って実際に`League`/`Game`を走らせ、`data/`へ出力させる。
+
+- `models.yaml`のprovider解決(`config.py`)は経由せず、スクリプト内で`FakeAdapter`インスタンスを直接組み立てて`League`に注入する。
+- 反則負け(`parse_failure`/`timeout`/`api_error`/`illegal_move`)・リトライ発生・複数provider混在など、web側の表示確認で必要になるケースが最低1件ずつ含まれるよう、対局ごとに`FakeAdapter`の応答パターンを変えて生成する。
+- pytestのテストスイートには含めない(`test_`接頭辞を付けないファイル名にすることで自動収集を避ける)、手動実行するスクリプトという位置付け。
 
 ## 並列実行
 
