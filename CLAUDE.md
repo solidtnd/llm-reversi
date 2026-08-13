@@ -27,6 +27,23 @@
 
 `engine/` と `web/` はコードレベルで互いに依存させない。両者のやり取りは必ず `data/` のJSON経由で行う。
 
+## よく使うコマンド
+
+```sh
+# engine
+cd engine
+uv run pytest                                        # 単体テスト(tests/live/はキー未設定ならskip)
+uv run reversi-engine run-league --dry-run           # 実行予定カードの確認(APIキー不要)
+uv run reversi-engine run-league                     # 未実施カードの対局を実行
+uv run reversi-engine aggregate                      # results.jsonl -> ranking.json
+uv run python tests/generate_dummy_data.py --reset    # data/にダミー対局を生成
+
+# web
+cd web
+npm run dev      # data/のコピー(predev)込みで開発サーバ起動
+npm run build    # 型チェック + 本番ビルド
+```
+
 ## 開発方針
 
 - `engine/` の依存関係管理は `uv` を使用する。
