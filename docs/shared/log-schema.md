@@ -66,8 +66,9 @@
 }
 ```
 
-- `type: "pass"` の場合、`position`はnull(LLMに問い合わせないため)。
-- `type: "forfeit"` の場合、`forfeit_reason`に理由を記録し、その手で対局は終了する。
+- `type: "pass"` の場合、`position`はnull(LLMに問い合わせないため)。同じ理由で`legal_moves`は空配列、`llm_raw_response`・`usage`はnull、`retried`は`"none"`、`response_time_ms`は`0`になる。
+- `response_time_ms`は、**その手の処理全体(初回呼び出し + リトライ + その間の処理)の経過時間**をミリ秒で記録する。Adapter呼び出し1回だけの時間にしないのは、[../engine/rules.md](../engine/rules.md#タイムアウトの扱い)のタイムアウトが「1手あたりの処理全体の予算」として定義されており、同じ尺度で記録しておくと予算超過との突き合わせができるため。
+- `type: "forfeit"` の場合、`forfeit_reason`に理由を記録し、その手で対局は終了する。`position`は`forfeit_reason: "illegal_move"`のときのみ**モデルが返した非合法な着手位置**を記録し、それ以外の理由(`timeout`/`parse_failure`/`api_error`)では着手位置が確定していないためnullとする。`illegal_move`の`error_detail`が常にnullなのは「原因は`position`・`legal_moves`を見れば分かる」という前提に立つためで、ここをnullにすると原因が追えなくなる。
 - `retried`は、この手でリトライが発生したかどうかと、発生した場合の原因を表す([../engine/rules.md](../engine/rules.md#1手ごとの処理)参照)。**1手あたりのリトライは原因(パース失敗/APIエラー)を問わず通算1回までなので、`retried`は「リトライ有無」と「その1回の原因」をまとめて表現できるenumとし、`parse_failure`と`api_error`が同時に発生したことを表す値(`"both"`のような)は持たない**。値は以下の3つ。
   - `"none"`: リトライは発生しなかった(1回目の応答で成功、またはリトライ前に反則負けが確定した)。
   - `"parse_failure"`: パース失敗が原因でリトライが発生した。
@@ -98,7 +99,7 @@
 }
 ```
 
-- 対局本体の棋譜JSON(上記[トップレベル構造](#トップレベル構造))から、[metrics.md](metrics.md)の指標計算に必要な値だけを抜き出した要約。`black`/`white`はそれぞれ`players`の`id`と、その対局における平均応答時間(`Move.response_time_ms`の単純平均)を持つ。手数による加重平均は行わない(平均応答時間は[metrics.md](metrics.md#安定性の指標)の通り参考情報の位置づけであり、そこまでの精度を必要としないと判断したため)。
+- 対局本体の棋譜JSON(上記[トップレベル構造](#トップレベル構造))から、[metrics.md](metrics.md)の指標計算に必要な値だけを抜き出した要約。`black`/`white`はそれぞれ`players`の`id`と、その対局における平均応答時間(`Move.response_time_ms`の単純平均)を持つ。**パス(`type: "pass"`)の手は平均から除外する**(LLMを呼ばず応答時間を持たない手を0msとして混ぜると、パスが多い対局ほど平均が不当に短くなるため)。手数による加重平均は行わない(平均応答時間は[metrics.md](metrics.md#安定性の指標)の通り参考情報の位置づけであり、そこまでの精度を必要としないと判断したため)。
 - `Move.retried`(リトライ)に関する集計値は持たない。リトライは最終的に成功すれば対局結果に影響しない一時的な事象であり、モデルの安定性は`forfeit_reason`の集計だけで測れると判断したため([metrics.md](metrics.md#安定性の指標)参照)。特定の対局でリトライが起きたかどうかを確認したい場合は、棋譜JSON本体の`Move.retried`を見る(この要約には出てこない)。
 - `score`(石数)は持たない。[metrics.md](metrics.md)で定義する指標に石数差は含まれないため。
 - この1行は、そのまま`ranking.json`の`games`配列の要素(の一部)になる([metrics.md](metrics.md)参照)。

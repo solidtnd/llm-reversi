@@ -1,0 +1,43 @@
+# 出場モデル一覧(docs/engine/adapter-interface.md「モデル一覧設定ファイル」参照)。
+#
+# - id: ログ上のプレイヤー識別子(一意)。同じ model でも config 違いは別 id にする。
+# - provider: openai | anthropic | gemini
+# - model: API呼び出し時のモデル名
+# - display_name: Web表示用の文字列
+# - config: モデル固有パラメータ。**キーはそのままAPIリクエストのパラメータとして渡される**
+#   (例外的な変換は adapter-interface.md の「config の受け渡し」参照)。
+#   棋譜JSONの players[].config にもそのまま転記される。
+#
+# 新モデルの追加は末尾に1エントリ追記するだけでよい(未実施カードのみ実行される)。
+models:
+  - id: gpt-4o
+    provider: openai
+    model: gpt-4o
+    display_name: "GPT-4o"
+    config: {}
+
+  - id: gpt-4o-mini
+    provider: openai
+    model: gpt-4o-mini
+    display_name: "GPT-4o mini"
+    config: {}
+
+  - id: claude-opus-5
+    provider: anthropic
+    model: claude-opus-5
+    display_name: "Claude Opus 5"
+    config:
+      max_tokens: 4096
+
+  - id: claude-haiku-4-5
+    provider: anthropic
+    model: claude-haiku-4-5
+    display_name: "Claude Haiku 4.5"
+    config:
+      max_tokens: 2048
+
+  - id: gemini-2.5-flash
+    provider: gemini
+    model: gemini-2.5-flash
+    display_name: "Gemini 2.5 Flash"
+    config: {}
