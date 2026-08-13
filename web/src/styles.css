@@ -1,0 +1,985 @@
+/*
+ * デザイントークンと全画面共通スタイル。
+ *
+ * 方針:
+ * - 色は「データ」と「盤面」にだけ使う。UIの装飾色は持たず、リンク・選択状態は
+ *   インク(黒/白)と罫線・下線で表現する。1色だけ大きく使う場所を盤面の緑に集約する。
+ * - provider色・対戦表の配色はdatavizスキルの検証済みパレットから採り、
+ *   3スロット(aqua/orange/violet)で全ペアのCVD分離を満たす組み合わせを使う。
+ *   コントラストが3:1未満のスロットがあるため、色は必ずラベル文字と併記する。
+ * - 数値・座標・IDは等幅(棋譜らしさ)、見出しはゴシックの太字。
+ */
+
+:root {
+  color-scheme: light;
+
+  --page: #f2f3f0;
+  --surface: #fbfbf9;
+  --sunken: #eaebe6;
+  --ink: #12140f;
+  --ink-2: #50534a;
+  --ink-3: #82857b;
+  --hairline: #dddfd6;
+  --hairline-strong: #c4c6bb;
+
+  --felt: #14503c;
+  --felt-edge: #0d3a2b;
+  --felt-line: rgba(246, 245, 238, 0.18);
+  --disc-black: #171a16;
+  --disc-white: #f6f5ee;
+
+  --bar-track: rgba(18, 20, 15, 0.1);
+  --bar-fill: #3c4a3a;
+
+  --div-pos: #2a78d6;
+  --div-neg: #e34948;
+  --div-mid: #e8e9e5;
+
+  --provider-openai: #1baf7a;
+  --provider-anthropic: #eb6834;
+  --provider-gemini: #4a3aa7;
+  --provider-unknown: #82857b;
+
+  --font-sans: "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP",
+    system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, "Liberation Mono",
+    monospace;
+
+  --radius: 4px;
+  --shell: 1160px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --page: #0e1110;
+    --surface: #171c1a;
+    --sunken: #121715;
+    --ink: #f4f5ef;
+    --ink-2: #b8bcb0;
+    --ink-3: #8a8d83;
+    --hairline: #262c29;
+    --hairline-strong: #39413c;
+
+    --felt: #0f3f2f;
+    --felt-edge: #082a1f;
+    --disc-black: #0b0d0a;
+
+    --bar-track: rgba(244, 245, 239, 0.12);
+    --bar-fill: #9aa596;
+
+    --div-pos: #3987e5;
+    --div-neg: #e66767;
+    --div-mid: #262c29;
+
+    --provider-openai: #199e70;
+    --provider-anthropic: #d95926;
+    --provider-gemini: #9085e9;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.65;
+  font-feature-settings: "palt" 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--hairline-strong);
+}
+
+a:hover {
+  border-bottom-color: currentColor;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.mono,
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 骨格 ───────────────────────────────────────────────────────── */
+
+.shell {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 40px);
+}
+
+.topbar {
+  border-bottom: 1px solid var(--hairline);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 60px;
+}
+
+.mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.mark__glyph {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline-strong);
+  background: linear-gradient(90deg, var(--disc-black) 0 50%, var(--disc-white) 50% 100%);
+}
+
+.topbar__meta {
+  margin-left: auto;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.page {
+  padding: clamp(28px, 5vw, 56px) 0 96px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--ink-3);
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  margin: 0 0 12px;
+}
+
+h2 {
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+  margin: 0;
+}
+
+.lede {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--ink-2);
+}
+
+.section {
+  margin-top: clamp(40px, 6vw, 72px);
+}
+
+.section__head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.section__note {
+  color: var(--ink-3);
+  font-size: 12px;
+  margin-left: auto;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+}
+
+.muted {
+  color: var(--ink-3);
+}
+
+.empty {
+  padding: 24px;
+  color: var(--ink-3);
+  text-align: center;
+}
+
+/* ── ヒーロー(石を数える) ───────────────────────────────────── */
+
+.hero {
+  display: grid;
+  gap: clamp(28px, 4vw, 48px);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 42%);
+    align-items: end;
+  }
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin-top: 28px;
+}
+
+.stat__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.stat__label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+
+.leaders {
+  border-top: 2px solid var(--ink);
+  padding-top: 12px;
+}
+
+.leaders__caption {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  margin-bottom: 12px;
+}
+
+.leader {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.leader__rank {
+  font-family: var(--font-mono);
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+.leader__name {
+  font-weight: 700;
+  border: none;
+}
+
+.leader__points {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.discs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 6px;
+  grid-column: 2 / -1;
+}
+
+.discs__disc {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--disc-black);
+  border: 1px solid var(--hairline-strong);
+}
+
+.discs__disc--half {
+  background: linear-gradient(90deg, var(--disc-black) 0 50%, transparent 50% 100%);
+}
+
+/* ── テーブル共通 ──────────────────────────────────────────── */
+
+.table-wrap {
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+}
+
+.table {
+  width: 100%;
+  font-size: 14px;
+}
+
+.table th,
+.table td {
+  padding: 10px 14px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.table thead th {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  font-weight: 700;
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background: var(--sunken);
+}
+
+.table td.num,
+.table th.num {
+  text-align: right;
+}
+
+.table__rank {
+  color: var(--ink-3);
+  width: 3rem;
+}
+
+.table__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+
+.table__sort[aria-pressed="true"] {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* magnitude(勝点 / BT強さ)のセル内バー。無彩色で控えめに。 */
+.meter {
+  display: grid;
+  grid-template-columns: 3.6rem 1fr;
+  align-items: center;
+  gap: 8px;
+  min-width: 9rem;
+}
+
+.meter__track {
+  height: 6px;
+  background: var(--bar-track);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.meter__fill {
+  display: block;
+  height: 100%;
+  background: var(--bar-fill);
+  border-radius: 3px;
+}
+
+/* ── provider バッジ ──────────────────────────────────────── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.badge__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--provider-unknown);
+}
+
+.badge--openai .badge__dot {
+  background: var(--provider-openai);
+}
+
+.badge--anthropic .badge__dot {
+  background: var(--provider-anthropic);
+}
+
+.badge--gemini .badge__dot {
+  background: var(--provider-gemini);
+}
+
+/* ── 検索・フィルタ ───────────────────────────────────────── */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 6px 10px;
+}
+
+.field input,
+.field select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  min-width: 12rem;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+}
+
+.field__label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  border: 1px solid var(--hairline-strong);
+  border-radius: 999px;
+  padding: 3px 11px;
+  font-size: 12px;
+  color: var(--ink-2);
+  background: var(--surface);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--page);
+}
+
+.chip__count {
+  font-family: var(--font-mono);
+  color: inherit;
+  opacity: 0.7;
+  margin-left: 6px;
+}
+
+/* ── 対戦表(diverging) ─────────────────────────────────── */
+
+.matrix {
+  font-size: 13px;
+}
+
+.matrix th,
+.matrix td {
+  border: 1px solid var(--hairline);
+  padding: 0;
+}
+
+.matrix thead th {
+  padding: 8px 10px;
+  font-size: 11px;
+  color: var(--ink-3);
+  font-weight: 700;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.matrix tbody th {
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+  background: var(--surface);
+}
+
+.matrix__cell {
+  width: 84px;
+  height: 46px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.matrix__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.matrix__link:hover {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+
+.matrix__self {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--sunken) 0 5px,
+    var(--surface) 5px 10px
+  );
+}
+
+.matrix__empty {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.legend__ramp {
+  display: flex;
+  height: 10px;
+  width: 200px;
+  border: 1px solid var(--hairline-strong);
+}
+
+.legend__ramp span {
+  flex: 1;
+}
+
+/* ── 盤面 ────────────────────────────────────────────────── */
+
+.replay {
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .replay {
+    grid-template-columns: minmax(320px, 46%) minmax(0, 1fr);
+  }
+}
+
+.board-frame {
+  background: var(--felt-edge);
+  padding: clamp(8px, 1.6vw, 14px);
+  border-radius: 6px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: 1.4rem repeat(8, 1fr);
+  grid-template-rows: 1.4rem repeat(8, 1fr);
+  gap: 0;
+}
+
+.board__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(246, 245, 238, 0.6);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.board__cell {
+  position: relative;
+  aspect-ratio: 1;
+  background: var(--felt);
+  border-right: 1px solid var(--felt-line);
+  border-bottom: 1px solid var(--felt-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.board__cell--left {
+  border-left: 1px solid var(--felt-line);
+}
+
+.board__cell--top {
+  border-top: 1px solid var(--felt-line);
+}
+
+.board__stone {
+  width: 78%;
+  height: 78%;
+  border-radius: 50%;
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.board__stone--black {
+  background: var(--disc-black);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.16);
+}
+
+.board__stone--white {
+  background: var(--disc-white);
+  box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.22);
+}
+
+.board__hint {
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(246, 245, 238, 0.34);
+}
+
+.board__cell--played::after {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border: 2px solid rgba(246, 245, 238, 0.85);
+  border-radius: 50%;
+}
+
+.board__cell--illegal::after {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border: 2px solid var(--div-neg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board__stone {
+    transition: none;
+  }
+}
+
+.scoreline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.scoreline__side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scoreline__disc {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline-strong);
+}
+
+.scoreline__disc--black {
+  background: var(--disc-black);
+}
+
+.scoreline__disc--white {
+  background: var(--disc-white);
+}
+
+/* ── リプレイ操作 ─────────────────────────────────────────── */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.controls__button {
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  padding: 5px 12px;
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.controls__button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.controls__button--primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--page);
+  min-width: 5.5rem;
+}
+
+.controls__turn {
+  font-family: var(--font-mono);
+  color: var(--ink-2);
+  font-size: 13px;
+  margin-left: auto;
+}
+
+.controls__slider {
+  width: 100%;
+  accent-color: var(--ink);
+}
+
+/* ── 対局者ヘッダ・生ログ ─────────────────────────────────── */
+
+.players {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 640px) {
+  .players {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.player {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 12px 14px;
+}
+
+.player--turn {
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+
+.player__side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+
+.player__name {
+  font-weight: 800;
+  margin: 4px 0 6px;
+  display: block;
+}
+
+.rows {
+  display: grid;
+  gap: 0;
+  font-size: 13px;
+}
+
+.rows__row {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.rows__row:last-child {
+  border-bottom: none;
+}
+
+.rows__key {
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.rows__value {
+  overflow-wrap: anywhere;
+}
+
+.notice {
+  border-left: 3px solid var(--div-neg);
+  padding: 8px 12px;
+  background: var(--sunken);
+  font-size: 13px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+details.raw {
+  margin-top: 12px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 10px;
+}
+
+details.raw summary {
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--ink-2);
+  letter-spacing: 0.06em;
+}
+
+pre.raw__body {
+  margin: 10px 0 0;
+  padding: 12px;
+  background: var(--sunken);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  max-height: 320px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ── メトリクス ───────────────────────────────────────────── */
+
+.metrics {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.metric {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 14px;
+}
+
+.metric__label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+.metric__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.metric__sub {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.rates {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.rate {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 3.5rem;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.rate__label {
+  color: var(--ink-2);
+}
+
+.rate__value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.footer {
+  border-top: 1px solid var(--hairline);
+  padding: 20px 0 40px;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.breadcrumb {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 14px;
+}
+
+.state {
+  padding: 64px 0;
+  text-align: center;
+  color: var(--ink-3);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

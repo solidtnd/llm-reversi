@@ -41,7 +41,8 @@ web/
 │   └── data/                 # copy-data.mjsの出力先(gitignore対象、ビルド時に生成)
 └── src/
     ├── main.tsx               # エントリポイント(HashRouterのセットアップ)
-    ├── App.tsx                # ルーティング定義(3ルート)
+    ├── App.tsx                # ルーティング定義(3ルート)+ 共通レイアウト
+    ├── styles.css             # デザイントークンと全画面共通スタイル(1ファイルに集約)
     ├── pages/
     │   ├── RankingPage.tsx        # トップ: ランキング表 + 対戦表
     │   ├── ModelDetailPage.tsx    # モデル指標 + 対局履歴
@@ -57,8 +58,12 @@ web/
     │   └── MoveLogPanel.tsx       # 生ログ・反則理由・トークン数・応答時間の表示
     └── lib/
         ├── types.ts               # ranking.json・対局JSONの型定義([../shared/log-schema.md](../shared/log-schema.md)・[../shared/metrics.md](../shared/metrics.md)に対応)
-        └── api.ts                 # ranking.jsonの取得・対局JSON個別取得のラッパ
+        ├── api.ts                 # ranking.jsonの取得・対局JSON個別取得のラッパ(取得結果のキャッシュとhookを含む)
+        ├── board.ts               # 盤面文字列の表示用ヘルパ(初期配置の定数・座標変換・石数カウントのみ)
+        └── format.ts              # 数値・時刻の表示整形
 ```
+
+`lib/board.ts`に**リバーシのルール(合法手判定・反転)は置かない**。webは`board_after`を並べるだけでよい設計([../shared/log-schema.md](../shared/log-schema.md)の「`board_before`は持たない」)なので、ここにあるのはリプレイの開始局面に使う初期配置の定数と、スコア表示のための石数カウントだけに限る。
 
 ## テスト方針
 
@@ -70,15 +75,32 @@ web/
 - `ranking.json`はアプリ起動時に1回fetchし、全画面(トップ・モデル詳細)で共有する。
 - 個別対局JSON(`data/games/<game_id>.json`)は対局詳細ページを開いたときに初めてfetchする(全件の事前ロードはしない)。[../shared/metrics.md](../shared/metrics.md)の`ranking.json`が`games`配列(軽量インデックス)を持つ設計は、この遅延fetchを支えるためのもの。
 
+## デザイン方針
+
+実装時に決めた見た目の方針。
+
+- **色はデータと盤面にしか使わない。** UIの装飾色(アクセントカラー)を持たず、リンク・選択状態はインク(黒/白)と罫線・下線で表す。色を大きく使う場所を盤面の緑1色に集約することで、provider色や対戦表の配色が「意味のある色」として読めるようにする。
+- **配色は`dataviz`スキルの検証済みパレットから採り、検証スクリプトを通した組み合わせだけを使う。**
+  - provider(OpenAI/Anthropic/Gemini)は識別(categorical)なので3スロット(aqua/orange/violet)。全ペア条件でCVD分離を満たす組み合わせを選んでいる。明度コントラストが3:1未満のスロットを含むため、**バッジは必ずラベル文字と併記**し色だけで識別させない。
+  - 対戦表のセルは「行のモデルから見た勝ち越し度」という**極性**なので発散(diverging)配色(青↔赤、中央は無彩色)。provider色と用途がぶつからないよう、providerには青系を割り当てない。セルには常に「勝-分-負」の数値も表示する。
+  - ランキング表のセル内バーは値の大きさ(magnitude)なので**無彩色**にする。順位ではなく値を表すものなので、色で意味を追加しない。
+  - 反則理由の内訳は1〜2件しか出ない量なので、棒グラフにせず数値のチップで示す(少数のカウントを面積で見せると精度を装うため)。
+- **数値・座標・対局IDは等幅フォント、見出しはゴシックの太字。** 棋譜(`d3`のような代数記法)を扱う画面なので、桁が揃うことと座標が読みやすいことを優先する。
+- **ダークモードは`prefers-color-scheme`で切り替える。** 明色を単純反転させるのではなく、暗い面用に選び直した値を使う(datavizスキルの方針)。
+- 盤面の石はCSSトランジションで色が変わるが、`prefers-reduced-motion`が指定されていればアニメーションしない。
+
 ## デプロイ
 
-GitHub Actionsで以下を1ワークフローとして実行する。
+GitHub Actionsで以下を1ワークフローとして実行する(`.github/workflows/deploy-pages.yml`)。
 
 1. リポジトリをcheckout
 2. Node.jsセットアップ・`web/`で依存関係インストール
-3. `data/`を`web/public/data/`へコピー(`copy-data.mjs`)
+3. `data/`を`web/public/data/`へコピー(`copy-data.mjs`。`npm run build`の`prebuild`で自動実行される)
 4. `npm run build`
 5. ビルド成果物をGitHub Pagesへ公開
+
+- 公開にはリポジトリ設定の Settings > Pages > Source を「GitHub Actions」にする必要がある。
+- Viteの`base`は`"./"`(相対パス)にする。プロジェクトページ(`https://<user>.github.io/<repo>/`)でもリポジトリ名をビルド時に知らずに動かせるため。HashRouterと組み合わせるとリロード時の404も起きない。
 
 ## 実装に使うClaude Codeスキル
 
