@@ -36,15 +36,21 @@ engine/
 │   ├── config.py        # models.yaml / league.yaml 読み込み
 │   └── cli.py           # 試合実行(run-league)/集計実行(aggregate)の2コマンドのエントリポイント
 └── tests/
+    ├── conftest.py       # tests/をsys.pathに追加(サブディレクトリからも`import fakes`できるように)
     ├── fakes.py          # LLMAdapter Protocolを実装したFakeAdapter(テストダブル)
     ├── test_board.py
     ├── test_game.py
     ├── test_league.py
+    ├── test_storage.py
+    ├── test_config.py
+    ├── test_aggregate.py
+    ├── test_cli.py
     ├── adapters/         # 各プロバイダAdapterのプロンプト整形・パース処理の単体テスト
     │   ├── test_openai.py
     │   ├── test_anthropic.py
     │   └── test_gemini.py
     ├── live/             # 実APIに接続して動作確認するテスト(下記「テスト方針」参照)
+    │   └── test_live_adapters.py
     └── generate_dummy_data.py  # FakeAdapterを使いdata/へダミー対局データを生成するスクリプト(下記「ダミーデータ生成」参照。`test_`接頭辞を付けずpytestの収集対象外にする)
 ```
 
@@ -58,6 +64,8 @@ engine/
   - 加えて、`legal_moves`からランダムに1つ選んで返す「ランダムモード」も持つ。単体テストの決定的な検証には使わないが、[ダミーデータ生成](#ダミーデータ生成)で1手ごとに合法手を選び続けて対局を最後まで進めるために使う。LLMAdapter Protocolを満たす実装をテスト用・データ生成用で二重に持たないための選択。
 - `adapters/*.py`(各プロバイダ実装)の単体テストは、プロバイダSDKのレスポンスを模したオブジェクトをテスト内で構築し、プロンプト整形・レスポンスのパース・`AdapterParseError`/`AdapterAPIError`への例外変換を検証する。実APIは呼ばない。
 - 実際のプロバイダAPIに接続して動作確認するテストは`tests/live/`に分離し、通常の単体テスト実行には含めない(開発中に不要なAPI費用を発生させないため)。少数モデル・少数手数での手動実行を想定する。
+  - 「含めない」の実現方法は、pytestの収集対象から外すのではなく**APIキーが未設定なら`pytest.skip`する**方式とする。`uv run pytest`を素で叩いたときに勝手にAPIを呼ばない一方で、テストの存在自体は実行結果(skip表示)から見えるため、テストが腐っていることに気付けるようにするため。実行時は`engine/.env`にキーを設定して`uv run pytest tests/live -v`のように明示的に呼ぶ。
+  - 内容は「`models.yaml`のそのproviderの先頭モデルに、初期局面で1手だけ問い合わせ、合法手が返るか」を確認するものに留める(1テスト=1手なので費用も最小限)。リトライ用プロンプト(`retry_reason`付き)でも合法手が返るかも同様に確認する。
 
 ## ダミーデータ生成
 
