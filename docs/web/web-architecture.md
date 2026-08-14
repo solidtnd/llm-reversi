@@ -22,6 +22,7 @@ web(フロントエンド)の構成方針。全体構成・engine/web/dataの分
 1. **トップ**: モデルランキング表(勝点方式/Bradley-Terry方式でソート切替、モデル名・provider名で検索/絞り込み可) + 対戦表(総当たりマトリクス)
 2. **モデル詳細**(`#/models/<id>`): そのモデルの指標(勝率・先手後手別勝率・反則負け率とその内訳・平均応答時間・リトライ発生率) + 対局履歴(相手モデル・勝敗等で絞り込み可、対局詳細へのリンク付き)
 3. **対局詳細**(`#/games/<game_id>`): 棋譜リプレイ(盤面 + 手送り操作、その時点の`legal_moves`のうち選ばれなかった手も盤面上に薄く表示) + 手ごとの生ログパネル(`llm_raw_response`・反則理由・トークン数・応答時間)
+4. **About**(`#/about`): 指標(勝点方式/Bradley-Terry強さ推定・反則負け率など)の定義と対局条件(タイムアウト・リトライ・反則負けの扱い等)の説明。ヘッダー・フッター・トップページから導線を張る。サイトの企画経緯には触れない(「表示されている情報の意味・作られ方」だけを説明する)。内容はdocs(本ファイル・[../shared/metrics.md](../shared/metrics.md)・[../engine/rules.md](../engine/rules.md))の記述と対応するが、このページ自身が随時最新化する前提でdocsへの参照は行わず独立して書く。
 
 モデル名を表示する箇所(ランキング表・モデル詳細・対局詳細の対局者表示など)では、provider(OpenAI/Anthropic/Gemini)ごとのバッジを共通して表示する。
 
@@ -36,17 +37,19 @@ web/
 ├── tsconfig.json
 ├── index.html
 ├── scripts/
-│   └── copy-data.mjs        # data/をweb/public/data/へコピーするビルド前処理
+│   ├── copy-data.mjs        # data/をweb/public/data/へコピーするビルド前処理
+│   └── screenshot.mjs       # デザイン確認用のスクリーンショット撮影(下記「テスト方針」参照)
 ├── public/
 │   └── data/                 # copy-data.mjsの出力先(gitignore対象、ビルド時に生成)
 └── src/
     ├── main.tsx               # エントリポイント(HashRouterのセットアップ)
-    ├── App.tsx                # ルーティング定義(3ルート)+ 共通レイアウト
+    ├── App.tsx                # ルーティング定義(4ルート)+ 共通レイアウト(ヘッダーのGitHubリンク・テーマ切り替えを含む)
     ├── styles.css             # デザイントークンと全画面共通スタイル(1ファイルに集約)
     ├── pages/
     │   ├── RankingPage.tsx        # トップ: ランキング表 + 対戦表
     │   ├── ModelDetailPage.tsx    # モデル指標 + 対局履歴
-    │   └── GameDetailPage.tsx     # 棋譜リプレイ + 生ログパネル
+    │   ├── GameDetailPage.tsx     # 棋譜リプレイ + 生ログパネル
+    │   └── AboutPage.tsx          # 指標・対局条件の説明
     ├── components/
     │   ├── RankingTable.tsx
     │   ├── ModelSearchBox.tsx     # モデル名・provider名での検索/絞り込み(RankingTableで使用)
@@ -55,7 +58,9 @@ web/
     │   ├── GameHistoryTable.tsx   # モデル詳細内の対局履歴(相手モデルで絞り込み可能)
     │   ├── Board.tsx              # 64文字盤面文字列→盤面グリッド描画。選ばれなかったlegal_movesの薄い表示も担当
     │   ├── ReplayControls.tsx     # 手送り・自動再生の操作
-    │   └── MoveLogPanel.tsx       # 生ログ・反則理由・トークン数・応答時間の表示
+    │   ├── MoveLogPanel.tsx       # 生ログ・反則理由・トークン数・応答時間の表示
+    │   ├── Icons.tsx               # ヘッダー用アイコン(GitHub・ライト/ダーク)。外部アイコンライブラリは使わずインラインSVGで持つ
+    │   └── ThemeToggle.tsx         # ライト/ダークモードの手動切り替えボタン
     └── lib/
         ├── types.ts               # ranking.json・対局JSONの型定義([../shared/log-schema.md](../shared/log-schema.md)・[../shared/metrics.md](../shared/metrics.md)に対応)
         ├── api.ts                 # ranking.jsonの取得・対局JSON個別取得のラッパ(取得結果のキャッシュとhookを含む)
@@ -67,7 +72,10 @@ web/
 
 ## テスト方針
 
-自動テスト(unit/component/e2eいずれも)は導入しない。表示専用で、扱う状態も「fetchしてきたJSONをそのまま表示する」程度のため、自動テストのメンテナンスコストがロジックの複雑さに見合わない。動作確認は、[engine/engine-architecture.md#ダミーデータ生成](../engine/engine-architecture.md#ダミーデータ生成)で`data/`に生成したダミーデータを使い、`npm run dev`で人間が画面を目視確認する方法で行う。このため実装順としては、`data/`にダミーデータが存在する状態でweb実装に着手する(engine実装・ダミーデータ生成 → web実装の順)。
+自動テスト(assertion付きのunit/component/e2eいずれも)は導入しない。表示専用で、扱う状態も「fetchしてきたJSONをそのまま表示する」程度のため、自動テストのメンテナンスコストがロジックの複雑さに見合わない。動作確認は、[engine/engine-architecture.md#ダミーデータ生成](../engine/engine-architecture.md#ダミーデータ生成)で`data/`に生成したダミーデータを使い、`npm run dev`で人間が画面を目視確認する方法で行う。このため実装順としては、`data/`にダミーデータが存在する状態でweb実装に着手する(engine実装・ダミーデータ生成 → web実装の順)。
+
+- **`scripts/screenshot.mjs`(`npm run screenshot`)はassertionを持たない撮影専用ツール**で、上記の「自動テストは導入しない」方針とは矛盾しない。人間(またはコードを書くAI自身)がスマホ幅を含む複数ビューポートのレイアウトを画像で目視確認するための道具であり、`npm run build`・CIには組み込まない。実行にはPlaywright(devDependency)を使うが、追加のブラウザダウンロードを避けるためWindowsに標準搭載の`msedge`チャンネルを使う。
+- レイアウト崩れはブラウザを実際に開かないと見えない(型チェック・SSRスモークテストでは検出できない)ため、スマホ幅の余白・タップ領域・横スクロール表の見え方を確認する際はこのスクリプトで撮影してから判断する。
 
 ## データ取り込み方式
 
@@ -86,8 +94,10 @@ web/
   - ランキング表のセル内バーは値の大きさ(magnitude)なので**無彩色**にする。順位ではなく値を表すものなので、色で意味を追加しない。
   - 反則理由の内訳は1〜2件しか出ない量なので、棒グラフにせず数値のチップで示す(少数のカウントを面積で見せると精度を装うため)。
 - **数値・座標・対局IDは等幅フォント、見出しはゴシックの太字。** 棋譜(`d3`のような代数記法)を扱う画面なので、桁が揃うことと座標が読みやすいことを優先する。
-- **ダークモードは`prefers-color-scheme`で切り替える。** 明色を単純反転させるのではなく、暗い面用に選び直した値を使う(datavizスキルの方針)。
+- **ダークモードは既定で`prefers-color-scheme`に従うが、ヘッダーのボタンで手動上書きできる。** 初期値は端末設定どおり(明色を単純反転させず、暗い面用に選び直した値を使う点はdatavizスキルの方針のまま)。一度切り替えた後はその選択を`localStorage`に保持し、以後は端末設定の変化を追わない。実装は`<html data-theme="light"|"dark">`属性の有無で切り替え、CSS側は`:root`(既定)・`@media (prefers-color-scheme: dark)`配下の`:root:not([data-theme="light"])`・`:root[data-theme="dark"]`の3箇所にトークンを持つ(前者2つが「端末設定に従う」経路、3つ目が明示的な上書き)。index.htmlの初回描画前に`localStorage`を読んで属性を先に立てる小さなインラインスクリプトを置き、切り替え後の再訪問時に一瞬だけ元の配色が見えてしまう(FOUC)のを防ぐ。
 - 盤面の石はCSSトランジションで色が変わるが、`prefers-reduced-motion`が指定されていればアニメーションしない。
+- **ヘッダーのアイコン(GitHubリンク・テーマ切り替え)は外部アイコンライブラリを導入せず、インラインSVG(`components/Icons.tsx`)で持つ。** GitHubリンク1つ・テーマ切り替え1つのためだけに依存を増やすのは不釣り合いなため。
+- **トップページのヒーローにキャッチコピー的な文言は置かない。** 想定読者はモデル比較を検討するエンジニアであり、外向けの惹句よりも「対局条件・指標の定義がどこで確認できるか」を優先する。見出しは機能名(「モデルランキング」)とし、指標・対局条件の説明は`/about`ページに独立させる(画面構成の「4. About」参照)。
 
 ## デプロイ
 
