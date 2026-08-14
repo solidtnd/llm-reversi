@@ -66,7 +66,7 @@ class LLMAdapter(Protocol):
 
 - `request_move`は同期呼び出しとする(1手ごとに逐次進行するゲームのため、非同期化のメリットが薄い)。
 - タイムアウト・リトライは[rules.md](rules.md)の規定に従い、Adapterの外側(呼び出し元)で制御する。Adapter自体はプロバイダAPIの呼び出しとレスポンスのパースに専念する。
-- `retry_reason`は、[rules.md](rules.md#1手ごとの処理)のパース失敗による再試行(1手あたり1回まで)でのみ使う。初回呼び出しおよびAPIエラーによる再試行(同一内容で再送するため)では常に`None`を渡す。呼び出し元(engine側)は、直前に送出された`AdapterParseError.message`をそのまま`retry_reason`に渡して再試行する。Adapterはこれをプロンプトに追記し、モデルに前回の失敗を伝える(具体的な文言は[プロンプト](#プロンプト)節の未決定事項に含む)。
+- `retry_reason`は、[rules.md](rules.md#1手ごとの処理)のパース失敗による再試行(1手あたり1回まで)でのみ使う。初回呼び出しおよびAPIエラーによる再試行(同一内容で再送するため)では常に`None`を渡す。呼び出し元(engine側)は、直前に送出された`AdapterParseError.message`をそのまま`retry_reason`に渡して再試行する。Adapterはこれをプロンプトに追記し、モデルに前回の失敗を伝える(具体的な文言は[`retry_reason`挿入時のプロンプト](#retry_reason挿入時のプロンプト)参照)。
 
 ## 入出力
 
@@ -206,4 +206,4 @@ Geminiのみ、この共通スキーマから`additionalProperties`を外して�
 
 ## 未決定事項
 
-(現時点でなし。共通プロンプトテンプレートと例外`message`の文言は上記の通り確定し、コード側の1箇所(`adapters/base.py`)に実体を置いた。今後の調整は「ドキュメントの当該節とコードの定数を両方直す」運用とする)
+(現時点でなし)

@@ -67,4 +67,4 @@ points:
 
 ## 未決定事項
 
-(現時点でなし。上記の反則負け判定・タイムアウト処理・リトライ制御をAPIを呼ばずに検証するテスト方針は[engine-architecture.md](engine-architecture.md#テスト方針)で決定済み)
+(現時点でなし)

@@ -131,6 +131,10 @@ body {
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.65;
+  /*
+   * paltを有効にすると全角中点`・`(U+30FB)がグリフごと表示されなくなるため、
+   * 画面に出す中点は半角の`·`(U+00B7)を使うこと。
+   */
   font-feature-settings: "palt" 1;
 }
 
