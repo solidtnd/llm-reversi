@@ -47,10 +47,17 @@
 
   --radius: 4px;
   --shell: 1160px;
+  --gutter: clamp(16px, 4vw, 40px);
 }
 
+/*
+ * ダークモードは`prefers-color-scheme`を既定としつつ、ヘッダーの切り替えボタンで
+ * 明示的に上書きできるようにする(ThemeToggle.tsxが`<html data-theme="...">`を操作する)。
+ * トークンの定義は2箇所(システム設定に従う場合/明示的な上書き)で重複するが、
+ * このプロジェクトはCSSプリプロセッサを使わない方針のため、そのまま2回書く。
+ */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
 
     --page: #0e1110;
@@ -77,6 +84,34 @@
     --provider-anthropic: #d95926;
     --provider-gemini: #9085e9;
   }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --page: #0e1110;
+  --surface: #171c1a;
+  --sunken: #121715;
+  --ink: #f4f5ef;
+  --ink-2: #b8bcb0;
+  --ink-3: #8a8d83;
+  --hairline: #262c29;
+  --hairline-strong: #39413c;
+
+  --felt: #0f3f2f;
+  --felt-edge: #082a1f;
+  --disc-black: #0b0d0a;
+
+  --bar-track: rgba(244, 245, 239, 0.12);
+  --bar-fill: #9aa596;
+
+  --div-pos: #3987e5;
+  --div-neg: #e66767;
+  --div-mid: #262c29;
+
+  --provider-openai: #199e70;
+  --provider-anthropic: #d95926;
+  --provider-gemini: #9085e9;
 }
 
 *,
@@ -137,7 +172,7 @@ table {
 .shell {
   max-width: var(--shell);
   margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 40px);
+  padding: 0 var(--gutter);
 }
 
 .topbar {
@@ -153,6 +188,33 @@ table {
   align-items: center;
   gap: 16px;
   min-height: 60px;
+}
+
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+  color: var(--ink-2);
+}
+
+.icon-button:hover {
+  background: var(--sunken);
+  color: var(--ink);
+}
+
+.icon-button svg {
+  width: 18px;
+  height: 18px;
 }
 
 .mark {
@@ -176,6 +238,13 @@ table {
   margin-left: auto;
   color: var(--ink-3);
   font-size: 12px;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .topbar__meta {
+    display: none;
+  }
 }
 
 .page {
@@ -350,6 +419,20 @@ h2 {
   border-radius: var(--radius);
 }
 
+/*
+ * 横に長い表は、スマホ幅では.shellの余白ぶんを打ち消して画面端まで広げる(full-bleed)。
+ * スクロール開始位置が画面の物理的な端に来るため、より広い範囲を一度に見渡せ、
+ * 「まだ続きがある」というスクロール手がかりも掴みやすくなる。
+ */
+@media (max-width: 640px) {
+  .table-wrap {
+    margin-inline: calc(-1 * var(--gutter));
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+}
+
 .table {
   width: 100%;
   font-size: 14px;
@@ -508,12 +591,21 @@ h2 {
 }
 
 .chip {
+  display: inline-flex;
+  align-items: center;
   border: 1px solid var(--hairline-strong);
   border-radius: 999px;
   padding: 3px 11px;
   font-size: 12px;
   color: var(--ink-2);
   background: var(--surface);
+}
+
+/* タップ操作が主になるスマホ幅では、指で押しやすいよう当たり判定を広げる。 */
+@media (max-width: 640px) {
+  .chip {
+    padding: 9px 14px;
+  }
 }
 
 .chip[aria-pressed="true"] {
@@ -766,6 +858,13 @@ h2 {
   background: var(--surface);
   font-family: var(--font-mono);
   font-size: 13px;
+}
+
+@media (max-width: 640px) {
+  .controls__button {
+    padding: 10px 14px;
+    min-height: 44px;
+  }
 }
 
 .controls__button:disabled {
