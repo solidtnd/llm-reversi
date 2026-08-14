@@ -1,6 +1,7 @@
 /** トップ: モデルランキング表 + 総当たり対戦表。 */
 
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { HeadToHeadMatrix } from "../components/HeadToHeadMatrix";
 import { ModelSearchBox } from "../components/ModelSearchBox";
 import { RankingTable, type SortKey } from "../components/RankingTable";
@@ -54,14 +55,10 @@ export function RankingPage() {
       <section className="hero">
         <div>
           <p className="eyebrow">LLM × リバーシ</p>
-          <h1>
-            石を数えて、
-            <br />
-            モデルの強さを比べる。
-          </h1>
+          <h1>モデルランキング</h1>
           <p className="lede">
-            合法手の列挙・反転・勝敗判定だけをアルゴリズムが行い、どこに石を置くかは各LLMが決めます。
-            全モデルに同じプロンプトを与え、先手後手を入れ替えて総当たりで戦わせた記録です。
+            同一のプロンプトを全モデルに与え、先手後手を入れ替えて総当たりで対局させた記録です。
+            合法手の判定 · 石の反転 · 勝敗判定はプログラムが行い、着手そのものは各LLMが決定します。
           </p>
           <div className="stats">
             <div className="stat">
@@ -77,6 +74,9 @@ export function RankingPage() {
               <div className="stat__label">反則負けで決着</div>
             </div>
           </div>
+          <p className="muted" style={{ marginTop: 16, fontSize: 12 }}>
+            対局条件 · 指標の定義は<Link to="/about">指標 · 対局条件について</Link>を参照。
+          </p>
         </div>
 
         <div className="leaders">
