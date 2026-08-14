@@ -247,8 +247,13 @@ table {
   }
 }
 
+/*
+ * `<main class="shell page">`のように.shellと併用されるため、paddingは必ず
+ * padding-block(上下のみ)で指定する。paddingショートハンドを使うと、後から適用される
+ * こちらが.shellの左右padding(=ページ全体のガター)を0に上書きしてしまう。
+ */
 .page {
-  padding: clamp(28px, 5vw, 56px) 0 96px;
+  padding-block: clamp(28px, 5vw, 56px) 96px;
 }
 
 .eyebrow {
@@ -417,20 +422,6 @@ h2 {
   background: var(--surface);
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
-}
-
-/*
- * 横に長い表は、スマホ幅では.shellの余白ぶんを打ち消して画面端まで広げる(full-bleed)。
- * スクロール開始位置が画面の物理的な端に来るため、より広い範囲を一度に見渡せ、
- * 「まだ続きがある」というスクロール手がかりも掴みやすくなる。
- */
-@media (max-width: 640px) {
-  .table-wrap {
-    margin-inline: calc(-1 * var(--gutter));
-    border-left: none;
-    border-right: none;
-    border-radius: 0;
-  }
 }
 
 .table {
@@ -888,6 +879,8 @@ h2 {
 
 .controls__slider {
   width: 100%;
+  /* ブラウザ既定の左右marginぶん幅からはみ出すため、0にしてガター内に収める。 */
+  margin: 0;
   accent-color: var(--ink);
 }
 
