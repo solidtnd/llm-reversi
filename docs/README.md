@@ -28,6 +28,7 @@ docs/
 | [engine/engine-architecture.md](engine/engine-architecture.md) | engineのモジュール構成・並列実行方針・テスト方針 |
 | [engine/rules.md](engine/rules.md) | リバーシの対戦ルール、1手ごとの処理・反則負けの扱い、リーグ運営方針 |
 | [engine/adapter-interface.md](engine/adapter-interface.md) | LLMごとの差異を吸収するAdapter層のインターフェース定義、`models.yaml`の形式 |
+| [engine/models.md](engine/models.md) | `models.yaml`に登録する出場モデルの選定記録(各社の調査結果・選定理由・コスト試算) |
 
 ## webを実装するときに読むファイル
 

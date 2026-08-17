@@ -9,18 +9,50 @@
 #   棋譜JSONの players[].config にもそのまま転記される。
 #
 # 新モデルの追加は末尾に1エントリ追記するだけでよい(未実施カードのみ実行される)。
-models:
-  - id: gpt-4o
-    provider: openai
-    model: gpt-4o
-    display_name: "GPT-4o"
-    config: {}
+#
+# 現在は「第1段階(最小コア9モデル)」の構成。各社とも
+# 旧世代/廉価アンカー・新世代中位・新世代最上位の3つに絞ってある。
+# 見送った候補・追加検討の観点は docs/engine/models.md の「第2段階候補」を参照。
 
+models:
+  # --- OpenAI ---
   - id: gpt-4o-mini
     provider: openai
-    model: gpt-4o-mini
+    model: gpt-4o-mini-2024-07-18
     display_name: "GPT-4o mini"
     config: {}
+
+  - id: gpt-5.6-luna
+    provider: openai
+    model: gpt-5.6-luna
+    display_name: "GPT-5.6 Luna"
+    config:
+      reasoning_effort: low
+      max_completion_tokens: 2048
+
+  - id: gpt-5.6-sol
+    provider: openai
+    model: gpt-5.6-sol
+    display_name: "GPT-5.6 Sol"
+    config:
+      reasoning_effort: low
+      max_completion_tokens: 3072
+
+  # --- Anthropic ---
+  - id: claude-haiku-4-5
+    provider: anthropic
+    model: claude-haiku-4-5-20251001
+    display_name: "Claude Haiku 4.5"
+    config:
+      max_tokens: 2048
+
+  - id: claude-sonnet-5
+    provider: anthropic
+    model: claude-sonnet-5
+    display_name: "Claude Sonnet 5"
+    config:
+      max_tokens: 2048
+      thinking: false
 
   - id: claude-opus-5
     provider: anthropic
@@ -28,16 +60,30 @@ models:
     display_name: "Claude Opus 5"
     config:
       max_tokens: 4096
+      thinking: false
 
-  - id: claude-haiku-4-5
-    provider: anthropic
-    model: claude-haiku-4-5
-    display_name: "Claude Haiku 4.5"
-    config:
-      max_tokens: 2048
-
-  - id: gemini-2.5-flash
+  # --- Google Gemini ---
+  - id: gemini-2.5-flash-lite
     provider: gemini
-    model: gemini-2.5-flash
-    display_name: "Gemini 2.5 Flash"
-    config: {}
+    model: gemini-2.5-flash-lite
+    display_name: "Gemini 2.5 Flash-Lite"
+    config:
+      thinking_config:
+        thinking_budget: 0
+
+  - id: gemini-3.5-flash
+    provider: gemini
+    model: gemini-3.5-flash
+    display_name: "Gemini 3.5 Flash"
+    config:
+      thinking_config:
+        thinking_budget: 0
+
+  - id: gemini-3.1-pro-preview
+    provider: gemini
+    model: gemini-3.1-pro-preview
+    display_name: "Gemini 3.1 Pro Preview"
+    # thinkingを完全には無効化できないモデル。最小値で抑制する(要動作確認、docs/engine/models.md参照)。
+    config:
+      thinking_config:
+        thinking_budget: 128
