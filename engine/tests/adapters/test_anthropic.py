@@ -110,9 +110,28 @@ def test_thinking_mapping_is_passed_through():
 
 
 def test_other_config_keys_are_passed_through():
-    adapter, create = _adapter([_response()], {"output_config_effort": "high"})
+    adapter, create = _adapter([_response()], {"some_future_param": "high"})
     adapter.request_move(BOARD, LEGAL, "black")
-    assert create.last_call["output_config_effort"] == "high"
+    assert create.last_call["some_future_param"] == "high"
+
+
+def test_output_config_extra_keys_are_merged_with_format():
+    adapter, create = _adapter([_response()], {"output_config": {"effort": "low"}})
+    adapter.request_move(BOARD, LEGAL, "black")
+    assert create.last_call["output_config"] == {
+        "effort": "low",
+        "format": {"type": "json_schema", "schema": MOVE_JSON_SCHEMA},
+    }
+
+
+def test_output_config_cannot_override_format():
+    adapter, create = _adapter(
+        [_response()], {"output_config": {"format": {"type": "text"}}}
+    )
+    adapter.request_move(BOARD, LEGAL, "black")
+    assert create.last_call["output_config"] == {
+        "format": {"type": "json_schema", "schema": MOVE_JSON_SCHEMA}
+    }
 
 
 def test_config_is_not_mutated_between_calls():

@@ -38,9 +38,9 @@ models:
 
 ### `config`の受け渡し
 
-`config`のキーは**そのままプロバイダAPIのリクエストパラメータとして渡す**(`temperature`、`reasoning_effort`、`max_tokens`など)。Adapter側にモデル間で共通の正規化レイヤを作らないことで、プロバイダ側のパラメータ追加・廃止に本スキーマ・コードの変更なしで追従できる([../shared/log-schema.md](../shared/log-schema.md)の`config`と同じ理由)。例外は以下の2点のみで、いずれも「YAMLに素直に書ける形」と「APIが要求する形」の差を埋めるための最小限の変換に留める。
+`config`のキーは**そのままプロバイダAPIのリクエストパラメータとして渡す**(`temperature`、`reasoning_effort`、`max_tokens`など)。Adapter側にモデル間で共通の正規化レイヤを作らないことで、プロバイダ側のパラメータ追加・廃止に本スキーマ・コードの変更なしで追従できる([../shared/log-schema.md](../shared/log-schema.md)の`config`と同じ理由)。例外は以下の3点のみで、いずれも「YAMLに素直に書ける形」と「APIが要求する形」の差を埋めるための最小限の変換に留める。
 
-- **Anthropic**: `thinking: true` / `false` と真偽値で書いた場合のみ、APIの形式(`{"type": "adaptive"}` / `{"type": "disabled"}`)へ変換する。辞書で書いた場合はそのまま渡す。`max_tokens`はAnthropic APIで必須のため、`config`に無ければAdapter側の既定値(4096)を使う。
+- **Anthropic**: `thinking: true` / `false` と真偽値で書いた場合のみ、APIの形式(`{"type": "adaptive"}` / `{"type": "disabled"}`)へ変換する。辞書で書いた場合はそのまま渡す。`max_tokens`はAnthropic APIで必須のため、`config`に無ければAdapter側の既定値(4096)を使う。`output_config`(例: `effort`を指定する場合)は、構造化出力用の`format`(下記[出力フォーマットの強制](#出力フォーマットの強制)参照)とマージして渡す。単純に`config`全体を上書きすると`format`が消えて構造化出力自体が壊れるため、`format`キーは常にAdapter側の値が優先される(`config`側で`format`を指定しても無視される)。
 - **Gemini**: 共通スキーマから`additionalProperties`を外して渡す(後述の[出力フォーマットの強制](#出力フォーマットの強制)参照)。
 
 ## シークレット管理

@@ -52,11 +52,17 @@ class AnthropicAdapter:
     ) -> MoveResponse:
         prompt = build_prompt(board, legal_moves, player, retry_reason)
         extra = _normalize_config(self.config)
+        # configの output_config (例: {"effort": "low"}) はマージする。params.update(extra)で
+        # 丸ごと上書きすると構造化出力用のformatが消えてしまうため、ここで先に取り出しておく。
+        output_config = extra.pop("output_config", {})
         params: dict[str, Any] = {
             "model": self.model,
             "max_tokens": extra.pop("max_tokens", DEFAULT_MAX_TOKENS),
             "messages": [{"role": "user", "content": prompt}],
-            "output_config": {"format": {"type": "json_schema", "schema": MOVE_JSON_SCHEMA}},
+            "output_config": {
+                **output_config,
+                "format": {"type": "json_schema", "schema": MOVE_JSON_SCHEMA},
+            },
         }
         params.update(extra)
         try:
