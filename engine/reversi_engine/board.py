@@ -126,6 +126,7 @@ def legal_moves(board: BoardState, player: Player) -> list[str]:
 
 def is_legal_move(board: BoardState, player: Player, position: str) -> bool:
     """指定の着手が合法かどうかを返す。"""
+    validate_board(board)
     try:
         index = index_of(position)
     except ValueError:

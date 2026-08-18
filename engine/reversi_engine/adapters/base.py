@@ -150,20 +150,12 @@ def serialize_response(response: Any) -> str:
     まるごとシリアライズする。dumpに対応しないオブジェクト(テスト用のダミー等)は
     `str()` にフォールバックする。
     """
-    for attribute in ("model_dump_json", "to_json"):
-        dump = getattr(response, attribute, None)
-        if callable(dump):
-            try:
-                return dump()
-            except Exception:  # noqa: BLE001 - ログ用途なので失敗しても続行する
-                pass
-    for attribute in ("model_dump", "to_dict"):
-        dump = getattr(response, attribute, None)
-        if callable(dump):
-            try:
-                return json.dumps(dump(), ensure_ascii=False, default=str)
-            except Exception:  # noqa: BLE001
-                pass
+    dump = getattr(response, "model_dump_json", None)
+    if callable(dump):
+        try:
+            return dump()
+        except Exception:  # noqa: BLE001 - ログ用途なので失敗しても続行する
+            pass
     return str(response)
 
 

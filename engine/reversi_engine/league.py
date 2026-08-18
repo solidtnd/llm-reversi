@@ -5,7 +5,7 @@ docs/engine/rules.md「リーグ運営」と docs/engine/engine-architecture.md�
 
 from __future__ import annotations
 
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from typing import Any, Callable, Iterable, Sequence
 
@@ -118,7 +118,7 @@ class League:
 
         with ThreadPoolExecutor(max_workers=self.concurrent_games) as executor:
             futures = {executor.submit(self._play_card, card): card for card in pending}
-            for future in futures:
+            for future in as_completed(futures):
                 card = futures[future]
                 try:
                     record = future.result()
