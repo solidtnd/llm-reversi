@@ -1,0 +1,1604 @@
+{
+  "game_id": "20260818T141240266693-4d1c5a",
+  "players": {
+    "black": {
+      "id": "gpt-4o-mini",
+      "model": "gpt-4o-mini-2024-07-18",
+      "provider": "openai",
+      "display_name": "GPT-4o mini",
+      "config": {}
+    },
+    "white": {
+      "id": "claude-opus-5",
+      "model": "claude-opus-5",
+      "provider": "anthropic",
+      "display_name": "Claude Opus 5",
+      "config": {
+        "max_tokens": 4096,
+        "thinking": false
+      }
+    }
+  },
+  "result": {
+    "winner": "white",
+    "reason": "score",
+    "score": {
+      "black": 28,
+      "white": 36
+    }
+  },
+  "moves": [
+    {
+      "turn": 1,
+      "player": "black",
+      "type": "move",
+      "position": "c4",
+      "board_after": "..........................bbb......bw...........................",
+      "legal_moves": [
+        "d3",
+        "c4",
+        "f5",
+        "e6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEqLYTy7PYO16UyIBfs0RKZsUaZI\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"c4\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062357,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":267,\"total_tokens\":273,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 500,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 267,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 2,
+      "player": "white",
+      "type": "move",
+      "position": "e3",
+      "board_after": "....................w.....bbw......bw...........................",
+      "legal_moves": [
+        "c3",
+        "e3",
+        "c5"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMJveadhDvuHK323AaY\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"e3\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":449,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 4266,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 449,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 3,
+      "player": "black",
+      "type": "move",
+      "position": "f4",
+      "board_after": "....................w.....bbbb.....bw...........................",
+      "legal_moves": [
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEqQ7Vt6oVGafm11htdcp5M6msjK\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"f4\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062362,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":270,\"total_tokens\":276,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 500,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 270,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 4,
+      "player": "white",
+      "type": "move",
+      "position": "c3",
+      "board_after": "..................w.w.....bwbb.....bw...........................",
+      "legal_moves": [
+        "c3",
+        "g3",
+        "c5",
+        "g5"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMKH59kk3UdJnbuVM11\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"c3\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":452,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 5063,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 452,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 5,
+      "player": "black",
+      "type": "move",
+      "position": "d3",
+      "board_after": "..................wbw.....bbbb.....bw...........................",
+      "legal_moves": [
+        "c2",
+        "d2",
+        "e2",
+        "d3",
+        "f5",
+        "d6",
+        "e6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEqVeDE0Ygyzh28iIJ0Z5xYnZ1yQ\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d3\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062367,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_5d8d1116aa\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":276,\"total_tokens\":282,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 515,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 276,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 6,
+      "player": "white",
+      "type": "move",
+      "position": "g5",
+      "board_after": "..................wbw.....bbbw.....bw.w.........................",
+      "legal_moves": [
+        "g3",
+        "c5",
+        "g5"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMKgaGWMjMDz58E1ofJ\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g5\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":449,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3188,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 449,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 7,
+      "player": "black",
+      "type": "move",
+      "position": "f6",
+      "board_after": "..................wbw.....bbbw.....bb.w......b..................",
+      "legal_moves": [
+        "b2",
+        "c2",
+        "e2",
+        "f2",
+        "b3",
+        "f3",
+        "g4",
+        "f5",
+        "e6",
+        "f6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEqZ3hcpOcwAaQiZRxxBcxn7rxhC\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"f6\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062371,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_5d8d1116aa\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":285,\"total_tokens\":291,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 578,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 285,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 8,
+      "player": "white",
+      "type": "move",
+      "position": "e6",
+      "board_after": "..................wbw.....bbww.....bw.w.....wb..................",
+      "legal_moves": [
+        "b4",
+        "c5",
+        "d6",
+        "e6",
+        "e7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMKxjNBx8sXT9r6Bv23\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\":\\\"e6\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":458,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 2906,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 458,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 9,
+      "player": "black",
+      "type": "move",
+      "position": "b2",
+      "board_after": ".........b........bbw.....bbww.....bw.w.....wb..................",
+      "legal_moves": [
+        "b2",
+        "c2",
+        "f2",
+        "b3",
+        "f3",
+        "g4",
+        "h4",
+        "f5",
+        "d6",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEqd7vvgV2BzUV1UklHl3Em02VDt\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"b2\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062375,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":285,\"total_tokens\":291,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 531,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 285,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 10,
+      "player": "white",
+      "type": "move",
+      "position": "c6",
+      "board_after": ".........b........bbw.....bbww.....ww.w...w.wb..................",
+      "legal_moves": [
+        "a1",
+        "c2",
+        "b3",
+        "b4",
+        "c5",
+        "c6",
+        "g6",
+        "e7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMLDMgxMS5mQhkVFjc1\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"c6\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":467,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 4391,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 467,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 11,
+      "player": "black",
+      "type": "move",
+      "position": "f5",
+      "board_after": ".........b........bbw.....bbbw.....wwbw...w.wb..................",
+      "legal_moves": [
+        "f2",
+        "f3",
+        "g4",
+        "h4",
+        "f5",
+        "d6",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEqhIY4PAoJulK1U3EwwJCBjYZY3\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"f5\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062379,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":276,\"total_tokens\":282,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 437,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 276,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 12,
+      "player": "white",
+      "type": "move",
+      "position": "f3",
+      "board_after": ".........b........bbww....bbww.....wwbw...w.wb..................",
+      "legal_moves": [
+        "a1",
+        "d2",
+        "b3",
+        "f3",
+        "b4",
+        "g4",
+        "c5",
+        "g6",
+        "e7",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMLa48pu9dBPhxu458p\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"f3\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":473,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 4625,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 473,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 13,
+      "player": "black",
+      "type": "move",
+      "position": "f2",
+      "board_after": ".........b...b....bbbb....bbwb.....wwbw...w.wb..................",
+      "legal_moves": [
+        "f2",
+        "g3",
+        "g4",
+        "h4",
+        "c5",
+        "h5",
+        "d6",
+        "d7",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEqn6jaadLUgzniKpf0yo20ZvBM4\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"f2\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062385,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":282,\"total_tokens\":288,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 485,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 282,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 14,
+      "player": "white",
+      "type": "move",
+      "position": "g3",
+      "board_after": ".........b...b....bbbbw...bbww.....wwbw...w.wb..................",
+      "legal_moves": [
+        "a1",
+        "c2",
+        "d2",
+        "e2",
+        "g2",
+        "b3",
+        "g3",
+        "b4",
+        "g4",
+        "g6",
+        "e7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMLxZitNsr5ET3KL1tt\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g3\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":476,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 4656,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 476,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 15,
+      "player": "black",
+      "type": "move",
+      "position": "h5",
+      "board_after": ".........b...b....bbbbw...bbww.....wwbbb..w.wb..................",
+      "legal_moves": [
+        "h3",
+        "g4",
+        "h4",
+        "c5",
+        "h5",
+        "d6",
+        "h6",
+        "b7",
+        "d7",
+        "e7",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEqsYqC5sApcWQelFdyefGPvhdyq\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"h5\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062390,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":288,\"total_tokens\":294,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 500,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 288,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 16,
+      "player": "white",
+      "type": "move",
+      "position": "b3",
+      "board_after": ".........b...b...wwwwww...wbww.....wwbbb..w.wb..................",
+      "legal_moves": [
+        "a1",
+        "e1",
+        "f1",
+        "c2",
+        "d2",
+        "e2",
+        "g2",
+        "b3",
+        "b4",
+        "g4",
+        "g6",
+        "h6",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMMKtNc9hFpbqckhGSE\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"b3\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":482,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 4875,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 482,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 17,
+      "player": "black",
+      "type": "move",
+      "position": "c2",
+      "board_after": ".........bb..b...wwbwww...wbbw.....wwbbb..w.wb..................",
+      "legal_moves": [
+        "c2",
+        "d2",
+        "b4",
+        "g4",
+        "h4",
+        "c5",
+        "d6",
+        "d7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEqxedqbrkwr2SX0N1q6es3QbAZO\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"c2\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062395,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":280,\"total_tokens\":286,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 438,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 280,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 18,
+      "player": "white",
+      "type": "move",
+      "position": "d2",
+      "board_after": ".........bbw.b...wwwwww...wwbw.....wwbbb..w.wb..................",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "c1",
+        "d1",
+        "e1",
+        "f1",
+        "g1",
+        "d2",
+        "e2",
+        "g4",
+        "c5",
+        "g6",
+        "h6",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMMj8ccBeFEPy41mLn3\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"d2\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":485,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 5171,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 485,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 19,
+      "player": "black",
+      "type": "move",
+      "position": "g2",
+      "board_after": ".........bbw.bb..wwwwbw...wwbw.....wwbbb..w.wb..................",
+      "legal_moves": [
+        "c1",
+        "e2",
+        "g2",
+        "a4",
+        "b4",
+        "g4",
+        "h4",
+        "c5",
+        "d6",
+        "b7",
+        "d7",
+        "e7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEr3djeCzzSSNsGhyBCgpF84gNH6\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"g2\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062401,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_5d8d1116aa\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":292,\"total_tokens\":298,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 625,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 292,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 20,
+      "player": "white",
+      "type": "move",
+      "position": "h6",
+      "board_after": ".........bbw.bb..wwwwbw...wwbw.....wwbwb..w.wb.w................",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "c1",
+        "d1",
+        "e1",
+        "f1",
+        "g1",
+        "h1",
+        "a2",
+        "g4",
+        "g6",
+        "h6",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMN9VL4pr2DEeFMFsJr\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"h6\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":482,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3844,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 482,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 21,
+      "player": "black",
+      "type": "move",
+      "position": "h3",
+      "board_after": ".........bbw.bb..wwwwbbb..wwbw.....wwbwb..w.wb.w................",
+      "legal_moves": [
+        "e2",
+        "a3",
+        "h3",
+        "a4",
+        "b4",
+        "g4",
+        "h4",
+        "c5",
+        "d6",
+        "b7",
+        "d7",
+        "e7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEr7t9Wk3yKMHuaI26iiGWOA8lj2\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"h3\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062405,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":296,\"total_tokens\":302,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 438,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 296,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 22,
+      "player": "white",
+      "type": "move",
+      "position": "h2",
+      "board_after": ".........bbw.bbw.wwwwbwb..wwbw.....wwbwb..w.wb.w................",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "c1",
+        "d1",
+        "f1",
+        "g1",
+        "h1",
+        "a2",
+        "h2",
+        "g4",
+        "h4",
+        "g6",
+        "e7",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMNTqPiwE8NthiwGLXi\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"h2\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":485,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3906,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 485,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 23,
+      "player": "black",
+      "type": "move",
+      "position": "h4",
+      "board_after": ".........bbw.bbw.wwwwbbb..wwbw.b...wwbbb..w.wb.w................",
+      "legal_moves": [
+        "h1",
+        "e2",
+        "a3",
+        "a4",
+        "b4",
+        "g4",
+        "h4",
+        "c5",
+        "d6",
+        "b7",
+        "d7",
+        "e7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEErCCZksaUFnb5khd4rJ4flZLSYK\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"h4\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062410,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":298,\"total_tokens\":304,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 641,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 298,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 24,
+      "player": "white",
+      "type": "move",
+      "position": "g4",
+      "board_after": ".........bbw.bbw.wwwwbbb..wwbwwb...wwwbb..w.wb.w................",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "c1",
+        "d1",
+        "f1",
+        "g1",
+        "h1",
+        "a2",
+        "e2",
+        "g4",
+        "g6",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMNp7HKAuNywWe4JjjX\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g4\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":479,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 4343,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 479,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 25,
+      "player": "black",
+      "type": "move",
+      "position": "c1",
+      "board_after": "..b......bbb.bbw.wwwbbbb..wwbbwb...wwwbb..w.wb.w................",
+      "legal_moves": [
+        "c1",
+        "h1",
+        "e2",
+        "a3",
+        "a4",
+        "b4",
+        "c5",
+        "d6",
+        "g6",
+        "b7",
+        "d7",
+        "e7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEErGLodqamg6Ko7UR3um8rSTKvz1\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"c1\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062414,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":299,\"total_tokens\":305,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 485,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 299,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 26,
+      "player": "white",
+      "type": "move",
+      "position": "e2",
+      "board_after": "..b......bbbwwww.wwwwwbb..wwwbwb...wwwbb..w.wb.w................",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "d1",
+        "e1",
+        "f1",
+        "g1",
+        "h1",
+        "e2",
+        "g6",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMP9iFQw6Kjmzr5uYxg\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\":\\\"e2\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":473,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3625,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 473,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 27,
+      "player": "black",
+      "type": "move",
+      "position": "h1",
+      "board_after": "..b....b.bbbwwwb.wwwwwbb..wwwbwb...wwwbb..w.wb.w................",
+      "legal_moves": [
+        "d1",
+        "e1",
+        "f1",
+        "g1",
+        "h1",
+        "a3",
+        "a4",
+        "b4",
+        "c5",
+        "d6",
+        "g6",
+        "d7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEErLVLj8r9iWbIApXNquuOOAqkpV\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"h1\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062419,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":299,\"total_tokens\":305,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 453,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 299,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 28,
+      "player": "white",
+      "type": "move",
+      "position": "d1",
+      "board_after": "..bw...b.bwwwwwb.wwwwwbb..wwwbwb...wwwbb..w.wb.w................",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "d1",
+        "e1",
+        "a2",
+        "g6",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMPTULi9DNZM2rKsjE9\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"d1\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":464,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3390,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 464,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 29,
+      "player": "black",
+      "type": "move",
+      "position": "b4",
+      "board_after": "..bw...b.bwwwwwb.bwwwwbb.bbbbbwb...wwwbb..w.wb.w................",
+      "legal_moves": [
+        "e1",
+        "f1",
+        "g1",
+        "a3",
+        "b4",
+        "c5",
+        "d6",
+        "b7",
+        "d7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEErOum97kygWTu4yuIqvr1j077R5\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"b4\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062422,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":291,\"total_tokens\":297,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 532,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 291,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 30,
+      "player": "white",
+      "type": "move",
+      "position": "a4",
+      "board_after": "..bw...b.bwwwwwb.wwwwwbbwwwwwwwb...wwwbb..w.wb.w................",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "a2",
+        "a3",
+        "a4",
+        "a5",
+        "b5",
+        "c5",
+        "g6",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMPk1FmxmC3TwEBHajm\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"a4\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":473,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 4250,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 473,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 31,
+      "player": "black",
+      "type": "move",
+      "position": "d6",
+      "board_after": "..bw...b.bwwwwwb.wwwwwbbwwwwwbwb...wbwbb..wbbb.w................",
+      "legal_moves": [
+        "e1",
+        "f1",
+        "g1",
+        "a3",
+        "b5",
+        "c5",
+        "d6",
+        "b7",
+        "d7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEErTtGlg21qf70aUkfIHkeb3UABK\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d6\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062427,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":291,\"total_tokens\":297,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 453,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 291,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 32,
+      "player": "white",
+      "type": "move",
+      "position": "a1",
+      "board_after": "w.bw...b.wwwwwwb.wwwwwbbwwwwwbwb...wbwbb..wbbb.w................",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "a2",
+        "g6",
+        "d7",
+        "e7",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMQ61Y2j2ePT8VENCeD\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"a1\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":464,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 6000,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 464,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 33,
+      "player": "black",
+      "type": "move",
+      "position": "f1",
+      "board_after": "w.bw.b.b.wwwwbbb.wwwwbbbwwwwwbwb...wbwbb..wbbb.w................",
+      "legal_moves": [
+        "e1",
+        "f1",
+        "g1",
+        "a2",
+        "a3",
+        "c5",
+        "b6",
+        "b7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEraFGRoyBYie8039OWUFgsvIQiF\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"f1\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062434,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":288,\"total_tokens\":294,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 437,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 288,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 34,
+      "player": "white",
+      "type": "move",
+      "position": "b1",
+      "board_after": "wwww.b.b.wwwwbbb.wwwwbbbwwwwwbwb...wbwbb..wbbb.w................",
+      "legal_moves": [
+        "b1",
+        "g1",
+        "g6",
+        "d7",
+        "e7",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMQZm94XALt99keckJx\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\":\\\"b1\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":461,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3922,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 461,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 35,
+      "player": "black",
+      "type": "move",
+      "position": "a2",
+      "board_after": "wwww.b.bbbbbbbbb.bwwwbbbwwbwwbwb...bbwbb..wbbb.w................",
+      "legal_moves": [
+        "e1",
+        "a2",
+        "a3",
+        "b5",
+        "c5",
+        "b6",
+        "b7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEreqUYO5XPmsg9ucyOlKzGX9ZtX\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a2\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062438,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":285,\"total_tokens\":291,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 500,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 285,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 36,
+      "player": "white",
+      "type": "move",
+      "position": "e1",
+      "board_after": "wwwwwb.bbbbwwbbb.bwwwbbbwwbwwbwb...bbwbb..wbbb.w................",
+      "legal_moves": [
+        "e1",
+        "g1",
+        "a3",
+        "b5",
+        "c5",
+        "g6",
+        "d7",
+        "e7",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMQtbxeRm6jWG9hcbqX\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"e1\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":470,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 4016,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 470,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 37,
+      "player": "black",
+      "type": "move",
+      "position": "b5",
+      "board_after": "wwwwwb.bbbbwwbbb.bwwwbbbwbbwwbwb.b.bbwbb..wbbb.w................",
+      "legal_moves": [
+        "b5",
+        "c5",
+        "b6",
+        "g6",
+        "b7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEErjbnaknf9fiXI0zcTpwTrFq5zQ\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"b5\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062443,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":279,\"total_tokens\":285,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 578,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 279,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 38,
+      "player": "white",
+      "type": "move",
+      "position": "g1",
+      "board_after": "wwwwwwwbbbbwwwwb.bwwwbwbwbbwwbwb.b.bbwbb..wbbb.w................",
+      "legal_moves": [
+        "g1",
+        "a3",
+        "a5",
+        "c5",
+        "a6",
+        "b6",
+        "g6",
+        "d7",
+        "e7",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMRESZhRhRKMQegjx7C\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g1\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":473,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3734,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 473,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 39,
+      "player": "black",
+      "type": "move",
+      "position": "b6",
+      "board_after": "wwwwwwwbbbbwwwwb.bwwwbwbwbbwwbwb.b.bbwbb.bbbbb.w................",
+      "legal_moves": [
+        "b6",
+        "g6",
+        "b7",
+        "d7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEErnAnmeRz2DN8nRbKXB0RWT8jXJ\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"b6\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062447,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":276,\"total_tokens\":282,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 516,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 276,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 40,
+      "player": "white",
+      "type": "move",
+      "position": "g6",
+      "board_after": "wwwwwwwbbbbwwwwb.bwwwbwbwbbwwbwb.b.bbwwb.bbbbbww................",
+      "legal_moves": [
+        "a3",
+        "a5",
+        "c5",
+        "a6",
+        "g6",
+        "b7",
+        "c7",
+        "d7",
+        "e7",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMRYxYYKTryTGbfADTS\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g6\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":473,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 2906,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 473,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 41,
+      "player": "black",
+      "type": "move",
+      "position": "f7",
+      "board_after": "wwwwwwwbbbbwwwwb.bwwwbwbwbbwwbwb.b.bbwwb.bbbbbbw.....b..........",
+      "legal_moves": [
+        "f7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEErqAgEbEDQCPQJr42PGvxrFLeXd\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"f7\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062450,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":267,\"total_tokens\":273,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 563,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 267,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 42,
+      "player": "white",
+      "type": "move",
+      "position": "b7",
+      "board_after": "wwwwwwwbbwbwwwwb.wwwwbwbwwbwwbwb.w.wbwwb.wwbbbbw.w...b..........",
+      "legal_moves": [
+        "a3",
+        "a5",
+        "c5",
+        "a6",
+        "b7",
+        "c7",
+        "d7",
+        "e7",
+        "g7",
+        "h7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMRoCYqJ4mAB89YMZJB\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\":\\\"b7\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":473,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 2937,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 473,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 43,
+      "player": "black",
+      "type": "move",
+      "position": "a3",
+      "board_after": "wwwwwwwbbwbwwwwbbbbbbbwbwwbwwbwb.w.wbwwb.wwbbbbw.w...b..........",
+      "legal_moves": [
+        "a3",
+        "c5",
+        "a6",
+        "h7",
+        "a8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEru7449RzTgDzFO0m5L3CI7Pa0f\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a3\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062454,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":276,\"total_tokens\":282,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 610,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 276,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 44,
+      "player": "white",
+      "type": "move",
+      "position": "h7",
+      "board_after": "wwwwwwwbbwbwwwwbbbbbbbwbwwbwwbwb.w.wbwwb.wwbbbww.w...b.w........",
+      "legal_moves": [
+        "c5",
+        "c7",
+        "d7",
+        "e7",
+        "g7",
+        "h7",
+        "f8",
+        "g8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMS4Zmu1n8uy4ZuMh6w\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"h7\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":464,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3671,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 464,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 45,
+      "player": "black",
+      "type": "move",
+      "position": "a5",
+      "board_after": "wwwwwwwbbwbwwwwbbbbbbbwbbbbwwbwbbw.wbwwb.wwbbbww.w...b.w........",
+      "legal_moves": [
+        "a5",
+        "c5",
+        "a6",
+        "a8",
+        "b8",
+        "h8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEErymxRcgA7BCp7odYM6Lsc9Emvy\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a5\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062458,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":280,\"total_tokens\":286,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 516,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 280,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 46,
+      "player": "white",
+      "type": "move",
+      "position": "g8",
+      "board_after": "wwwwwwwbbwbwwwwbbbbbbbwbbbbwwbwbbw.wbwwb.wwbwbww.w...w.w......w.",
+      "legal_moves": [
+        "c5",
+        "a6",
+        "c7",
+        "d7",
+        "e7",
+        "g7",
+        "e8",
+        "f8",
+        "g8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMSNLrJoQxV7k5bcRgn\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g8\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":467,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3625,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 467,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 47,
+      "player": "black",
+      "type": "move",
+      "position": "c5",
+      "board_after": "wwwwwwwbbwbwwwwbbbbbbbwbbbbbwbwbbbbbbwwb.wwbwbww.w...w.w......w.",
+      "legal_moves": [
+        "c5",
+        "a6",
+        "c7",
+        "d7",
+        "e7",
+        "a8",
+        "b8",
+        "e8",
+        "f8",
+        "h8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEs2PltENR0o0OVxBKTrBl7cudz2\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"c5\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062462,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":292,\"total_tokens\":298,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 609,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 292,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 48,
+      "player": "white",
+      "type": "move",
+      "position": "a6",
+      "board_after": "wwwwwwwbwwbwwwwbwbbwbbwbwbwbwbwbwwbbbwwbwwwbwbww.w...w.w......w.",
+      "legal_moves": [
+        "a6",
+        "c7",
+        "d7",
+        "e7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMSi4WZZQYHMB1b4jTS\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"a6\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":455,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3485,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 455,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 49,
+      "player": "black",
+      "type": "move",
+      "position": "a8",
+      "board_after": "wwwwwwwbwwbwwwwbwbbwbbwbwbwbwbwbwwbbbwwbwwbbwbww.b...w.wb.....w.",
+      "legal_moves": [
+        "a7",
+        "c7",
+        "d7",
+        "e7",
+        "a8",
+        "b8",
+        "e8",
+        "f8",
+        "h8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEs6nMohYrpBT5kQcMPNjJaQcz6X\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a8\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062466,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":289,\"total_tokens\":295,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 469,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 289,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 50,
+      "player": "white",
+      "type": "move",
+      "position": "c8",
+      "board_after": "wwwwwwwbwwbwwwwbwbbwbbwbwbwbwbwbwwbbbwwbwwbbwbww.w...w.wb.w...w.",
+      "legal_moves": [
+        "c7",
+        "d7",
+        "e7",
+        "g7",
+        "b8",
+        "c8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMSyUTf9S95NbySDNpJ\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\":\\\"c8\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":458,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 4531,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 458,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 51,
+      "player": "black",
+      "type": "move",
+      "position": "e7",
+      "board_after": "wwwwwwwbwwbwwwwbwbbwbbwbwbwbwbwbwwbbbwwbwwbbbbww.w..bw.wb.w...w.",
+      "legal_moves": [
+        "a7",
+        "d7",
+        "e7",
+        "b8",
+        "e8",
+        "f8",
+        "h8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEsBWRD1CkO5xDi4x4pXVCs4S9P8\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"e7\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062471,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":283,\"total_tokens\":289,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 562,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 283,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 52,
+      "player": "white",
+      "type": "move",
+      "position": "g7",
+      "board_after": "wwwwwwwbwwbwwwwbwbwwbbwbwbwwwbwbwwbbwwwbwwbbbwww.w..bwwwb.w...w.",
+      "legal_moves": [
+        "c7",
+        "d7",
+        "g7",
+        "d8",
+        "e8",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMTLv412Y2MB39bwPrd\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g7\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":458,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3688,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 458,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 53,
+      "player": "black",
+      "type": "move",
+      "position": "h8",
+      "board_after": "wwwwwwwbwwbwwwwbwbwwbbwbwbwwwbwbwwbbwwwbwwbbbwwb.w..bwwbb.w...wb",
+      "legal_moves": [
+        "a7",
+        "b8",
+        "e8",
+        "f8",
+        "h8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEsFpkhV3J6CG5PGQwNJJvQiSW57\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"h8\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062475,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":277,\"total_tokens\":283,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 422,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 277,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 54,
+      "player": "white",
+      "type": "move",
+      "position": "e8",
+      "board_after": "wwwwwwwbwwbwwwwbwbwwbbwbwbwwwbwbwwbbwwwbwwbbwwwb.w..wwwbb.w.w.wb",
+      "legal_moves": [
+        "c7",
+        "d7",
+        "d8",
+        "e8",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMTfDt65Z3QKzVWwTqY\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"e8\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":455,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3406,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 455,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 55,
+      "player": "black",
+      "type": "move",
+      "position": "d7",
+      "board_after": "wwwwwwwbwwbwwwwbwbwwbbwbwbwwwbbbwwbbwbwbwwbbbwwb.w.bbbbbb.w.w.wb",
+      "legal_moves": [
+        "a7",
+        "d7",
+        "b8",
+        "d8",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEsJyQHqgZHPfMf6h66jrzJVex2j\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d7\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062479,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":278,\"total_tokens\":284,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 625,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 278,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 56,
+      "player": "white",
+      "type": "move",
+      "position": "c7",
+      "board_after": "wwwwwwwbwwbwwwwbwbwwbbwbwbwwwbbbwwwbwbwbwwwwbwwb.wwbbbbbb.w.w.wb",
+      "legal_moves": [
+        "c7",
+        "d8",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMTwpmgcYbbwQfjgj74\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"c7\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":449,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3078,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 449,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 57,
+      "player": "black",
+      "type": "move",
+      "position": "b8",
+      "board_after": "wwwwwwwbwwbwwwwbwbwwbbwbwbwwwbbbwbwbbbwbwbwbbwwb.bbbbbbbbbw.w.wb",
+      "legal_moves": [
+        "a7",
+        "b8",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEsNK5QD9f6yTLJSyoXCpBM8Vi4W\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"b8\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062483,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":272,\"total_tokens\":278,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 625,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 272,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 58,
+      "player": "white",
+      "type": "move",
+      "position": "a7",
+      "board_after": "wwwwwwwbwwbwwwwbwbwwbbwbwbwwwbbbwbwbbbwbwwwbbwwbwbbbbbbbbbw.w.wb",
+      "legal_moves": [
+        "a7",
+        "d8",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMUDfmYm9SZojYpRb2n\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"a7\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":449,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 3078,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 449,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 59,
+      "player": "black",
+      "type": "move",
+      "position": "d8",
+      "board_after": "wwwwwwwbwwbwwwwbwbwwbbwbwbwwwbbbwbwbbbwbwwwbbwwbwbbbbbbbbbbbw.wb",
+      "legal_moves": [
+        "d8",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEEsRvekxFZtRbSoEWCjJYnfexGkN\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d8\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787062487,\"model\":\"gpt-4o-mini-2024-07-18\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":\"fp_b8c19d84b4\",\"usage\":{\"completion_tokens\":6,\"prompt_tokens\":269,\"total_tokens\":275,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":null,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 563,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 269,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 60,
+      "player": "white",
+      "type": "move",
+      "position": "f8",
+      "board_after": "wwwwwwwbwwbwwwwbwbwwbbwbwbwwwbbbwbwbbbwbwwwwbwwbwbbbwwbbbbbbwwwb",
+      "legal_moves": [
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeAMUWeUFFxX36ezLWh1x\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\":\\\"f8\\\"}\",\"type\":\"text\"}],\"model\":\"claude-opus-5\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"global\",\"input_tokens\":443,\"output_tokens\":10,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 5062,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 443,
+        "completion_tokens": 10
+      }
+    }
+  ],
+  "started_at": "2026-08-18T14:12:40.266693+00:00",
+  "ended_at": "2026-08-18T14:14:55.617760+00:00"
+}

@@ -1,0 +1,144 @@
+{
+  "game_id": "20260818T143521232156-655f39",
+  "players": {
+    "black": {
+      "id": "gpt-5.6-sol",
+      "model": "gpt-5.6-sol",
+      "provider": "openai",
+      "display_name": "GPT-5.6 Sol",
+      "config": {
+        "reasoning_effort": "low",
+        "max_completion_tokens": 3072
+      }
+    },
+    "white": {
+      "id": "gemini-3.1-pro-preview",
+      "model": "gemini-3.1-pro-preview",
+      "provider": "gemini",
+      "display_name": "Gemini 3.1 Pro Preview",
+      "config": {
+        "thinking_config": {
+          "thinking_budget": 128
+        }
+      }
+    }
+  },
+  "result": {
+    "winner": "white",
+    "reason": "forfeit",
+    "score": null
+  },
+  "moves": [
+    {
+      "turn": 1,
+      "player": "black",
+      "type": "move",
+      "position": "d3",
+      "board_after": "...................b.......bb......bw...........................",
+      "legal_moves": [
+        "d3",
+        "c4",
+        "f5",
+        "e6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEFCItChKI2MKrFt1rvxRCSL3F4dV\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d3\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787063718,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":35,\"prompt_tokens\":260,\"total_tokens\":295,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":14,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 3609,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 260,
+        "completion_tokens": 35
+      }
+    },
+    {
+      "turn": 2,
+      "player": "white",
+      "type": "move",
+      "position": "c3",
+      "board_after": "..................wb.......wb......bw...........................",
+      "legal_moves": [
+        "c3",
+        "e3",
+        "c5"
+      ],
+      "llm_raw_response": "{\"sdk_http_response\":{\"headers\":{\"x-gemini-service-tier\":\"standard\",\"content-type\":\"application/json; charset=UTF-8\",\"vary\":\"Origin, X-Origin, Referer\",\"content-encoding\":\"gzip\",\"date\":\"Tue, 18 Aug 2026 14:35:28 GMT\",\"server\":\"scaffolding on HTTPServer2\",\"x-xss-protection\":\"0\",\"x-frame-options\":\"SAMEORIGIN\",\"x-content-type-options\":\"nosniff\",\"server-timing\":\"gfet4t7; dur=6258\",\"alt-svc\":\"h3=\\\":443\\\"; ma=2592000,h3-29=\\\":443\\\"; ma=2592000\",\"transfer-encoding\":\"chunked\"},\"body\":null},\"candidates\":[{\"content\":{\"parts\":[{\"media_resolution\":null,\"code_execution_result\":null,\"executable_code\":null,\"file_data\":null,\"function_call\":null,\"function_response\":null,\"inline_data\":null,\"text\":\"{\\\"position\\\":\\\"c3\\\"}\",\"thought\":null,\"thought_signature\":\"EpQFCpEFARFNMg8FAwOfHT7kCqX8yiqy_0I9g6OIH0e2tXJ6Y0DEsCtpW-WNxR2ehQkdGalSN-hwu9GnzcaDayOGgnYoQnG_IyfxYfZtGFnYpQy2PDm-JrHEUT28UFhG4VryhGQ6GcQD0jn3F-IpEsIxsDHb4mg97Vi2gwg0n25A5z1h4WLLTU8PPv-R1R0SjjzWJvp0hNd8-aW8zxUI3VsStV6zdz60VF1H_p7xzwGce_yrLnlWZI85vMOn469x3ege3YjysBlNthHVHstB1DNhXkrSzbJ9yWcJeoVS2528k33K_fzaYZhxxM26N8_av9BoJbAxFPc8If68GonWspuThW_TyAt8GzfNO_u9JsYT9C3ngstY_fOCFqtzuIm1kkpqr6wb-6rZgPDjqYJfz1HWPOCI1V-8A1NqALmRzLmV3sM7nbUYecR5fyR0v6CYxRFEb6CsgOTYQH_JZALeuUs--ru6x12Us19ERe1wvMqgmSsOAir73LZt7sguf-GWhgKPenX8h0_-Hg52Vlq2QL7F3wr53li1rztroa0cRzidPHoGjU3WECj8eEjFNDx-WRVYJ2HCsc_UrgP0qzrWsDG9O8bDFZMjQ8_LUYYrmpZtgpYAf4M8i_9jJEJeVHX34HAqleR9TezcuGbTMwlWmaOA3cLcls0D26o1nyv5jITJS5bzTpaAXxJtoHLyn4NYpVRCjAszqJ8hxCtZFD8n2A1YEIqt7wQsmnV_eU_qnEfBozEO-01xlAdMmhhH3UKNqBKb_2Qs5UJJlrHY9qA5Gbju5J6daZHWOFas-gtbCtMQM18r42wmhSd5ZVLdykFZsoCZlk1vGO7Hk1fSKUD4b_YqSzY4dQ24CmHu-tzBgc6gQBb95sIR\",\"video_metadata\":null,\"tool_call\":null,\"tool_response\":null,\"part_metadata\":null,\"audio_transcription\":null}],\"role\":\"model\"},\"citation_metadata\":null,\"finish_message\":null,\"token_count\":null,\"finish_reason\":\"STOP\",\"grounding_metadata\":null,\"avg_logprobs\":null,\"index\":0,\"logprobs_result\":null,\"safety_ratings\":null,\"url_context_metadata\":null}],\"create_time\":null,\"model_version\":\"gemini-3.1-pro-preview\",\"prompt_feedback\":null,\"response_id\":\"qW2EavGYPIaz1e8P0KuO2Qg\",\"usage_metadata\":{\"cache_tokens_details\":null,\"cached_content_token_count\":null,\"candidates_token_count\":6,\"candidates_tokens_details\":null,\"prompt_token_count\":212,\"prompt_tokens_details\":[{\"modality\":\"TEXT\",\"token_count\":212}],\"thoughts_token_count\":193,\"tool_use_prompt_token_count\":null,\"tool_use_prompt_tokens_details\":null,\"total_token_count\":411,\"traffic_type\":null},\"model_status\":null,\"automatic_function_calling_history\":[],\"parsed\":{\"position\":\"c3\"}}",
+      "retried": "none",
+      "response_time_ms": 6281,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 212,
+        "completion_tokens": 6
+      }
+    },
+    {
+      "turn": 3,
+      "player": "black",
+      "type": "move",
+      "position": "c4",
+      "board_after": "..................wb......bbb......bw...........................",
+      "legal_moves": [
+        "b3",
+        "c4",
+        "f5",
+        "e6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEFCThbMghCcxRQ968xs67nX5SOws\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"c4\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787063729,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":351,\"prompt_tokens\":260,\"total_tokens\":611,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":330,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 14188,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 260,
+        "completion_tokens": 351
+      }
+    },
+    {
+      "turn": 4,
+      "player": "white",
+      "type": "move",
+      "position": "c5",
+      "board_after": "..................wb......wbb.....www...........................",
+      "legal_moves": [
+        "e3",
+        "c5"
+      ],
+      "llm_raw_response": "{\"sdk_http_response\":{\"headers\":{\"x-gemini-service-tier\":\"standard\",\"content-type\":\"application/json; charset=UTF-8\",\"vary\":\"Origin, X-Origin, Referer\",\"content-encoding\":\"gzip\",\"date\":\"Tue, 18 Aug 2026 14:35:46 GMT\",\"server\":\"scaffolding on HTTPServer2\",\"x-xss-protection\":\"0\",\"x-frame-options\":\"SAMEORIGIN\",\"x-content-type-options\":\"nosniff\",\"server-timing\":\"gfet4t7; dur=4000\",\"alt-svc\":\"h3=\\\":443\\\"; ma=2592000,h3-29=\\\":443\\\"; ma=2592000\",\"transfer-encoding\":\"chunked\"},\"body\":null},\"candidates\":[{\"content\":{\"parts\":[{\"media_resolution\":null,\"code_execution_result\":null,\"executable_code\":null,\"file_data\":null,\"function_call\":null,\"function_response\":null,\"inline_data\":null,\"text\":\"{\\\"position\\\": \\\"c5\\\"}\",\"thought\":null,\"thought_signature\":\"EooFCocFARFNMg-w5QerOJmfnAsRp-RMYRMaH38cYb8qb2BQJl_sWP8uEn03k14mxD1XKjp2MpKEcKNwxOeP74iE__RLA9lf71HH3POFt3ayI8YXBlsPL5kvXIok2niLza9d3-ptZz3_HSC0HOsVhcYMz4-u7ZeCyaPVcCzUl-85ebCW803O-hqyzAU4zOUigLjKDzIknXM3jHekQDd5XWI-Zel-9i7ySIqKL-m5X9Xp9H39eaLOXSCL0cXtT_c6h-LGmIjH5XgJPyCjQDpDRzU3AEe2s-Q2hV6F_ahHi8i-sIgljmnXrokutM30XYaZOAnGxk9aojuvfN0AIYPnZlEtgkKAABelMpGMFppuFiOyumcmox2cOS37N0zhn3FiLRypor_SDLwNYeNKeHob16mcp8BhSn5s8gwU8_vCAgzR7cXt_CqrIi1MA0CBtHfyEKft7BTSRzgC6gtKsDMNMtd9Big3QrfKWkZtvECKYJ9vdrG1FHfBRQctI_ao_KgSgwQh4-VLpOPyW9Dw58FM23jKjV4M7I1UOh4nRmi9rVg_AAcsQvEevVIiN822PGbUAefnv_UwGUbXfThVdFxPc5PPfmytXwY9WtXPAZynU4FPfbH5jdcPFDcTcwMB4VFsEOQt03bkTURZ4zQwrj8oR85Bd2vYS_FMQvlA7gaTnII0ymgP18irv8HOg1513fwkje_SD4scXkVQKoLaEiNcnwdlOnvqwU3HQZXD61KuzVVrvvslIZmfI_giS7OYp_vy6go95jKpflMz8hmnW3ZXgmzR3mwEeIR1OE6L_zDd3KveglGROYXvR_bm8LgRW9tWdjTBbkEHnl_UwPqvkS7Qc0q0h6k07AWpieJxk5E=\",\"video_metadata\":null,\"tool_call\":null,\"tool_response\":null,\"part_metadata\":null,\"audio_transcription\":null}],\"role\":\"model\"},\"citation_metadata\":null,\"finish_message\":null,\"token_count\":null,\"finish_reason\":\"STOP\",\"grounding_metadata\":null,\"avg_logprobs\":null,\"index\":0,\"logprobs_result\":null,\"safety_ratings\":null,\"url_context_metadata\":null}],\"create_time\":null,\"model_version\":\"gemini-3.1-pro-preview\",\"prompt_feedback\":null,\"response_id\":\"vm2Eaum8Gu-21e8Pn4-hoAw\",\"usage_metadata\":{\"cache_tokens_details\":null,\"cached_content_token_count\":null,\"candidates_token_count\":7,\"candidates_tokens_details\":null,\"prompt_token_count\":209,\"prompt_tokens_details\":[{\"modality\":\"TEXT\",\"token_count\":209}],\"thoughts_token_count\":224,\"tool_use_prompt_token_count\":null,\"tool_use_prompt_tokens_details\":null,\"total_token_count\":440,\"traffic_type\":null},\"model_status\":null,\"automatic_function_calling_history\":[],\"parsed\":{\"position\":\"c5\"}}",
+      "retried": "none",
+      "response_time_ms": 4015,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 209,
+        "completion_tokens": 7
+      }
+    },
+    {
+      "turn": 5,
+      "player": "black",
+      "type": "forfeit",
+      "position": null,
+      "board_after": "..................wb......wbb.....www...........................",
+      "legal_moves": [
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "c6",
+        "d6",
+        "e6",
+        "f6"
+      ],
+      "llm_raw_response": null,
+      "retried": "none",
+      "response_time_ms": 30016,
+      "forfeit_reason": "timeout",
+      "error_detail": null,
+      "usage": null
+    }
+  ],
+  "started_at": "2026-08-18T14:35:21.232156+00:00",
+  "ended_at": "2026-08-18T14:36:19.330750+00:00"
+}
