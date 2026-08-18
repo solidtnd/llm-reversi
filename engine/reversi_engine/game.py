@@ -24,7 +24,7 @@ from .board import (
     opponent,
 )
 
-DEFAULT_TIMEOUT_SECONDS = 30.0
+DEFAULT_TIMEOUT_SECONDS = 60.0
 
 #: 1手あたりのリトライ予算。原因(パース失敗/APIエラー)を問わず通算1回まで
 #: (docs/engine/rules.md「1手ごとの処理」)。ルールとして固定なので設定値にはしない。
