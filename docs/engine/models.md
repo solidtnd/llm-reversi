@@ -64,7 +64,7 @@ APIキーで`GET /v1/models`(OpenAI・Anthropic)・`ListModels`(Gemini)を実際
 
 | モデル | 構造化出力(responseSchema) | Input | Output | 備考 |
 | --- | --- | --- | --- | --- |
-| gemini-2.5-flash-lite | ○ | $0.10 | $0.40 | |
+| gemini-2.5-flash-lite | ○ | $0.10 | $0.40 | `ListModels`には`generateContent`対応として載っているが、実際に呼ぶと404(「新規ユーザーには提供終了、`gemini-3.5-flash-lite`へ」)。カタログ掲載と実呼び出し可否が一致しない例(2026-08-18確認、後述) |
 | gemini-2.5-flash | ○ | $0.30 | $2.50 | |
 | gemini-2.5-pro | ○ | $1.25(20万トークン超は$2.50) | $10.00(同$15.00) | thinkingを完全には無効化できない |
 | gemini-3.1-flash-lite | ○ | $0.25 | $1.50 | |
@@ -113,9 +113,11 @@ APIキーで`GET /v1/models`(OpenAI・Anthropic)・`ListModels`(Gemini)を実際
 
 | id | model | 位置づけ |
 | --- | --- | --- |
-| gemini-2.5-flash-lite | gemini-2.5-flash-lite | 旧世代・最安ティア(基準点) |
+| gemini-3.1-flash-lite | gemini-3.1-flash-lite | 最安ティア(基準点) |
 | gemini-3.5-flash | gemini-3.5-flash | 新世代・中位 |
 | gemini-3.1-pro-preview | gemini-3.1-pro-preview | 新世代・最上位(Pro系は現状これがpreviewのみの事実上の最上位) |
+
+**`gemini-2.5-flash-lite`→`gemini-3.1-flash-lite`への差し替え(2026-08-18)**: 当初選定した`gemini-2.5-flash-lite`は、`models.yaml`に反映した後の動作確認(`request_move`を1回実際に呼ぶ)で404エラーになった。`ListModels`のレスポンスには`generateContent`対応モデルとして今も載っており、Web上の情報でも有効に見えるが、実際に`generateContent`を呼ぶと`This model models/gemini-2.5-flash-lite is no longer available to new users. Please update your code to use models/gemini-3.5-flash-lite for the latest features and improvements.`という404が返ってくることを確認した。カタログ一覧(`ListModels`)と実際の呼び出し可否がAPIキー(プロジェクト)の作成時期等に応じて食い違うことがある、という実例。エラーメッセージが案内する代替は`gemini-3.5-flash-lite`だが、価格・位置づけの面では表中の投資調査結果(前節)にある`gemini-3.1-flash-lite`(旧世代寄りでより安価)を選び、実際に1手問い合わせて合法手が返ることを確認した上で採用した。これにより第1段階のGeminiラインナップは3モデルとも実質的に「Gemini 3系」となり、Anthropicと同様に「旧世代アンカー」を用意できていない状態になった(前節「「古くて弱いモデル」は3社とも用意できない」参照)。
 
 ### 第2段階候補(結果を見てから追加を検討)
 
@@ -136,7 +138,7 @@ APIキーで`GET /v1/models`(OpenAI・Anthropic)・`ListModels`(Gemini)を実際
 | 候補 | 追加する意義 |
 | --- | --- |
 | gpt-5-nano / gpt-5.6-terra | gpt-5.6-lunaとの世代内・世代間の中間ティア比較 |
-| gemini-2.5-pro / gemini-3.1-flash-lite | Geminiの追加ティア(旧世代最上位・新世代最安) |
+| gemini-2.5-pro | Geminiの追加ティア(旧世代最上位)。なお`gemini-3.1-flash-lite`は`gemini-2.5-flash-lite`が呼び出せなかったため既に第1段階に採用済み(前節参照) |
 | claude-opus-4-8 | claude-opus-5と同価格帯($5/$25)での世代差のみの比較 |
 
 **観点C: 設定のバリエーション(config違い)を持たせる意義があるか**
@@ -174,7 +176,7 @@ thinkingを一切無効化・抑制できないモデル(`claude-fable-5`)は、
 
 **Anthropicの`effort`制御について**: 当初`engine/reversi_engine/adapters/anthropic.py`の`request_move`は`output_config`を`params.update(extra)`で丸ごと上書きしており、`config`に`output_config: {effort: "low"}`を書くと構造化出力用の`format`ごと消えてしまう不具合があったが、`output_config`をマージするように修正済み(`format`は常にAdapter側の値が優先される、[adapter-interface.md](adapter-interface.md#configの受け渡し)参照)。これにより`config: {output_config: {effort: "low"}}`のような形でAnthropicモデルの`effort`もコスト制御に使えるようになったが、今回の選定では`thinking`の有効/無効のみで制御しており、`effort`は未使用のまま(必要になれば追加で調整可能)。
 
-Geminiの`thinking_config`のキー名(google-genai SDKのスネークケース表記に合わせた想定)は実際にAPIへ1回テスト呼び出しして動作確認できていない。`run-league --dry-run`はカードの確認のみでAPI呼び出しを行わないため、本番実行前に少数のカードで実際に動くか確認することを推奨する。
+Geminiの`thinking_config`のキー名(google-genai SDKのスネークケース表記に合わせた想定)は、2026-08-18に`gemini-3.1-flash-lite`・`gemini-3.5-flash`(`thinking_budget: 0`)・`gemini-3.1-pro-preview`(`thinking_budget: 128`)へ実際に1手ずつ問い合わせて動作確認済み。いずれも合法手を含む構造化出力が返ってきている。
 
 ## 大まかなコスト試算(参考値)
 
@@ -192,7 +194,6 @@ Geminiの`thinking_config`のキー名(google-genai SDKのスネークケース�
 
 ## 未決定事項
 
-- Gemini`thinking_config`のキー名・値が実際のAPI呼び出しで機能するかを未検証(本番運用前に少数カードでの動作確認が必要)。
 - `gpt-5.6-sol`等の新命名規則モデルが今後もこのIDのまま存続するか(2026-07-09 GAとまだ新しいため実績が少ない)。
 - Claude Sonnet 5の価格が導入価格($2/$10)のまま定着するか、2026-08-31以降に$3/$15へ変わるか。
 - `gemini-3-flash-preview`・`gemini-3.6-flash`・`gemini-3.7-flash`の構造化出力対応が確認でき次第、追加候補とする。
