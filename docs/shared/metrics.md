@@ -83,7 +83,9 @@
 }
 ```
 
-- `models[].display_name`・`provider`は`data/results.jsonl`に含まれない(結果ログは指標計算に必要な値だけを持つ)ため、集計スクリプトは表示用メタデータのみ[../engine/adapter-interface.md](../engine/adapter-interface.md#モデル一覧設定ファイルenginemodelsyaml)の`models.yaml`から補う。「対局データはJSONLのみを読む」という方針はそのままで、`models.yaml`は対局データではなく設定情報として参照する。設定から削除されたモデルがログに残っている場合は、`display_name`にidを、`provider`に`"unknown"`を入れて集計対象から落とさない(過去の対局結果を消さないため)。
+- `models[].display_name`・`provider`は`data/results.jsonl`の各行が持つ値をそのまま使う([log-schema.md](log-schema.md#対局結果ログdataresultsjsonl)参照)。**集計は`models.yaml`を一切参照しない。** `models.yaml`は「今後どのモデルを対戦させるか」を宣言する設定ファイルであり、過去に何が対戦したかの記録ではないため、そこに依存させると「APIエラーで対戦をやめたモデルを`models.yaml`から削除する」といった通常の運用をしただけで、そのモデルの過去の対局の表示名が失われてしまう。集計の入力は結果ログのみとし、モデルの追加・削除は集計結果に影響しない(削除したモデルの過去の対局は、以前と同じ表示名のまま集計され続ける)。
+  - 同一`id`で`display_name`が行ごとに異なる場合(後からリネームした場合)は後勝ち = 最後に対戦した時点の値を採用する(理由は[log-schema.md](log-schema.md#対局結果ログdataresultsjsonl)参照)。
+  - 古い形式の行など`provider`・`display_name`を持たない行があった場合は、`display_name`にidを、`provider`に`"unknown"`を入れて集計対象から落とさない(過去の対局結果を消さないため)。
 - `models`配列は事前にソートしない(順位はランキング方式によって`points`降順/`bt_strength`降順のどちらでも変わるため)。Web側が表示したい列でソートする。
 - `head_to_head`は「対戦表(マトリクス)」用。モデル数を`n`とすると`n×(n-1)/2`件(同一カードの重複を避けるため`a<b`のみ持つ)。先手後手別の内訳は個々のカードではなくモデル単位の指標(`win_rate_as_black`等)側で扱うため、ここでは先手後手を合算した勝敗数のみ持つ。`game_ids`は、対戦表のセルから該当カードの対局一覧・棋譜リプレイへドリルダウンするWeb側の導線のために持たせる。
 - `games`は全対局の要約一覧。Web側の対局一覧画面(モデル別・反則負けのみ、等でのフィルタ表示)が、対局ごとの完全な棋譜JSON(手順・生応答を含む重いファイル)を全件fetchせずに一覧表示を完結できるようにするため。個別対局のリプレイ・生ログ閲覧時に、初めて該当`game_id`の棋譜JSON本体をfetchする想定。

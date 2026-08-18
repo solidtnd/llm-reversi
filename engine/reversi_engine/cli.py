@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import argparse
 import sys
-from pathlib import Path
 from typing import Any, Sequence
 
 from .aggregate import aggregate
@@ -140,15 +139,9 @@ def _run_aggregate(args: argparse.Namespace) -> int:
         print(f"{storage.results_path} に対局結果がありません。", file=sys.stderr)
         return 1
 
-    models: list[ModelSpec] = []
-    models_path = Path(args.models)
-    if models_path.exists():
-        models = load_models(models_path)
-    else:
-        print(f"{models_path} が無いため display_name / provider は補完しません。", file=sys.stderr)
-
+    # models.yamlは参照しない(表示名も結果ログ側が持つ。docs/shared/metrics.md参照)
     league_config = load_league(args.league)
-    ranking = aggregate(results, models=models, points=league_config.points)
+    ranking = aggregate(results, points=league_config.points)
     path = storage.write_ranking(ranking)
     print(f"{len(results)}局を集計し {len(ranking['models'])}モデル分を書き出しました: {path}")
     return 0
@@ -169,6 +162,11 @@ def _build_parser() -> argparse.ArgumentParser:
     run_league = subparsers.add_parser("run-league", help="未実施カードの対局を実行する")
     _add_common_arguments(run_league)
     run_league.add_argument(
+        "--models",
+        default=str(DEFAULT_MODELS_PATH),
+        help="モデル一覧YAMLのパス(既定: engine/models.yaml)",
+    )
+    run_league.add_argument(
         "--env",
         default=str(DEFAULT_ENV_PATH),
         help="APIキーを読み込む.envのパス(既定: engine/.env)",
@@ -186,11 +184,6 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def _add_common_arguments(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument(
-        "--models",
-        default=str(DEFAULT_MODELS_PATH),
-        help="モデル一覧YAMLのパス(既定: engine/models.yaml)",
-    )
     parser.add_argument(
         "--league",
         default=str(DEFAULT_LEAGUE_PATH),

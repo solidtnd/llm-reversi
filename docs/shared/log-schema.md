@@ -90,8 +90,8 @@
 ```json
 {
   "game_id": "string",
-  "black": { "id": "string", "avg_response_time_ms": 1234 },
-  "white": { "id": "string", "avg_response_time_ms": 1500 },
+  "black": { "id": "string", "provider": "string", "display_name": "string", "avg_response_time_ms": 1234 },
+  "white": { "id": "string", "provider": "string", "display_name": "string", "avg_response_time_ms": 1500 },
   "winner": "black | white | draw",
   "reason": "score | forfeit",
   "forfeit_reason": "illegal_move | timeout | parse_failure | api_error | null",
@@ -99,7 +99,9 @@
 }
 ```
 
-- 対局本体の棋譜JSON(上記[トップレベル構造](#トップレベル構造))から、[metrics.md](metrics.md)の指標計算に必要な値だけを抜き出した要約。`black`/`white`はそれぞれ`players`の`id`と、その対局における平均応答時間(`Move.response_time_ms`の単純平均)を持つ。**パス(`type: "pass"`)の手は平均から除外する**(LLMを呼ばず応答時間を持たない手を0msとして混ぜると、パスが多い対局ほど平均が不当に短くなるため)。手数による加重平均は行わない(平均応答時間は[metrics.md](metrics.md#安定性の指標)の通り参考情報の位置づけであり、そこまでの精度を必要としないと判断したため)。
+- 対局本体の棋譜JSON(上記[トップレベル構造](#トップレベル構造))から、[metrics.md](metrics.md)の指標計算・表示に必要な値だけを抜き出した要約。`black`/`white`はそれぞれ`players`の`id`・`provider`・`display_name`と、その対局における平均応答時間(`Move.response_time_ms`の単純平均)を持つ。**パス(`type: "pass"`)の手は平均から除外する**(LLMを呼ばず応答時間を持たない手を0msとして混ぜると、パスが多い対局ほど平均が不当に短くなるため)。
+- **`provider`・`display_name`を指標計算に使わないにもかかわらずこの要約に含めるのは、集計を`models.yaml`から独立させるため。** これらを持たせないと、集計時に表示名を`models.yaml`(設定ファイル)から引く必要が生じ、「APIエラーで対戦をやめたモデルを`models.yaml`から削除する」といった通常の運用をしただけで、そのモデルの過去の対局の表示名が失われてしまう(`models.yaml`は「今後どのモデルを対戦させるか」を宣言する設定であり、過去に何が対戦したかの記録ではない)。棋譜JSON本体(`data/games/*.json`)も同じ値を持つが、集計時にそちらを読みには行かない([ファイル形式](#ファイル形式json--jsonl)の「集計スクリプトはこのJSONLのみを読み込む」方針を維持するため。表示名という小さな文字列のために、全手・LLMの生応答を含む重いファイルを対局数分開くのは本末転倒)。要約行なので`id`と同様に対局ごとに値が重複するが、正規化はしない。
+- `provider`・`display_name`には**その対局を行った時点の値**が入る。同一`id`のまま`display_name`を後から変更した場合、`ranking.json`の`models[]`は1モデル1エントリなので代表値を1つ選ぶ必要があり、**行を読み進めた順で後勝ち**(=最後に対戦した時点の値)とする。`results.jsonl`は追記専用でファイル内が時系列順に並ぶため、単純に上書きしていくだけで最新の表示名になる。手数による加重平均は行わない(平均応答時間は[metrics.md](metrics.md#安定性の指標)の通り参考情報の位置づけであり、そこまでの精度を必要としないと判断したため)。
 - `Move.retried`(リトライ)に関する集計値は持たない。リトライは最終的に成功すれば対局結果に影響しない一時的な事象であり、モデルの安定性は`forfeit_reason`の集計だけで測れると判断したため([metrics.md](metrics.md#安定性の指標)参照)。特定の対局でリトライが起きたかどうかを確認したい場合は、棋譜JSON本体の`Move.retried`を見る(この要約には出てこない)。
 - `score`(石数)は持たない。[metrics.md](metrics.md)で定義する指標に石数差は含まれないため。
 - この1行は、そのまま`ranking.json`の`games`配列の要素(の一部)になる([metrics.md](metrics.md)参照)。

@@ -370,7 +370,6 @@ def generate(data_dir: Path) -> list[GameRecord]:
 
     ranking = aggregate(
         storage.read_results(),
-        models=DUMMY_MODELS,
         points=Points(),
         generated_at=(BASE_TIME + timedelta(minutes=17 * len(cards))).isoformat(),
     )

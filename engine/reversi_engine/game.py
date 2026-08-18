@@ -137,21 +137,28 @@ class GameRecord:
         }
 
     def summary(self) -> dict[str, Any]:
-        """`data/results.jsonl` の1行(集計・差分実行判定の入力)を返す。"""
+        """`data/results.jsonl` の1行(集計・差分実行判定の入力)を返す。
+
+        `provider`・`display_name`は指標計算には使わないが、集計を`models.yaml`から
+        独立させるためここに含める(docs/shared/log-schema.md「対局結果ログ」)。
+        """
         return {
             "game_id": self.game_id,
-            "black": {
-                "id": self.black.id,
-                "avg_response_time_ms": self.average_response_time_ms("black"),
-            },
-            "white": {
-                "id": self.white.id,
-                "avg_response_time_ms": self.average_response_time_ms("white"),
-            },
+            "black": self._player_summary("black"),
+            "white": self._player_summary("white"),
             "winner": self.result.winner,
             "reason": self.result.reason,
             "forfeit_reason": self._forfeit_reason(),
             "ended_at": self.ended_at,
+        }
+
+    def _player_summary(self, player: Player) -> dict[str, Any]:
+        participant = self.black if player == "black" else self.white
+        return {
+            "id": participant.id,
+            "provider": participant.provider,
+            "display_name": participant.display_name,
+            "avg_response_time_ms": self.average_response_time_ms(player),
         }
 
     def average_response_time_ms(self, player: Player) -> int:

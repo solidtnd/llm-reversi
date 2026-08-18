@@ -3,12 +3,23 @@
 from __future__ import annotations
 
 from reversi_engine.aggregate import aggregate
-from reversi_engine.config import ModelSpec, Points
+from reversi_engine.config import Points
 
-MODELS = [
-    ModelSpec(id="strong", provider="openai", model="gpt-4o", display_name="強いモデル"),
-    ModelSpec(id="weak", provider="anthropic", model="claude-haiku-4-5", display_name="弱いモデル"),
-]
+#: id → (provider, display_name)。結果ログの各行が持つ表示用メタデータ
+META = {
+    "strong": ("openai", "強いモデル"),
+    "weak": ("anthropic", "弱いモデル"),
+}
+
+
+def player(model_id: str, ms: int) -> dict:
+    provider, display_name = META.get(model_id, ("openai", model_id))
+    return {
+        "id": model_id,
+        "provider": provider,
+        "display_name": display_name,
+        "avg_response_time_ms": ms,
+    }
 
 
 def row(
@@ -24,8 +35,8 @@ def row(
 ):
     return {
         "game_id": game_id,
-        "black": {"id": black, "avg_response_time_ms": black_ms},
-        "white": {"id": white, "avg_response_time_ms": white_ms},
+        "black": player(black, black_ms),
+        "white": player(white, white_ms),
         "winner": winner,
         "reason": reason,
         "forfeit_reason": forfeit_reason,
@@ -38,7 +49,7 @@ def _model(ranking: dict, model_id: str) -> dict:
 
 
 def test_aggregate_shape():
-    ranking = aggregate([row("g1", "strong", "weak", "black")], models=MODELS)
+    ranking = aggregate([row("g1", "strong", "weak", "black")])
     assert set(ranking) == {"generated_at", "models", "head_to_head", "games"}
     assert set(ranking["models"][0]) == {
         "id",
@@ -76,7 +87,7 @@ def test_model_metrics():
         row("g3", "strong", "weak", "draw"),
         row("g4", "weak", "strong", "black", reason="forfeit", forfeit_reason="illegal_move"),
     ]
-    ranking = aggregate(rows, models=MODELS)
+    ranking = aggregate(rows)
 
     strong = _model(ranking, "strong")
     assert strong["games"] == 4
@@ -105,7 +116,7 @@ def test_avg_response_time_is_mean_of_game_averages():
         row("g1", "strong", "weak", "black", black_ms=1000, white_ms=500),
         row("g2", "weak", "strong", "black", black_ms=3000, white_ms=2000),
     ]
-    ranking = aggregate(rows, models=MODELS)
+    ranking = aggregate(rows)
 
     assert _model(ranking, "strong")["avg_response_time_ms"] == 1500  # (1000 + 2000) / 2
     assert _model(ranking, "weak")["avg_response_time_ms"] == 1750  # (500 + 3000) / 2
@@ -113,7 +124,7 @@ def test_avg_response_time_is_mean_of_game_averages():
 
 def test_points_use_configured_weights():
     rows = [row("g1", "strong", "weak", "black"), row("g2", "weak", "strong", "draw")]
-    ranking = aggregate(rows, models=MODELS, points=Points(win=3, draw=1, loss=0))
+    ranking = aggregate(rows, points=Points(win=3, draw=1, loss=0))
 
     assert _model(ranking, "strong")["points"] == 4.0  # 1勝(3) + 引き分け(1)
     assert _model(ranking, "weak")["points"] == 1.0
@@ -125,7 +136,7 @@ def test_head_to_head_is_id_ordered_and_color_agnostic():
         row("g2", "weak", "strong", "black"),
         row("g3", "strong", "weak", "draw"),
     ]
-    ranking = aggregate(rows, models=MODELS)
+    ranking = aggregate(rows)
 
     assert len(ranking["head_to_head"]) == 1
     card = ranking["head_to_head"][0]
@@ -138,7 +149,7 @@ def test_head_to_head_is_id_ordered_and_color_agnostic():
 
 def test_games_are_sorted_by_game_id():
     rows = [row("g2", "strong", "weak", "black"), row("g1", "weak", "strong", "white")]
-    ranking = aggregate(rows, models=MODELS)
+    ranking = aggregate(rows)
     assert [game["game_id"] for game in ranking["games"]] == ["g1", "g2"]
 
 
@@ -147,7 +158,7 @@ def test_bt_strength_ranks_stronger_model_higher():
         row(f"g{index}", "strong", "weak", "black")
         for index in range(1, 5)
     ] + [row("g5", "weak", "strong", "white")]
-    ranking = aggregate(rows, models=MODELS)
+    ranking = aggregate(rows)
 
     strengths = {entry["id"]: entry["bt_strength"] for entry in ranking["models"]}
     assert strengths["strong"] > strengths["weak"]
@@ -156,20 +167,46 @@ def test_bt_strength_ranks_stronger_model_higher():
 
 def test_bt_strength_is_uniform_for_single_model():
     rows = [row("g1", "solo", "solo", "draw")]
-    ranking = aggregate(rows, models=[])
+    ranking = aggregate(rows)
     assert _model(ranking, "solo")["bt_strength"] == 1.0
 
 
 def test_bt_strength_handles_undefeated_model():
     """全勝モデルがいても正則化により有限の値に収まる。"""
     rows = [row(f"g{index}", "strong", "weak", "black") for index in range(1, 4)]
-    ranking = aggregate(rows, models=MODELS)
+    ranking = aggregate(rows)
     for entry in ranking["models"]:
         assert 0.0 < entry["bt_strength"] < 1.0
 
 
-def test_unknown_model_falls_back_to_id_and_unknown_provider():
-    ranking = aggregate([row("g1", "retired", "weak", "black")], models=MODELS)
+def test_metadata_comes_from_the_result_rows():
+    """models.yamlを渡さなくても、表示名・providerは結果ログの行から埋まる。"""
+    ranking = aggregate([row("g1", "strong", "weak", "black")])
+
+    assert _model(ranking, "strong")["display_name"] == "強いモデル"
+    assert _model(ranking, "strong")["provider"] == "openai"
+    assert _model(ranking, "weak")["display_name"] == "弱いモデル"
+    assert _model(ranking, "weak")["provider"] == "anthropic"
+
+
+def test_renamed_display_name_uses_the_latest_row():
+    """同一idでdisplay_nameが変わった場合は後勝ち(最後に対戦した時点の値)。"""
+    old = row("g1", "strong", "weak", "black")
+    new = row("g2", "strong", "weak", "black")
+    new["black"] = {**new["black"], "display_name": "強いモデル(改名後)"}
+
+    ranking = aggregate([old, new])
+
+    assert _model(ranking, "strong")["display_name"] == "強いモデル(改名後)"
+
+
+def test_rows_without_metadata_fall_back_to_id_and_unknown():
+    """provider/display_nameを持たない古い形式の行でも集計対象から落とさない。"""
+    legacy = row("g1", "retired", "weak", "black")
+    legacy["black"] = {"id": "retired", "avg_response_time_ms": 1000}
+
+    ranking = aggregate([legacy])
+
     retired = _model(ranking, "retired")
     assert retired["display_name"] == "retired"
     assert retired["provider"] == "unknown"
@@ -182,12 +219,12 @@ def test_invalid_rows_are_ignored():
         {"black": {"id": "strong"}, "white": {"id": "weak"}, "winner": "black"},  # game_idなし
         "文字列",
     ]
-    ranking = aggregate(rows, models=MODELS)
+    ranking = aggregate(rows)
     assert [game["game_id"] for game in ranking["games"]] == ["g1"]
 
 
 def test_empty_results():
-    ranking = aggregate([], models=MODELS)
+    ranking = aggregate([])
     assert ranking["models"] == []
     assert ranking["head_to_head"] == []
     assert ranking["games"] == []

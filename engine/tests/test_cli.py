@@ -29,8 +29,6 @@ def workspace(tmp_path):
 
 def _common_args(workspace):
     return [
-        "--models",
-        str(workspace / "models.yaml"),
         "--league",
         str(workspace / "league.yaml"),
         "--data-dir",
@@ -39,7 +37,17 @@ def _common_args(workspace):
 
 
 def test_run_league_dry_run_lists_cards(workspace, capsys):
-    exit_code = main(["run-league", *_common_args(workspace), "--env", str(workspace / ".env"), "--dry-run"])
+    exit_code = main(
+        [
+            "run-league",
+            *_common_args(workspace),
+            "--models",
+            str(workspace / "models.yaml"),
+            "--env",
+            str(workspace / ".env"),
+            "--dry-run",
+        ]
+    )
 
     output = capsys.readouterr().out
     assert exit_code == 0
@@ -48,31 +56,55 @@ def test_run_league_dry_run_lists_cards(workspace, capsys):
     assert not (workspace / "data").exists()  # 対局は行わない
 
 
+def _write_results(data_dir):
+    data_dir.mkdir(exist_ok=True)
+    row = {
+        "game_id": "g1",
+        "black": {
+            "id": "alpha",
+            "provider": "openai",
+            "display_name": "Alpha",
+            "avg_response_time_ms": 1000,
+        },
+        "white": {
+            "id": "beta",
+            "provider": "anthropic",
+            "display_name": "Beta",
+            "avg_response_time_ms": 2000,
+        },
+        "winner": "black",
+        "reason": "score",
+        "forfeit_reason": None,
+        "ended_at": "2026-01-01T00:00:00+00:00",
+    }
+    (data_dir / "results.jsonl").write_text(json.dumps(row) + "\n", encoding="utf-8")
+
+
 def test_aggregate_writes_ranking(workspace, capsys):
     data_dir = workspace / "data"
-    data_dir.mkdir()
-    rows = [
-        {
-            "game_id": "g1",
-            "black": {"id": "alpha", "avg_response_time_ms": 1000},
-            "white": {"id": "beta", "avg_response_time_ms": 2000},
-            "winner": "black",
-            "reason": "score",
-            "forfeit_reason": None,
-            "ended_at": "2026-01-01T00:00:00+00:00",
-        }
-    ]
-    (data_dir / "results.jsonl").write_text(
-        "\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8"
-    )
+    _write_results(data_dir)
 
     exit_code = main(["aggregate", *_common_args(workspace)])
 
     assert exit_code == 0
     ranking = json.loads((data_dir / "ranking.json").read_text(encoding="utf-8"))
     assert {entry["id"] for entry in ranking["models"]} == {"alpha", "beta"}
-    assert ranking["models"][0]["display_name"] in ("Alpha", "Beta")
+    assert {entry["display_name"] for entry in ranking["models"]} == {"Alpha", "Beta"}
     assert "1局を集計" in capsys.readouterr().out
+
+
+def test_aggregate_does_not_need_models_yaml(workspace):
+    """集計はmodels.yamlを参照しない(削除したモデルの過去対局も表示名を保つ)。"""
+    data_dir = workspace / "data"
+    _write_results(data_dir)
+    (workspace / "models.yaml").unlink()
+
+    exit_code = main(["aggregate", *_common_args(workspace)])
+
+    assert exit_code == 0
+    ranking = json.loads((data_dir / "ranking.json").read_text(encoding="utf-8"))
+    assert {entry["display_name"] for entry in ranking["models"]} == {"Alpha", "Beta"}
+    assert {entry["provider"] for entry in ranking["models"]} == {"openai", "anthropic"}
 
 
 def test_aggregate_without_results_fails(workspace, capsys):

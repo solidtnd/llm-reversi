@@ -10,7 +10,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Sequence
 
-from .config import ModelSpec, Points
+from .config import Points
 from .game import utc_now_iso
 
 FORFEIT_REASONS = ("illegal_move", "timeout", "parse_failure", "api_error")
@@ -22,6 +22,9 @@ BT_ALPHA = 0.01
 @dataclass
 class _ModelStats:
     id: str
+    #: 結果ログの行から拾う表示用メタデータ(行ごとに上書きするため最後に対戦した値が残る)
+    display_name: str = ""
+    provider: str = ""
     games: int = 0
     wins: int = 0
     losses: int = 0
@@ -40,15 +43,14 @@ class _ModelStats:
 def aggregate(
     results: Iterable[dict[str, Any]],
     *,
-    models: Sequence[ModelSpec] = (),
     points: Points | None = None,
     generated_at: str | None = None,
 ) -> dict[str, Any]:
     """結果ログから `ranking.json` の内容を組み立てる(全量再生成)。
 
-    `display_name` / `provider` は結果ログに含まれないため `models.yaml`
-    (= `models` 引数)から補う。ログにしか存在しないモデル(設定から削除された等)は
-    `display_name` に id を、`provider` に `"unknown"` を入れる。
+    入力は結果ログのみで、`models.yaml` は参照しない。`display_name` / `provider` も
+    各行が持つ値を使うため、`models.yaml` からモデルを削除しても過去の対局は
+    以前と同じ表示名のまま集計され続ける(docs/shared/metrics.md参照)。
     """
     weights = points or Points()
     rows = [row for row in results if _is_valid_row(row)]
@@ -66,6 +68,8 @@ def aggregate(
 
         black = stats.setdefault(black_id, _ModelStats(id=black_id))
         white = stats.setdefault(white_id, _ModelStats(id=white_id))
+        _update_metadata(black, row["black"])
+        _update_metadata(white, row["white"])
 
         black.games += 1
         white.games += 1
@@ -107,19 +111,17 @@ def aggregate(
             }
         )
 
-    metadata = {spec.id: spec for spec in models}
     model_ids = sorted(stats)
     strengths = _bradley_terry_strengths(model_ids, rows)
 
     model_entries = []
     for model_id in model_ids:
         entry = stats[model_id]
-        spec = metadata.get(model_id)
         model_entries.append(
             {
                 "id": model_id,
-                "display_name": spec.display_name if spec else model_id,
-                "provider": spec.provider if spec else "unknown",
+                "display_name": entry.display_name or model_id,
+                "provider": entry.provider or "unknown",
                 "games": entry.games,
                 "wins": entry.wins,
                 "losses": entry.losses,
@@ -168,6 +170,14 @@ def _is_valid_row(row: Any) -> bool:
         and isinstance(white.get("id"), str)
         and row.get("winner") in ("black", "white", "draw")
     )
+
+
+def _update_metadata(stats: _ModelStats, entry: dict[str, Any]) -> None:
+    """表示用メタデータを行の値で上書きする(同一idで値が異なる場合は後勝ち)。"""
+    for key in ("display_name", "provider"):
+        value = entry.get(key)
+        if isinstance(value, str) and value:
+            setattr(stats, key, value)
 
 
 def _add_response_time(stats: _ModelStats, value: Any) -> None:

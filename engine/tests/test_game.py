@@ -327,8 +327,11 @@ def test_summary_matches_results_jsonl_schema():
         "forfeit_reason",
         "ended_at",
     }
-    assert set(summary["black"]) == {"id", "avg_response_time_ms"}
+    assert set(summary["black"]) == {"id", "provider", "display_name", "avg_response_time_ms"}
     assert summary["black"]["id"] == "black-model"
+    # 集計をmodels.yamlから独立させるため、表示用メタデータも要約に持たせる
+    assert summary["black"]["provider"] == "fake"
+    assert summary["black"]["display_name"] == "black-model"
     assert summary["forfeit_reason"] is None
 
 
