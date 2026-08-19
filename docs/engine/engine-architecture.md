@@ -34,7 +34,7 @@ engine/
 │   ├── storage.py       # data/への棋譜JSON書き出し・JSONL追記(スレッドセーフ)
 │   ├── aggregate.py     # JSONL→ranking.json集計(../shared/metrics.md参照)
 │   ├── config.py        # models.yaml / league.yaml 読み込み
-│   └── cli.py           # 試合実行(run-league)/集計実行(aggregate)の2コマンドのエントリポイント
+│   └── cli.py           # 試合実行(run-league)/集計実行(aggregate)/反則負けの再戦準備(clear-forfeits)の3コマンドのエントリポイント
 └── tests/
     ├── conftest.py       # tests/をsys.pathに追加(サブディレクトリからも`import fakes`できるように)
     ├── fakes.py          # LLMAdapter Protocolを実装したFakeAdapter(テストダブル)

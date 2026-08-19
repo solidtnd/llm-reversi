@@ -65,6 +65,38 @@ def test_read_results_skips_blank_lines(tmp_path):
     assert storage.read_results() == [{"game_id": "g1"}]
 
 
+def test_remove_games_deletes_from_results_and_games_dir(tmp_path):
+    storage = Storage(tmp_path)
+    kept = _record("20260101T000000000000-aaaaaa")
+    removed = _record("20260101T000000000001-bbbbbb")
+    storage.record_game(kept)
+    storage.record_game(removed)
+
+    storage.remove_games([removed.game_id])
+
+    assert not (tmp_path / "games" / f"{removed.game_id}.json").exists()
+    assert (tmp_path / "games" / f"{kept.game_id}.json").exists()
+    assert [row["game_id"] for row in storage.read_results()] == [kept.game_id]
+
+
+def test_remove_games_with_missing_game_file_does_not_raise(tmp_path):
+    storage = Storage(tmp_path)
+    storage.append_result({"game_id": "g1"})
+
+    storage.remove_games(["g1"])  # data/games/g1.json は存在しない
+
+    assert storage.read_results() == []
+
+
+def test_remove_games_with_empty_iterable_is_noop(tmp_path):
+    storage = Storage(tmp_path)
+    storage.append_result({"game_id": "g1"})
+
+    storage.remove_games([])
+
+    assert [row["game_id"] for row in storage.read_results()] == ["g1"]
+
+
 def test_write_ranking(tmp_path):
     storage = Storage(tmp_path)
     ranking = {"generated_at": "2026-01-01T00:00:00+00:00", "models": [], "games": []}

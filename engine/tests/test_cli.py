@@ -116,3 +116,72 @@ def test_aggregate_without_results_fails(workspace, capsys):
 def test_unknown_command_is_rejected(workspace):
     with pytest.raises(SystemExit):
         main(["no-such-command"])
+
+
+def _write_result_row(data_dir, game_id, *, forfeit_reason):
+    data_dir.mkdir(exist_ok=True)
+    games_dir = data_dir / "games"
+    games_dir.mkdir(exist_ok=True)
+    row = {
+        "game_id": game_id,
+        "black": {"id": "alpha", "provider": "openai", "display_name": "Alpha", "avg_response_time_ms": 1000},
+        "white": {"id": "beta", "provider": "anthropic", "display_name": "Beta", "avg_response_time_ms": 2000},
+        "winner": "white" if forfeit_reason else "black",
+        "reason": "forfeit" if forfeit_reason else "score",
+        "forfeit_reason": forfeit_reason,
+        "ended_at": "2026-01-01T00:00:00+00:00",
+    }
+    with (data_dir / "results.jsonl").open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(row) + "\n")
+    (games_dir / f"{game_id}.json").write_text("{}", encoding="utf-8")
+
+
+def test_clear_forfeits_removes_only_matching_reason(workspace, capsys):
+    data_dir = workspace / "data"
+    _write_result_row(data_dir, "g-api-error", forfeit_reason="api_error")
+    _write_result_row(data_dir, "g-illegal", forfeit_reason="illegal_move")
+    _write_result_row(data_dir, "g-ok", forfeit_reason=None)
+
+    exit_code = main(["clear-forfeits", *_common_args(workspace)])
+
+    assert exit_code == 0
+    remaining = {json.loads(line)["game_id"] for line in (data_dir / "results.jsonl").read_text(encoding="utf-8").splitlines()}
+    assert remaining == {"g-illegal", "g-ok"}
+    assert not (data_dir / "games" / "g-api-error.json").exists()
+    assert (data_dir / "games" / "g-illegal.json").exists()
+    assert "1局を削除しました" in capsys.readouterr().out
+
+
+def test_clear_forfeits_dry_run_does_not_delete(workspace, capsys):
+    data_dir = workspace / "data"
+    _write_result_row(data_dir, "g-api-error", forfeit_reason="api_error")
+
+    exit_code = main(["clear-forfeits", *_common_args(workspace), "--dry-run"])
+
+    assert exit_code == 0
+    assert (data_dir / "games" / "g-api-error.json").exists()
+    output = capsys.readouterr().out
+    assert "dry-run" in output
+    assert "未削除" in output
+
+
+def test_clear_forfeits_accepts_custom_reason(workspace, capsys):
+    data_dir = workspace / "data"
+    _write_result_row(data_dir, "g-timeout", forfeit_reason="timeout")
+    _write_result_row(data_dir, "g-api-error", forfeit_reason="api_error")
+
+    exit_code = main(["clear-forfeits", *_common_args(workspace), "--reason", "timeout"])
+
+    assert exit_code == 0
+    remaining = {json.loads(line)["game_id"] for line in (data_dir / "results.jsonl").read_text(encoding="utf-8").splitlines()}
+    assert remaining == {"g-api-error"}
+
+
+def test_clear_forfeits_without_matches_reports_none(workspace, capsys):
+    data_dir = workspace / "data"
+    _write_result_row(data_dir, "g-ok", forfeit_reason=None)
+
+    exit_code = main(["clear-forfeits", *_common_args(workspace)])
+
+    assert exit_code == 0
+    assert "ありません" in capsys.readouterr().out

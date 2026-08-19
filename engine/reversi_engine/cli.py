@@ -1,4 +1,4 @@
-"""CLIエントリポイント(`run-league` / `aggregate` の2コマンド)。
+"""CLIエントリポイント(`run-league` / `aggregate` / `clear-forfeits` の3コマンド)。
 
 試合実行と集計実行は別コマンドとする(docs/engine/engine-architecture.md「並列実行」)。
 """
@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import argparse
 import sys
-from typing import Any, Sequence
+from typing import Any, Sequence, get_args
 
 from .aggregate import aggregate
 from .config import (
@@ -20,9 +20,14 @@ from .config import (
     load_league,
     load_models,
 )
-from .game import GameRecord, Participant
+from .game import ForfeitReason, GameRecord, Participant
 from .league import Card, League
 from .storage import DEFAULT_DATA_DIR, Storage
+
+#: `clear-forfeits`が既定で対象にする反則理由。APIキーの課金切れ・レート制限など
+#: 利用者側の不備で反則負けになったケースの再戦を想定する(それ以外の理由は
+#: モデル自身の応答品質を示す情報のため、既定では消さない)。
+DEFAULT_CLEAR_REASONS = ("api_error",)
 
 
 class _PlaceholderAdapter:
@@ -43,6 +48,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _run_league(args)
     if args.command == "aggregate":
         return _run_aggregate(args)
+    if args.command == "clear-forfeits":
+        return _run_clear_forfeits(args)
     parser.error(f"未知のコマンド: {args.command}")  # pragma: no cover
     return 2
 
@@ -148,6 +155,35 @@ def _run_aggregate(args: argparse.Namespace) -> int:
 
 
 # ---------------------------------------------------------------------------
+# clear-forfeits
+# ---------------------------------------------------------------------------
+
+
+def _run_clear_forfeits(args: argparse.Namespace) -> int:
+    storage = Storage(args.data_dir)
+    reasons = set(args.reason)
+    targets = [row for row in storage.read_results() if row.get("forfeit_reason") in reasons]
+    if not targets:
+        print(f"理由={sorted(reasons)}の反則負け対局はありません。")
+        return 0
+
+    prefix = "[dry-run] " if args.dry_run else ""
+    for row in targets:
+        black = (row.get("black") or {}).get("id")
+        white = (row.get("white") or {}).get("id")
+        print(f"  {prefix}{row.get('game_id')}: {black}(黒) vs {white}(白) 理由={row.get('forfeit_reason')}")
+
+    if args.dry_run:
+        print(f"{len(targets)}局が対象です(--dry-runのため未削除)。")
+        return 0
+
+    storage.remove_games(row["game_id"] for row in targets)
+    print(f"{len(targets)}局を削除しました。次回run-league実行時に未実施カードとして再戦されます。")
+    print("ranking.jsonも古いままなので、再戦後にaggregateを再実行してください。")
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # パーサ
 # ---------------------------------------------------------------------------
 
@@ -179,6 +215,24 @@ def _build_parser() -> argparse.ArgumentParser:
 
     aggregate_parser = subparsers.add_parser("aggregate", help="results.jsonlからranking.jsonを生成する")
     _add_common_arguments(aggregate_parser)
+
+    clear_forfeits = subparsers.add_parser(
+        "clear-forfeits",
+        help="指定理由の反則負け対局をresults.jsonl/games/から取り除き、再戦可能にする",
+    )
+    _add_common_arguments(clear_forfeits)
+    clear_forfeits.add_argument(
+        "--reason",
+        nargs="+",
+        default=list(DEFAULT_CLEAR_REASONS),
+        choices=list(get_args(ForfeitReason)),
+        help=f"取り除く反則理由(既定: {' '.join(DEFAULT_CLEAR_REASONS)})",
+    )
+    clear_forfeits.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="削除は行わず対象一覧だけ表示する",
+    )
 
     return parser
 

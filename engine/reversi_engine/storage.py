@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import threading
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 from .game import GameRecord
 
@@ -77,6 +77,22 @@ class Storage:
                         f"{self.results_path} の {number} 行目がJSONとして読めない: {exc}"
                     ) from exc
         return rows
+
+    def remove_games(self, game_ids: Iterable[str]) -> None:
+        """指定した対局を`results.jsonl`と`data/games/`の両方から取り除く。
+
+        削除後にrun-leagueを実行すると、未実施カードとして自動的に再戦される
+        (`league.pending_cards`は`results.jsonl`の残存行だけを実施済みとみなすため)。
+        """
+        ids = set(game_ids)
+        if not ids:
+            return
+        rows = [row for row in self.read_results() if row.get("game_id") not in ids]
+        with self._lock:
+            lines = "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
+            self.results_path.write_text(lines, encoding="utf-8", newline="\n")
+        for game_id in ids:
+            (self.games_dir / f"{game_id}.json").unlink(missing_ok=True)
 
     def read_game(self, game_id: str) -> dict[str, Any]:
         """棋譜JSONを読み込む。"""
