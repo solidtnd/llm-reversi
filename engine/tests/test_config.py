@@ -30,7 +30,7 @@ def test_repository_models_yaml_is_valid():
 def test_repository_league_yaml_matches_rules_defaults():
     config = load_league(DEFAULT_LEAGUE_PATH)
     assert config.timeout_seconds == 60
-    assert config.concurrent_games == 4
+    assert config.concurrent_games == 20
     assert config.points == Points(win=1.0, draw=0.5, loss=0.0)
 
 
