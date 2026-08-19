@@ -1,0 +1,55 @@
+{
+  "game_id": "20260819T143255156578-b776d0",
+  "players": {
+    "black": {
+      "id": "gemini-3.1-pro-preview",
+      "model": "gemini-3.1-pro-preview",
+      "provider": "gemini",
+      "display_name": "Gemini 3.1 Pro Preview",
+      "config": {
+        "thinking_config": {
+          "thinking_budget": 128
+        }
+      }
+    },
+    "white": {
+      "id": "gemini-3.5-flash",
+      "model": "gemini-3.5-flash",
+      "provider": "gemini",
+      "display_name": "Gemini 3.5 Flash",
+      "config": {
+        "thinking_config": {
+          "thinking_budget": 0
+        }
+      }
+    }
+  },
+  "result": {
+    "winner": "white",
+    "reason": "forfeit",
+    "score": null
+  },
+  "moves": [
+    {
+      "turn": 1,
+      "player": "black",
+      "type": "forfeit",
+      "position": null,
+      "board_after": "...........................wb......bw...........................",
+      "legal_moves": [
+        "d3",
+        "c4",
+        "f5",
+        "e6"
+      ],
+      "llm_raw_response": null,
+      "retried": "api_error",
+      "response_time_ms": 250,
+      "forfeit_reason": "api_error",
+      "error_detail": "レート制限に達しました: ClientError(\"429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\\\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_requests_per_model, limit: 25, model: gemini-3.1-pro\\\\nPlease retry in 9.137556315s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_requests_per_model', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.1-pro'}, 'quotaValue': '25'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '9s'}]}}\")",
+      "usage": null
+    }
+  ],
+  "started_at": "2026-08-19T14:32:55.156578+00:00",
+  "ended_at": "2026-08-19T14:32:55.416350+00:00"
+}

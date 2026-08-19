@@ -1,0 +1,1577 @@
+{
+  "game_id": "20260819T143231938066-d28610",
+  "players": {
+    "black": {
+      "id": "claude-haiku-4-5",
+      "model": "claude-haiku-4-5-20251001",
+      "provider": "anthropic",
+      "display_name": "Claude Haiku 4.5",
+      "config": {
+        "max_tokens": 2048
+      }
+    },
+    "white": {
+      "id": "gpt-5.6-sol",
+      "model": "gpt-5.6-sol",
+      "provider": "openai",
+      "display_name": "GPT-5.6 Sol",
+      "config": {
+        "reasoning_effort": "low",
+        "max_completion_tokens": 3072
+      }
+    }
+  },
+  "result": {
+    "winner": "white",
+    "reason": "score",
+    "score": {
+      "black": 2,
+      "white": 61
+    }
+  },
+  "moves": [
+    {
+      "turn": 1,
+      "player": "black",
+      "type": "move",
+      "position": "f5",
+      "board_after": "...........................wb......bbb..........................",
+      "legal_moves": [
+        "d3",
+        "c4",
+        "f5",
+        "e6"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCGdYSo3PRiH4PiiFi62\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"f5\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":410,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1141,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 410,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 2,
+      "player": "white",
+      "type": "move",
+      "position": "d6",
+      "board_after": "...........................wb......wbb.....w....................",
+      "legal_moves": [
+        "f4",
+        "d6",
+        "f6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbd6cm6GtDTS4f9IUFHMmSbvhkcn\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d6\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787149948,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":468,\"prompt_tokens\":257,\"total_tokens\":725,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":447,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 13094,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 257,
+        "completion_tokens": 468
+      }
+    },
+    {
+      "turn": 3,
+      "player": "black",
+      "type": "move",
+      "position": "c4",
+      "board_after": "..........................bbb......wbb.....w....................",
+      "legal_moves": [
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCGebaLpCLxX8b2Lsufw\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"c4\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":413,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1328,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 413,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 4,
+      "player": "white",
+      "type": "move",
+      "position": "b3",
+      "board_after": ".................w........wbb......wbb.....w....................",
+      "legal_moves": [
+        "b3",
+        "d3",
+        "f3",
+        "f4",
+        "g5"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbdLjBfzqPD78p2KyawJb8S5Jr4M\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"b3\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787149963,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1569,\"prompt_tokens\":263,\"total_tokens\":1832,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1536,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 32437,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 263,
+        "completion_tokens": 1569
+      }
+    },
+    {
+      "turn": 5,
+      "player": "black",
+      "type": "move",
+      "position": "c5",
+      "board_after": ".................w........wbb.....bbbb.....w....................",
+      "legal_moves": [
+        "b4",
+        "c5",
+        "c6",
+        "c7",
+        "d7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCGh7jrjEPnrFqbfiWNB\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"c5\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":413,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1750,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 413,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 6,
+      "player": "white",
+      "type": "move",
+      "position": "b4",
+      "board_after": ".................w.......wwbb.....wbbb.....w....................",
+      "legal_moves": [
+        "d3",
+        "b4",
+        "f4",
+        "c6",
+        "e6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbdtqJ8SSEmhhYCPj1euHdWDTgxa\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"b4\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787149997,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1871,\"prompt_tokens\":263,\"total_tokens\":2134,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1832,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 41203,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 263,
+        "completion_tokens": 1871
+      }
+    },
+    {
+      "turn": 7,
+      "player": "black",
+      "type": "move",
+      "position": "d7",
+      "board_after": ".................w.......wwbb.....wbbb.....b.......b............",
+      "legal_moves": [
+        "a2",
+        "a4",
+        "b5",
+        "b6",
+        "c7",
+        "d7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCGkEiPmwDVJHN2Dv8cH\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"d7\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":416,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 938,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 416,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 8,
+      "player": "white",
+      "type": "move",
+      "position": "e3",
+      "board_after": ".................w..w....wwwb.....wbbb.....b.......b............",
+      "legal_moves": [
+        "e3",
+        "f4",
+        "g5",
+        "e6",
+        "e7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbeZQbuXjQJaqtbmj3WwvPWHbVcH\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"e3\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150039,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1625,\"prompt_tokens\":263,\"total_tokens\":1888,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1586,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 38969,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 263,
+        "completion_tokens": 1625
+      }
+    },
+    {
+      "turn": 9,
+      "player": "black",
+      "type": "move",
+      "position": "c3",
+      "board_after": ".................wb.w....wwbb.....wbbb.....b.......b............",
+      "legal_moves": [
+        "a2",
+        "e2",
+        "a3",
+        "c3",
+        "d3",
+        "a4",
+        "b5"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCGoBAf2NURDqwNmaCoR\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"c3\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":419,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 875,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 419,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 10,
+      "player": "white",
+      "type": "move",
+      "position": "d3",
+      "board_after": ".................wwww....wwbb.....wbbb.....b.......b............",
+      "legal_moves": [
+        "c2",
+        "d2",
+        "d3",
+        "f4",
+        "g5",
+        "e6",
+        "e7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbfDsBnkVQ4UNRTxIgjBBa18c7Cj\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d3\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150079,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":910,\"prompt_tokens\":269,\"total_tokens\":1179,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":883,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 20797,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 269,
+        "completion_tokens": 910
+      }
+    },
+    {
+      "turn": 11,
+      "player": "black",
+      "type": "move",
+      "position": "f2",
+      "board_after": ".............b...wwwb....wwbb.....wbbb.....b.......b............",
+      "legal_moves": [
+        "a2",
+        "b2",
+        "c2",
+        "d2",
+        "e2",
+        "f2",
+        "a3",
+        "a4",
+        "b5",
+        "b6"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCGpmb8dzKqmpzZrzcrk\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"f2\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":428,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 765,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 428,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 12,
+      "player": "white",
+      "type": "move",
+      "position": "e7",
+      "board_after": ".............b...wwwb....wwbb.....wbbb.....w.......bw...........",
+      "legal_moves": [
+        "g1",
+        "f3",
+        "f4",
+        "g5",
+        "e6",
+        "f6",
+        "g6",
+        "e7",
+        "d8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbfZK6VrRp9BnMp4ZBaJq1wMSfEc\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"e7\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150101,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1569,\"prompt_tokens\":275,\"total_tokens\":1844,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1537,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 36875,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 275,
+        "completion_tokens": 1569
+      }
+    },
+    {
+      "turn": 13,
+      "player": "black",
+      "type": "move",
+      "position": "b5",
+      "board_after": ".............b...wwwb....wwbb....bbbbb.....w.......bw...........",
+      "legal_moves": [
+        "a2",
+        "b2",
+        "c2",
+        "d2",
+        "a3",
+        "a4",
+        "b5",
+        "b6",
+        "c7",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCGsYfLUgNbcqDvH4rnq\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"b5\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":428,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1063,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 428,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 14,
+      "player": "white",
+      "type": "move",
+      "position": "d8",
+      "board_after": ".............b...wwwb....wwbb....bbbbb.....w.......ww......w....",
+      "legal_moves": [
+        "f3",
+        "f4",
+        "a6",
+        "b6",
+        "c6",
+        "e6",
+        "f6",
+        "g6",
+        "c7",
+        "d8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbgAsDhSYVFlazbVOGpJPZa1teTP\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d8\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150138,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1254,\"prompt_tokens\":278,\"total_tokens\":1532,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1220,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 31718,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 278,
+        "completion_tokens": 1254
+      }
+    },
+    {
+      "turn": 15,
+      "player": "black",
+      "type": "move",
+      "position": "e2",
+      "board_after": "............bb...wwbb....wbbb....bbbbb.....w.......ww......w....",
+      "legal_moves": [
+        "a2",
+        "b2",
+        "c2",
+        "d2",
+        "e2",
+        "a3",
+        "a4",
+        "c7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCGuxtArX9d2DPF7XNzj\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"e2\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":425,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 907,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 425,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 16,
+      "player": "white",
+      "type": "move",
+      "position": "f6",
+      "board_after": "............bb...wwbb....wbwb....bbbwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "d2",
+        "f3",
+        "f4",
+        "b6",
+        "c6",
+        "e6",
+        "f6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbghi4gOvvba1arVT4RNOnqc303u\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"f6\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150171,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1473,\"prompt_tokens\":269,\"total_tokens\":1742,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1440,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 33531,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 269,
+        "completion_tokens": 1473
+      }
+    },
+    {
+      "turn": 17,
+      "player": "black",
+      "type": "move",
+      "position": "a3",
+      "board_after": "............bb..bbbbb....bbwb....bbbwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "a2",
+        "b2",
+        "c2",
+        "a3",
+        "a4",
+        "e6",
+        "f7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCGxVzVJuyGAJwFMY3pr\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"a3\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":422,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 797,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 422,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 18,
+      "player": "white",
+      "type": "move",
+      "position": "e1",
+      "board_after": "....w.......wb..bbbbw....bbww....bbbwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "e1",
+        "g1",
+        "b2",
+        "d2",
+        "a4",
+        "f4",
+        "a5",
+        "g5",
+        "b6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbhF0NTzBXWGq0DIQXUHZqW3DU2T\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"e1\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150205,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":2220,\"prompt_tokens\":275,\"total_tokens\":2495,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":2175,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 44062,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 275,
+        "completion_tokens": 2220
+      }
+    },
+    {
+      "turn": 19,
+      "player": "black",
+      "type": "move",
+      "position": "f3",
+      "board_after": "....w.......wb..bbbbbb...bbwb....bbbwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "f1",
+        "d2",
+        "f3",
+        "f4",
+        "f7",
+        "g7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCH1oexRaN7ky3XQ1YHe\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"f3\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":419,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 750,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 419,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 20,
+      "player": "white",
+      "type": "move",
+      "position": "b2",
+      "board_after": "....w....w..wb..bbwbbb...bbwb....bbbwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "g1",
+        "b2",
+        "d2",
+        "g2",
+        "g3",
+        "a4",
+        "f4",
+        "g4",
+        "a5",
+        "g5",
+        "a6",
+        "b6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbhyXdqvAPRPtaqfOvdgKSXjVkNK\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"b2\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150250,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1284,\"prompt_tokens\":284,\"total_tokens\":1568,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1251,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 29953,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 284,
+        "completion_tokens": 1284
+      }
+    },
+    {
+      "turn": 21,
+      "player": "black",
+      "type": "move",
+      "position": "f1",
+      "board_after": "....wb...w..bb..bbwbbb...bbwb....bbbwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "b1",
+        "c1",
+        "d1",
+        "f1",
+        "c2",
+        "d2",
+        "e6",
+        "f7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCH455xUgYFnQArnNrdS\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\":\\\"f1\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":425,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 875,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 425,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 22,
+      "player": "white",
+      "type": "move",
+      "position": "g3",
+      "board_after": "....wb...w..bw..bbwwwww..bbwb....bbbwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "g1",
+        "d2",
+        "g3",
+        "a4",
+        "f4",
+        "a5",
+        "g5",
+        "b6",
+        "c6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbiT6MZNoewIcjpfcvqSxPA2O7U5\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"g3\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150281,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":2087,\"prompt_tokens\":275,\"total_tokens\":2362,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":2048,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 45875,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 275,
+        "completion_tokens": 2087
+      }
+    },
+    {
+      "turn": 23,
+      "player": "black",
+      "type": "move",
+      "position": "h3",
+      "board_after": "....wb...w..bw..bbbbbbbb.bbwb....bbbwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "b1",
+        "c1",
+        "d1",
+        "g1",
+        "c2",
+        "d2",
+        "g2",
+        "h3",
+        "f4",
+        "g4",
+        "e6",
+        "f7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCH7WyXZmf7kvL3gb2dL\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"h3\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":437,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1000,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 437,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 24,
+      "player": "white",
+      "type": "move",
+      "position": "a5",
+      "board_after": "....wb...w..bw..bbbbbbbb.bbwb...wwwwwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "g1",
+        "d2",
+        "a4",
+        "f4",
+        "h4",
+        "a5",
+        "g5",
+        "b6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbjEpTpsQnnFNLaNo2LZfX7TjnRm\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a5\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150328,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":979,\"prompt_tokens\":273,\"total_tokens\":1252,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":952,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 21016,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 273,
+        "completion_tokens": 979
+      }
+    },
+    {
+      "turn": 25,
+      "player": "black",
+      "type": "move",
+      "position": "g1",
+      "board_after": "....wbb..w..bb..bbbbbbbb.bbwb...wwwwwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "c1",
+        "d1",
+        "g1",
+        "g2",
+        "a6",
+        "b6",
+        "c6",
+        "e6",
+        "f7",
+        "g7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCH99RnomxbjzLa9gsD3\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g1\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":437,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1109,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 437,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 26,
+      "player": "white",
+      "type": "move",
+      "position": "h1",
+      "board_after": "....wwww.w..bb..bbbbbbbb.bbwb...wwwwwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "h1",
+        "a2",
+        "c2",
+        "d2",
+        "g2",
+        "a4",
+        "f4",
+        "h4",
+        "g5"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbja91w31Kt2PrUkuvge0mS5i15V\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"h1\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150350,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":112,\"prompt_tokens\":276,\"total_tokens\":388,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":91,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 3188,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 276,
+        "completion_tokens": 112
+      }
+    },
+    {
+      "turn": 27,
+      "player": "black",
+      "type": "move",
+      "position": "b1",
+      "board_after": ".b..wwww.b..bb..bbbbbbbb.bbwb...wwwwwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "a1",
+        "b1",
+        "c1",
+        "a6",
+        "b6",
+        "c6",
+        "e6",
+        "f7",
+        "g7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCH9TN3HcjET2YAcMdz1\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"b1\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":428,\"output_tokens\":12,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 953,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 428,
+        "completion_tokens": 12
+      }
+    },
+    {
+      "turn": 28,
+      "player": "white",
+      "type": "move",
+      "position": "a1",
+      "board_after": "wb..wwww.w..bb..bbwbbbbb.bbwb...wwwwwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "a1",
+        "a2",
+        "c2",
+        "d2",
+        "g2",
+        "a4",
+        "f4",
+        "h4",
+        "g5"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbjehOfBsnxslonCTvwDCV8mTDyy\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a1\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150354,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":130,\"prompt_tokens\":277,\"total_tokens\":407,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":109,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 4719,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 277,
+        "completion_tokens": 130
+      }
+    },
+    {
+      "turn": 29,
+      "player": "black",
+      "type": "move",
+      "position": "c1",
+      "board_after": "wbb.wwww.b..bb..bbwbbbbb.bbwb...wwwwwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "c1",
+        "c2",
+        "d2",
+        "a6",
+        "b6",
+        "c6",
+        "e6",
+        "f7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCH9sjzptGqKdm2UcBdG\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"c1\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":425,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1140,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 425,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 30,
+      "player": "white",
+      "type": "move",
+      "position": "d1",
+      "board_after": "wwwwwwww.b..bb..bbwbbbbb.bbwb...wwwwwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "d1",
+        "a2",
+        "d2",
+        "g2",
+        "a4",
+        "f4",
+        "h4",
+        "g5"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbjkvuyQlOmb3i0QnKW6P9ulx47b\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d1\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150360,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":250,\"prompt_tokens\":274,\"total_tokens\":524,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":229,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 10859,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 274,
+        "completion_tokens": 250
+      }
+    },
+    {
+      "turn": 31,
+      "player": "black",
+      "type": "move",
+      "position": "c2",
+      "board_after": "wwwwwwww.bb.bb..bbbbbbbb.bbwb...wwwwwb.....w.w.....ww......w....",
+      "legal_moves": [
+        "c2",
+        "d2",
+        "a6",
+        "b6",
+        "c6",
+        "e6",
+        "f7",
+        "g7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHAm5vRnd2ehwbjYwpS\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"c2\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":425,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 860,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 425,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 32,
+      "player": "white",
+      "type": "move",
+      "position": "g6",
+      "board_after": "wwwwwwww.bw.bb..bbbwbbbb.bbww...wwwwww.....w.ww....ww......w....",
+      "legal_moves": [
+        "a2",
+        "d2",
+        "g2",
+        "a4",
+        "f4",
+        "g4",
+        "h4",
+        "g5",
+        "g6"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbjwwqSJnX0PlMNBgfM8PtdxrEng\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"g6\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150372,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1288,\"prompt_tokens\":277,\"total_tokens\":1565,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1255,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 31156,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 277,
+        "completion_tokens": 1288
+      }
+    },
+    {
+      "turn": 33,
+      "player": "black",
+      "type": "move",
+      "position": "f4",
+      "board_after": "wwwwwwww.bw.bb..bbbwbbbb.bbbbb..wwwwww.....w.ww....ww......w....",
+      "legal_moves": [
+        "d2",
+        "f4",
+        "a6",
+        "b6",
+        "c6",
+        "e6",
+        "g7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHD815KCkfmQidjg2UZ\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"f4\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":422,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 813,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 422,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 34,
+      "player": "white",
+      "type": "move",
+      "position": "a2",
+      "board_after": "wwwwwwwwwww.bb..bwbwbbbb.bwbbb..wwwwww.....w.ww....ww......w....",
+      "legal_moves": [
+        "a2",
+        "d2",
+        "g2",
+        "h2",
+        "a4",
+        "g4",
+        "h4"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbkSBQjGf3K9GoKlRvM93jxPwY8a\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a2\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150404,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1285,\"prompt_tokens\":271,\"total_tokens\":1556,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1251,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 29062,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 271,
+        "completion_tokens": 1285
+      }
+    },
+    {
+      "turn": 35,
+      "player": "black",
+      "type": "move",
+      "position": "f8",
+      "board_after": "wwwwwwwwwww.bb..bwbwbbbb.bwbbb..wwbwww.....b.ww....wb......w.b..",
+      "legal_moves": [
+        "d2",
+        "a6",
+        "b6",
+        "c6",
+        "e6",
+        "c7",
+        "f7",
+        "g7",
+        "h7",
+        "f8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHFMFrLeKGQiuyjspDe\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"f8\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":428,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1203,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 428,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 36,
+      "player": "white",
+      "type": "move",
+      "position": "a4",
+      "board_after": "wwwwwwwwwww.bb..wwbwbbbbwwwbbb..wwbwww.....b.ww....wb......w.b..",
+      "legal_moves": [
+        "d2",
+        "g2",
+        "h2",
+        "a4",
+        "g4",
+        "h4",
+        "b6",
+        "c6",
+        "c7",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbkwBeO9Qo2rbdvtenWwi6ejrmKU\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a4\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150434,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":963,\"prompt_tokens\":280,\"total_tokens\":1243,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":936,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 22031,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 280,
+        "completion_tokens": 963
+      }
+    },
+    {
+      "turn": 37,
+      "player": "black",
+      "type": "move",
+      "position": "g5",
+      "board_after": "wwwwwwwwwww.bb..wwbwbbbbwwwbbb..wwbbbbb....b.bw....wb......w.b..",
+      "legal_moves": [
+        "d2",
+        "g5",
+        "a6",
+        "c6",
+        "e6",
+        "c7",
+        "f7",
+        "g7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHH35WjsAUTRXgcngSg\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g5\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":425,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 829,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 425,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 38,
+      "player": "white",
+      "type": "move",
+      "position": "d2",
+      "board_after": "wwwwwwwwwwwwbb..wwwwbbbbwwwbbb..wwbbbbb....b.bw....wb......w.b..",
+      "legal_moves": [
+        "d2",
+        "g4",
+        "h4",
+        "h5",
+        "b6",
+        "c6",
+        "e6",
+        "f7",
+        "g7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEblJCHpkvhQr9rTYnWs0rO5jQmlb\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"d2\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150457,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1984,\"prompt_tokens\":277,\"total_tokens\":2261,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1945,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 47250,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 277,
+        "completion_tokens": 1984
+      }
+    },
+    {
+      "turn": 39,
+      "player": "black",
+      "type": "move",
+      "position": "h6",
+      "board_after": "wwwwwwwwwwwwbb..wwwwbbbbwwwbbb..wwbbbbb....b.bbb...wb......w.b..",
+      "legal_moves": [
+        "a6",
+        "h6",
+        "c7",
+        "g7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHLajc2N1u7ogQ8fZrH\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"h6\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":413,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 906,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 413,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 40,
+      "player": "white",
+      "type": "move",
+      "position": "c6",
+      "board_after": "wwwwwwwwwwwwbb..wwwwbbbbwwwbbb..wwwbbbb...wb.bbb...wb......w.b..",
+      "legal_moves": [
+        "g2",
+        "g4",
+        "h4",
+        "h5",
+        "b6",
+        "c6",
+        "e6",
+        "f7",
+        "g7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbm5isUzKDndiNJNI3RyUr5rJ4Hr\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"c6\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150505,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1087,\"prompt_tokens\":281,\"total_tokens\":1368,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1054,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 22734,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 281,
+        "completion_tokens": 1087
+      }
+    },
+    {
+      "turn": 41,
+      "player": "black",
+      "type": "move",
+      "position": "b7",
+      "board_after": "wwwwwwwwwwwwbb..wwwwbbbbwwwbbb..wwwbbbb...bb.bbb.b.wb......w.b..",
+      "legal_moves": [
+        "a6",
+        "b6",
+        "b7",
+        "c7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHNLBogMXkNnNc3iemu\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"b7\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":410,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1063,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 410,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 42,
+      "player": "white",
+      "type": "move",
+      "position": "g4",
+      "board_after": "wwwwwwwwwwwwwb..wwwwbwbbwwwwwww.wwwbbbb...bb.bbb.b.wb......w.b..",
+      "legal_moves": [
+        "g2",
+        "g4",
+        "h4",
+        "h5",
+        "e6",
+        "c7",
+        "f7",
+        "g7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbmTsqFcKxEUxbSe56qTMWd5zPz7\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"g4\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150529,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1785,\"prompt_tokens\":278,\"total_tokens\":2063,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1745,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 45937,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 278,
+        "completion_tokens": 1785
+      }
+    },
+    {
+      "turn": 43,
+      "player": "black",
+      "type": "move",
+      "position": "e8",
+      "board_after": "wwwwwwwwwwwwwb..wwwwbwbbwwwwwww.wwwbbbb...bb.bbb.b.bb......wbb..",
+      "legal_moves": [
+        "g2",
+        "b6",
+        "c7",
+        "e8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHRnhLDwjj2RomZaLqX\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"e8\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":410,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 969,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 410,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 44,
+      "player": "white",
+      "type": "move",
+      "position": "a8",
+      "board_after": "wwwwwwwwwwwwwb..wwwwbwbbwwwwwww.wwwwbbb...wb.bbb.w.bb...w..wbb..",
+      "legal_moves": [
+        "g2",
+        "h2",
+        "h4",
+        "h5",
+        "e6",
+        "c7",
+        "f7",
+        "g7",
+        "h7",
+        "a8",
+        "g8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbnE78bJ2ut2pI7bmlCYmPNzqhnk\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a8\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150576,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":509,\"prompt_tokens\":284,\"total_tokens\":793,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":488,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 12812,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 284,
+        "completion_tokens": 509
+      }
+    },
+    {
+      "turn": 45,
+      "player": "black",
+      "type": "move",
+      "position": "c8",
+      "board_after": "wwwwwwwwwwwwwb..wwwwbwbbwwwwwww.wwwwbbb...wb.bbb.w.bb...w.bbbb..",
+      "legal_moves": [
+        "b6",
+        "c8"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHSoWUQY563Q9LPWyea\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"c8\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":404,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 829,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 404,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 46,
+      "player": "white",
+      "type": "move",
+      "position": "h5",
+      "board_after": "wwwwwwwwwwwwwb..wwwwbwbbwwwwwww.wwwwwwww..wb.bbb.w.bb...w.bbbb..",
+      "legal_moves": [
+        "g2",
+        "h2",
+        "h4",
+        "h5",
+        "e6",
+        "c7",
+        "f7",
+        "g7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbnRm8LkBiEntkw4eTqotFgK6SBP\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"h5\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150589,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1128,\"prompt_tokens\":278,\"total_tokens\":1406,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1095,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 21609,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 278,
+        "completion_tokens": 1128
+      }
+    },
+    {
+      "turn": 47,
+      "player": "black",
+      "type": "move",
+      "position": "h4",
+      "board_after": "wwwwwwwwwwwwwb..wwwwbwbbwwwwwwwbwwwwwwbb..wb.bbb.w.bb...w.bbbb..",
+      "legal_moves": [
+        "h4",
+        "a6",
+        "b6",
+        "e6"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHUTU2K3swiH4yEcoFm\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"h4\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":410,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 922,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 410,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 48,
+      "player": "white",
+      "type": "move",
+      "position": "h2",
+      "board_after": "wwwwwwwwwwwwwb.wwwwwbwwbwwwwwwwbwwwwwwbb..wb.bbb.w.bb...w.bbbb..",
+      "legal_moves": [
+        "g2",
+        "h2",
+        "e6",
+        "c7",
+        "f7",
+        "g7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbnokhtK405m5J4PAFXpAQKDc379\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"h2\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150612,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":766,\"prompt_tokens\":274,\"total_tokens\":1040,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":739,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 18906,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 274,
+        "completion_tokens": 766
+      }
+    },
+    {
+      "turn": 49,
+      "player": "black",
+      "type": "move",
+      "position": "g2",
+      "board_after": "wwwwwwwwwwwwwbbwwwwwbwbbwwwwwwbbwwwwwwbb..wb.bbb.w.bb...w.bbbb..",
+      "legal_moves": [
+        "g2",
+        "a6",
+        "b6",
+        "e6"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHVvL5VNmt6u8UktYVa\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"g2\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":410,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 781,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 410,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 50,
+      "player": "white",
+      "type": "move",
+      "position": "g7",
+      "board_after": "wwwwwwwwwwwwwbwwwwwwbwwbwwwwwwwbwwwwwwwb..wb.wwb.w.bb.w.w.bbbb..",
+      "legal_moves": [
+        "e6",
+        "c7",
+        "f7",
+        "g7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbo8GO3EjT1riLg7glW43z7h401Y\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"g7\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150632,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":462,\"prompt_tokens\":269,\"total_tokens\":731,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":441,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 10766,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 269,
+        "completion_tokens": 462
+      }
+    },
+    {
+      "turn": 51,
+      "player": "black",
+      "type": "move",
+      "position": "a6",
+      "board_after": "wwwwwwwwwwwwwbwwwwwwbwwbwwwwwwwbwwwwwwwbb.wb.wwb.b.bb.w.w.bbbb..",
+      "legal_moves": [
+        "a6",
+        "b6",
+        "e6",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHWmYWk7Jf5CjRGTQMB\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"a6\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":410,\"output_tokens\":10,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 844,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 410,
+        "completion_tokens": 10
+      }
+    },
+    {
+      "turn": 52,
+      "player": "white",
+      "type": "move",
+      "position": "h7",
+      "board_after": "wwwwwwwwwwwwwbwwwwwwbwwwwwwwwwwwwwwwwwwwb.wb.www.b.bb.www.bbbb..",
+      "legal_moves": [
+        "e6",
+        "a7",
+        "c7",
+        "h7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEboJfiQprMipfszNxPuSQq1d5Anz\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"h7\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150643,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":486,\"prompt_tokens\":266,\"total_tokens\":752,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":465,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 10187,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 266,
+        "completion_tokens": 486
+      }
+    },
+    {
+      "turn": 53,
+      "player": "black",
+      "type": "move",
+      "position": "e6",
+      "board_after": "wwwwwwwwwwwwwbwwwwwwbwwwwwwwbwwwwwwwbwwwb.wbbwww.b.bb.www.bbbb..",
+      "legal_moves": [
+        "b6",
+        "e6",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHXbeyc54SZ73n1srei\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"e6\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":407,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 1172,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 407,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 54,
+      "player": "white",
+      "type": "move",
+      "position": "c7",
+      "board_after": "wwwwwwwwwwwwwbwwwwwwbwwwwwwwbwwwwwwwwwwwb.wwbwww.bwbb.www.bbbb..",
+      "legal_moves": [
+        "a7",
+        "c7",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEboVNr5V2no0AJCqPdrJ7WyOipKf\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"c7\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150655,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":1523,\"prompt_tokens\":264,\"total_tokens\":1787,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":1490,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 31422,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 264,
+        "completion_tokens": 1523
+      }
+    },
+    {
+      "turn": 55,
+      "player": "black",
+      "type": "move",
+      "position": "b6",
+      "board_after": "wwwwwwwwwwwwwbwwwwwwbwwwwwwbbwwwwwbwwwwwbbbbbwww.bbbb.www.bbbb..",
+      "legal_moves": [
+        "b6",
+        "f7"
+      ],
+      "llm_raw_response": "{\"id\":\"msg_011CeCHZzHZhWYSQW73ESG8A\",\"container\":null,\"content\":[{\"citations\":null,\"text\":\"{\\\"position\\\": \\\"b6\\\"}\",\"type\":\"text\"}],\"model\":\"claude-haiku-4-5-20251001\",\"role\":\"assistant\",\"stop_details\":null,\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"inference_geo\":\"not_available\",\"input_tokens\":404,\"output_tokens\":11,\"output_tokens_details\":null,\"server_tool_use\":null,\"service_tier\":\"standard\"}}",
+      "retried": "none",
+      "response_time_ms": 922,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 404,
+        "completion_tokens": 11
+      }
+    },
+    {
+      "turn": 56,
+      "player": "white",
+      "type": "move",
+      "position": "a7",
+      "board_after": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwbwwwwwwwwwwwwwbbbwwwwbbbb.www.bbbb..",
+      "legal_moves": [
+        "a7",
+        "f7",
+        "b8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbp118MC9tUSHHT0MVORNem5Keru\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"a7\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150687,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":678,\"prompt_tokens\":264,\"total_tokens\":942,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":651,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 14953,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 264,
+        "completion_tokens": 678
+      }
+    },
+    {
+      "turn": 57,
+      "player": "black",
+      "type": "pass",
+      "position": null,
+      "board_after": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwbwwwwwwwwwwwwwbbbwwwwbbbb.www.bbbb..",
+      "legal_moves": [],
+      "llm_raw_response": null,
+      "retried": "none",
+      "response_time_ms": 0,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": null
+    },
+    {
+      "turn": 58,
+      "player": "white",
+      "type": "move",
+      "position": "b8",
+      "board_after": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwbwwwwwwwwwwwwwbwbwwwwwwbb.wwwwbbbb..",
+      "legal_moves": [
+        "f7",
+        "b8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbpGsC46K7aLjhl95IZ9xRmoT019\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"b8\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150702,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":898,\"prompt_tokens\":261,\"total_tokens\":1159,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":871,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 18750,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 261,
+        "completion_tokens": 898
+      }
+    },
+    {
+      "turn": 59,
+      "player": "black",
+      "type": "pass",
+      "position": null,
+      "board_after": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwbwwwwwwwwwwwwwbwbwwwwwwbb.wwwwbbbb..",
+      "legal_moves": [],
+      "llm_raw_response": null,
+      "retried": "none",
+      "response_time_ms": 0,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": null
+    },
+    {
+      "turn": 60,
+      "player": "white",
+      "type": "move",
+      "position": "f7",
+      "board_after": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwbwwwwwwwwwwwwwbwwwwwwwwwwwwwwwbbbb..",
+      "legal_moves": [
+        "f7",
+        "g8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbpZbHQP2vYshm1KyTWMItgGIuK9\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"f7\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150721,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":939,\"prompt_tokens\":261,\"total_tokens\":1200,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":912,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 19594,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 261,
+        "completion_tokens": 939
+      }
+    },
+    {
+      "turn": 61,
+      "player": "black",
+      "type": "pass",
+      "position": null,
+      "board_after": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwbwwwwwwwwwwwwwbwwwwwwwwwwwwwwwbbbb..",
+      "legal_moves": [],
+      "llm_raw_response": null,
+      "retried": "none",
+      "response_time_ms": 0,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": null
+    },
+    {
+      "turn": 62,
+      "player": "white",
+      "type": "move",
+      "position": "g8",
+      "board_after": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwbwwwwwwwwwwwwwbwwwwwwwwwwwwwwwwwwww.",
+      "legal_moves": [
+        "g8"
+      ],
+      "llm_raw_response": "{\"id\":\"chatcmpl-EEbpt6ocEPMoR19dSvNJR1NHaO3Iw\",\"choices\":[{\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null,\"message\":{\"content\":\"{\\\"position\\\":\\\"g8\\\"}\",\"refusal\":null,\"role\":\"assistant\",\"annotations\":[],\"audio\":null,\"function_call\":null,\"tool_calls\":null}}],\"created\":1787150741,\"model\":\"gpt-5.6-sol\",\"object\":\"chat.completion\",\"moderation\":null,\"service_tier\":\"default\",\"system_fingerprint\":null,\"usage\":{\"completion_tokens\":15,\"prompt_tokens\":258,\"total_tokens\":273,\"completion_tokens_details\":{\"accepted_prediction_tokens\":0,\"audio_tokens\":0,\"reasoning_tokens\":0,\"rejected_prediction_tokens\":0},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cache_write_tokens\":0,\"cached_tokens\":0}}}",
+      "retried": "none",
+      "response_time_ms": 2422,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": {
+        "prompt_tokens": 258,
+        "completion_tokens": 15
+      }
+    },
+    {
+      "turn": 63,
+      "player": "black",
+      "type": "pass",
+      "position": null,
+      "board_after": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwbwwwwwwwwwwwwwbwwwwwwwwwwwwwwwwwwww.",
+      "legal_moves": [],
+      "llm_raw_response": null,
+      "retried": "none",
+      "response_time_ms": 0,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": null
+    },
+    {
+      "turn": 64,
+      "player": "white",
+      "type": "pass",
+      "position": null,
+      "board_after": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwbwwwwwwwwwwwwwbwwwwwwwwwwwwwwwwwwww.",
+      "legal_moves": [],
+      "llm_raw_response": null,
+      "retried": "none",
+      "response_time_ms": 0,
+      "forfeit_reason": null,
+      "error_detail": null,
+      "usage": null
+    }
+  ],
+  "started_at": "2026-08-19T14:32:31.938066+00:00",
+  "ended_at": "2026-08-19T14:45:47.344997+00:00"
+}
