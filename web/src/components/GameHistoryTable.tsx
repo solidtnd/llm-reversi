@@ -1,7 +1,7 @@
 /** モデル詳細内の対局履歴。相手モデル・勝敗で絞り込める。 */
 
 import { Link } from "react-router-dom";
-import { dateTime, shortGameId } from "../lib/format";
+import { dateTime, shortGameId, stoneDiff } from "../lib/format";
 import {
   FORFEIT_REASON_LABELS,
   type GameSummary,
@@ -61,10 +61,9 @@ export function GameHistoryTable({ games, modelId, modelsById }: Props) {
             const opponentId = isBlack ? game.white : game.black;
             const opponent = modelsById.get(opponentId);
             const outcome = outcomeOf(game, modelId);
-            const decided =
-              game.reason === "forfeit"
-                ? `反則負け(${game.forfeit_reason ? FORFEIT_REASON_LABELS[game.forfeit_reason] : "不明"})`
-                : "石数";
+            // 石数決着は「僅差か圧倒的か」が分かるよう、そのモデルから見た石数と差を出す
+            const mine = game.score ? (isBlack ? game.score.black : game.score.white) : null;
+            const theirs = game.score ? (isBlack ? game.score.white : game.score.black) : null;
             return (
               <tr key={game.game_id}>
                 <td className="mono">{dateTime(game.ended_at)}</td>
@@ -75,7 +74,18 @@ export function GameHistoryTable({ games, modelId, modelsById }: Props) {
                   </Link>
                 </td>
                 <td>{OUTCOME_LABELS[outcome]}</td>
-                <td>{decided}</td>
+                <td>
+                  {game.reason === "forfeit" ? (
+                    `反則負け(${game.forfeit_reason ? FORFEIT_REASON_LABELS[game.forfeit_reason] : "不明"})`
+                  ) : mine !== null && theirs !== null ? (
+                    <span className="mono">
+                      石数 {mine} - {theirs}{" "}
+                      <span className="muted">({stoneDiff(mine - theirs)})</span>
+                    </span>
+                  ) : (
+                    "石数"
+                  )}
+                </td>
                 <td>
                   <Link to={`/games/${encodeURIComponent(game.game_id)}`} className="mono">
                     {shortGameId(game.game_id)}

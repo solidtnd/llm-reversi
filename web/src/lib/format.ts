@@ -15,6 +15,29 @@ export function duration(ms: number): string {
   return `${(ms / 1000).toFixed(1)}秒`;
 }
 
+/** トークン数などの整数に桁区切りを入れる。 */
+export function count(value: number): string {
+  return value.toLocaleString("en-US");
+}
+
+/**
+ * USD建ての金額。桁が小さい概算値(1局分など)でも0にならないよう、
+ * 大きさに応じて小数点以下の桁数を変える。
+ */
+export function usd(value: number): string {
+  if (value >= 1) return `$${value.toFixed(2)}`;
+  if (value >= 0.01) return `$${value.toFixed(3)}`;
+  return `$${value.toFixed(4)}`;
+}
+
+/** 石数差(±付き)。0は「±0」と表示する。 */
+export function stoneDiff(value: number): string {
+  const rounded = Number(value.toFixed(2));
+  if (rounded > 0) return `+${rounded}`;
+  if (rounded < 0) return `${rounded}`;
+  return "±0";
+}
+
 /** ISO8601をローカル時刻の「2026-01-10 12:34」形式にする。 */
 export function dateTime(iso: string): string {
   const date = new Date(iso);

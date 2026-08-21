@@ -73,6 +73,12 @@ export interface ModelStats {
   forfeit_loss_rate: number;
   forfeit_reasons: Record<ForfeitReason, number>;
   avg_response_time_ms: number;
+  /** 全対局の入力トークン合計(概算。リトライ分は含まない) */
+  prompt_tokens: number;
+  /** 全対局の出力トークン合計(概算。リトライ分は含まない) */
+  completion_tokens: number;
+  /** 石数決着局における石数差(自分 - 相手)の平均。石数決着局が0局なら0 */
+  avg_stone_diff: number;
   points: number;
   bt_strength: number;
 }
@@ -95,6 +101,8 @@ export interface GameSummary {
   winner: Winner;
   reason: ResultReason;
   forfeit_reason: ForfeitReason | null;
+  /** 石数決着局のみ石数が入る(反則決着局はnull) */
+  score: Record<Color, number> | null;
   ended_at: string;
 }
 

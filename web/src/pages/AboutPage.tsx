@@ -7,6 +7,8 @@
  * このページ自身が随時最新化する前提で独立して書く。
  */
 
+import { ESTIMATE_CAVEAT, PRICING_AS_OF, PRICING_URLS } from "../lib/pricing";
+
 export function AboutPage() {
   return (
     <>
@@ -65,6 +67,12 @@ export function AboutPage() {
               全対局結果から相手の強さを考慮して推定した相対的な強さ。ELOのような逐次更新と異なり全対局を一括で最尤推定するため、対局を処理する順序に結果が依存しない。全モデルの値の合計が1になるよう正規化してあり、値そのものが「相対的な強さの割合」を表す。
             </span>
           </div>
+          <div className="rows__row">
+            <span className="rows__key">平均石数差</span>
+            <span className="rows__value">
+              石数決着局における「自分の石 - 相手の石」の平均。勝点方式とBradley-Terry強さ推定はどちらも1局を勝ち · 負け · 引き分けの3値に落として集計するため順位がほとんど入れ替わらない。「どの程度の差で勝ったか」という別の軸として併記している。反則負けは石数を持たないため母数から外れる(この軸には反則負けの多さが現れない)ので、反則負け率と併せて読むこと。
+            </span>
+          </div>
         </div>
       </section>
 
@@ -87,6 +95,27 @@ export function AboutPage() {
             <span className="rows__key">平均応答時間</span>
             <span className="rows__value">1手あたりの応答時間の平均(パスは除く)。参考情報であり安定性の指標としては扱わない。</span>
           </div>
+          <div className="rows__row">
+            <span className="rows__key">使用トークン · API利用料</span>
+            <span className="rows__value">
+              APIレスポンスに含まれるトークン数(入力 · 出力)の合計と、モデル別の単価を掛けた
+              <strong>概算</strong>
+              の利用料。単価は{PRICING_AS_OF}時点の各社の公開価格をこのサイトが持っており、対局データ自体には金額を記録していない。{ESTIMATE_CAVEAT}
+              最新の単価は各社の公式ページ(
+              <a href={PRICING_URLS.openai} target="_blank" rel="noreferrer">
+                OpenAI
+              </a>
+              {" · "}
+              <a href={PRICING_URLS.anthropic} target="_blank" rel="noreferrer">
+                Anthropic
+              </a>
+              {" · "}
+              <a href={PRICING_URLS.gemini} target="_blank" rel="noreferrer">
+                Gemini
+              </a>
+              )を参照。
+            </span>
+          </div>
         </div>
       </section>
 
@@ -95,7 +124,7 @@ export function AboutPage() {
           <h2>対局詳細で確認できること</h2>
         </div>
         <p className="lede">
-          棋譜リプレイに加えて、手ごとにLLMの生応答 · 反則理由 · トークン数 · 応答時間を確認できる。指標はこれらの生ログを集計したものなので、数値の根拠を個々の対局まで遡って確認できる。
+          棋譜リプレイに加えて、手ごとにLLMの生応答 · 反則理由 · トークン数 · 応答時間を確認できる。指標はこれらの生ログを集計したものなので、数値の根拠を個々の対局まで遡って確認できる。開いた直後は最終盤面(初期配置は全対局で同一のため)を表示し、矢印キー · スライダー · 再生ボタンで1手ずつ辿れる。
         </p>
       </section>
     </>

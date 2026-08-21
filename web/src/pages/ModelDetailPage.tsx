@@ -10,7 +10,14 @@ import {
 } from "../components/GameHistoryTable";
 import { ProviderBadge } from "../components/ProviderBadge";
 import { useRanking } from "../lib/api";
-import { duration, percent, points as formatPoints } from "../lib/format";
+import { count, duration, percent, points as formatPoints, stoneDiff, usd } from "../lib/format";
+import {
+  ESTIMATE_CAVEAT,
+  PRICING_AS_OF,
+  PRICING_URLS,
+  estimateUsd,
+  priceOf,
+} from "../lib/pricing";
 import {
   FORFEIT_REASONS,
   FORFEIT_REASON_LABELS,
@@ -42,6 +49,7 @@ export function ModelDetailPage() {
   }, [data, modelId]);
 
   const opponents = useMemo(() => countOpponents(allGames, modelId), [allGames, modelId]);
+  const scoreDecidedGames = allGames.filter((game) => game.reason === "score").length;
 
   const visibleGames = allGames.filter((game) => {
     const other = game.black === modelId ? game.white : game.black;
@@ -105,6 +113,13 @@ export function ModelDetailPage() {
             <div className="metric__sub">全モデル合計が1になる正規化値</div>
           </div>
           <div className="metric">
+            <div className="metric__label">平均石数差</div>
+            <div className="metric__value">{stoneDiff(model.avg_stone_diff)}</div>
+            <div className="metric__sub">
+              石数決着{scoreDecidedGames}局の平均(自分 - 相手)
+            </div>
+          </div>
+          <div className="metric">
             <div className="metric__label">平均応答時間</div>
             <div className="metric__value">{duration(model.avg_response_time_ms)}</div>
             <div className="metric__sub">1手あたり(パスを除く)</div>
@@ -124,6 +139,8 @@ export function ModelDetailPage() {
           </div>
         </div>
       </section>
+
+      <ApiCostSection model={model} />
 
       <section className="section">
         <div className="section__head">
@@ -179,6 +196,85 @@ export function ModelDetailPage() {
         <GameHistoryTable games={visibleGames} modelId={modelId} modelsById={modelsById} />
       </section>
     </>
+  );
+}
+
+/**
+ * このモデルに使ったトークン数と、そこから逆算した概算のAPI利用料。
+ *
+ * 金額は`data/`に持たせず、Web側の単価表(lib/pricing.ts)と掛けて出す。単価は
+ * 変動するため、調査時点(`PRICING_AS_OF`)と公式ページへのリンクを必ず併記する。
+ */
+function ApiCostSection({ model }: { model: ModelStats }) {
+  const price = priceOf(model.id);
+  const total = model.prompt_tokens + model.completion_tokens;
+  const cost = estimateUsd(model.id, model.prompt_tokens, model.completion_tokens);
+  const officialUrl = PRICING_URLS[model.provider];
+
+  return (
+    <section className="section">
+      <div className="section__head">
+        <h2>API利用料(概算)</h2>
+        <span className="section__note">{model.games}局分の合計</span>
+      </div>
+      <div className="rows card" style={{ padding: "4px 16px" }}>
+        <div className="rows__row">
+          <span className="rows__key">使用トークン</span>
+          <span className="rows__value mono">
+            入力 {count(model.prompt_tokens)} / 出力 {count(model.completion_tokens)}
+            (合計 {count(total)})
+          </span>
+        </div>
+        <div className="rows__row">
+          <span className="rows__key">単価</span>
+          <span className="rows__value">
+            {price ? (
+              <span className="mono">
+                入力 ${price.input.toFixed(2)} / 出力 ${price.output.toFixed(2)}
+                (100万トークンあたり)
+              </span>
+            ) : (
+              <span className="muted">単価表に未登録のモデル</span>
+            )}
+            <br />
+            <span className="muted" style={{ fontSize: 12 }}>
+              {PRICING_AS_OF}時点の公開価格。最新の単価は
+              {officialUrl ? (
+                <>
+                  {" "}
+                  <a href={officialUrl} target="_blank" rel="noreferrer">
+                    公式の料金ページ
+                  </a>
+                  {" "}
+                </>
+              ) : (
+                "各プロバイダの公式料金ページ"
+              )}
+              を参照。
+            </span>
+          </span>
+        </div>
+        <div className="rows__row">
+          <span className="rows__key">概算利用料</span>
+          <span className="rows__value">
+            {cost === null ? (
+              <span className="muted">—(単価不明)</span>
+            ) : (
+              <span className="mono">
+                {usd(cost)}
+                {model.games > 0 ? ` (1局あたり ${usd(cost / model.games)})` : ""}
+              </span>
+            )}
+          </span>
+        </div>
+        <div className="rows__row">
+          <span className="rows__key">注意</span>
+          <span className="rows__value muted" style={{ fontSize: 12 }}>
+            {ESTIMATE_CAVEAT}
+          </span>
+        </div>
+      </div>
+    </section>
   );
 }
 

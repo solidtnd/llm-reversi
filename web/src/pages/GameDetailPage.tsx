@@ -8,7 +8,8 @@ import { ProviderBadge } from "../components/ProviderBadge";
 import { ReplayControls } from "../components/ReplayControls";
 import { useGame } from "../lib/api";
 import { INITIAL_BOARD, countStones } from "../lib/board";
-import { dateTime, duration } from "../lib/format";
+import { count, dateTime, duration, usd } from "../lib/format";
+import { PRICING_AS_OF, estimateUsd } from "../lib/pricing";
 import {
   COLOR_LABELS,
   FORFEIT_REASON_LABELS,
@@ -44,10 +45,12 @@ export function GameDetailPage() {
     [lastIndex],
   );
 
+  // 初期盤面は全対局で同一なので、開いた直後は最終盤面を見せる
+  // (棋譜を追いたい場合は矢印・スライダーで戻す)。lastIndexは棋譜の読み込み完了で確定する。
   useEffect(() => {
-    setIndex(0);
+    setIndex(lastIndex);
     setPlaying(false);
-  }, [gameId]);
+  }, [gameId, lastIndex]);
 
   useEffect(() => {
     if (!playing) return;
@@ -175,7 +178,11 @@ export function GameDetailPage() {
               setPlaying(false);
               setIndex(clamp(next));
             }}
-            onTogglePlay={() => setPlaying((current) => !current)}
+            onTogglePlay={() => {
+              // 既定表示が最終盤面なので、終端から再生した場合は頭から流す
+              if (!playing && index >= lastIndex) setIndex(0);
+              setPlaying((current) => !current);
+            }}
             label={move ? `${move.turn}手目 / 全${data.moves.length}手` : `開始局面 / 全${data.moves.length}手`}
           />
         </div>
@@ -208,6 +215,44 @@ export function GameDetailPage() {
               {duration(averageResponse(data, "white"))}
             </span>
           </div>
+          <div className="rows__row">
+            <span className="rows__key">使用トークン</span>
+            <span className="rows__value mono">
+              {(["black", "white"] as Color[]).map((color) => {
+                const tokens = totalTokens(data, color);
+                return (
+                  <span key={color} style={{ display: "block" }}>
+                    {COLOR_LABELS[color]} 入力 {count(tokens.prompt)} / 出力{" "}
+                    {count(tokens.completion)}
+                  </span>
+                );
+              })}
+            </span>
+          </div>
+          <div className="rows__row">
+            <span className="rows__key">概算利用料</span>
+            <span className="rows__value">
+              <span className="mono">
+                {(["black", "white"] as Color[]).map((color) => {
+                  const tokens = totalTokens(data, color);
+                  const cost = estimateUsd(
+                    data.players[color].id,
+                    tokens.prompt,
+                    tokens.completion,
+                  );
+                  return (
+                    <span key={color} style={{ display: "block" }}>
+                      {COLOR_LABELS[color]} {cost === null ? "—(単価不明)" : usd(cost)}
+                    </span>
+                  );
+                })}
+              </span>
+              <span className="muted" style={{ fontSize: 12 }}>
+                {PRICING_AS_OF}時点の単価による概算(単価はモデル詳細ページに記載)。
+                リトライで失敗した呼び出し分のトークンは記録に含まれない。
+              </span>
+            </span>
+          </div>
         </div>
       </section>
     </>
@@ -234,6 +279,18 @@ function resultDetail(game: GameRecord): string {
   return score
     ? `石数 ${score.black} - ${score.white} で決着(黒 - 白)。`
     : "石数で決着。";
+}
+
+/** その対局でその色が使ったトークン数の合計(`usage`がnullの手は加算しない)。 */
+function totalTokens(game: GameRecord, color: Color): { prompt: number; completion: number } {
+  let prompt = 0;
+  let completion = 0;
+  for (const move of game.moves) {
+    if (move.player !== color || !move.usage) continue;
+    prompt += move.usage.prompt_tokens;
+    completion += move.usage.completion_tokens;
+  }
+  return { prompt, completion };
 }
 
 function averageResponse(game: GameRecord, color: Color): number {
