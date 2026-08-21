@@ -1,6 +1,7 @@
-/** ルーティング定義(3ルート)と共通レイアウト。 */
+/** ルーティング定義と共通レイアウト。 */
 
-import { Link, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, NavLink, Route, Routes, useLocation, useNavigationType } from "react-router-dom";
 import { GithubIcon } from "./components/Icons";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { AboutPage } from "./pages/AboutPage";
@@ -10,17 +11,41 @@ import { RankingPage } from "./pages/RankingPage";
 
 const REPO_URL = "https://github.com/solidtnd/llm-reversi";
 
+/**
+ * ページ遷移のたびに先頭までスクロールする。
+ *
+ * react-routerはSPA内の遷移でスクロール位置を維持するため、対局詳細を下まで
+ * スクロールしてからランキングへ戻ると、戻り先も途中から表示されてしまう。
+ * ブラウザの戻る/進む(popstate)はブラウザ自身が位置を復元するので対象外にする。
+ */
+function ScrollToTop() {
+  const { pathname, search } = useLocation();
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    if (navigationType === "POP") return;
+    window.scrollTo(0, 0);
+  }, [pathname, search, navigationType]);
+
+  return null;
+}
+
 export function App() {
   return (
     <>
+      <ScrollToTop />
       <header className="topbar">
         <div className="shell topbar__inner">
           <Link className="mark" to="/">
             <span className="mark__glyph" aria-hidden="true" />
             LLMリバーシ対戦記録
           </Link>
-          <span className="topbar__meta">ルールはアルゴリズム、着手はLLM</span>
           <nav className="topbar__actions">
+            <NavLink className="topbar__link" to="/about">
+              {/* 狭い画面ではヘッダーのタイトルが折り返すため、ラベルを短くする */}
+              <span className="topbar__link-long">指標 · 対局条件について</span>
+              <span className="topbar__link-short">指標について</span>
+            </NavLink>
             <ThemeToggle />
             <a
               className="icon-button"

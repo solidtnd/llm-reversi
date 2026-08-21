@@ -40,8 +40,13 @@
   --provider-gemini: #4a3aa7;
   --provider-unknown: #82857b;
 
-  --font-sans: "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", "Noto Sans JP",
-    system-ui, -apple-system, "Segoe UI", sans-serif;
+  /*
+   * 和文はプラットフォーム標準のゴシックに任せる(Webフォントは読み込まない)。
+   * Windowsの既定和文フォントである游ゴシックは字面が小さく字間も詰まって見えるため、
+   * 同じくWindows標準のメイリオを先に指定して回避する。
+   */
+  --font-sans: "Helvetica Neue", Arial, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo,
+    "Noto Sans JP", sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, "Liberation Mono",
     monospace;
 
@@ -129,13 +134,8 @@ body {
   background: var(--page);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.65;
-  /*
-   * paltを有効にすると全角中点`・`(U+30FB)がグリフごと表示されなくなるため、
-   * 画面に出す中点は半角の`·`(U+00B7)を使うこと。
-   */
-  font-feature-settings: "palt" 1;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 a {
@@ -227,7 +227,7 @@ table {
   gap: 10px;
   border: none;
   font-weight: 800;
-  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .mark__glyph {
@@ -238,16 +238,69 @@ table {
   background: linear-gradient(90deg, var(--disc-black) 0 50%, var(--disc-white) 50% 100%);
 }
 
-.topbar__meta {
-  margin-left: auto;
-  color: var(--ink-3);
-  font-size: 12px;
+.topbar__link {
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--radius);
+  color: var(--ink-2);
+  font-size: 13px;
   white-space: nowrap;
 }
 
+.topbar__link:hover {
+  background: var(--sunken);
+  color: var(--ink);
+}
+
+/* NavLinkが現在のページに付ける`active`クラス。色だけでなく下線でも示す */
+.topbar__link.active {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.topbar__link-short {
+  display: none;
+}
+
+/*
+ * 狭い画面ではヘッダーに「タイトル + Aboutリンク + ボタン2つ」を一列で収める必要が
+ * あるため、各要素を一段小さくする(横スクロールが出ると本文全体が横に動いてしまう)。
+ */
 @media (max-width: 640px) {
-  .topbar__meta {
+  .topbar__inner {
+    gap: 8px;
+  }
+
+  .topbar__actions {
+    gap: 2px;
+  }
+
+  .mark {
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  .mark__glyph {
+    width: 18px;
+    height: 18px;
+  }
+
+  .topbar__link {
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+
+  .topbar__link-long {
     display: none;
+  }
+
+  .topbar__link-short {
+    display: inline;
+  }
+
+  .icon-button {
+    width: 34px;
+    height: 34px;
   }
 }
 
@@ -269,16 +322,14 @@ table {
 }
 
 h1 {
-  font-size: clamp(28px, 5vw, 44px);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.25;
   font-weight: 800;
   margin: 0 0 12px;
 }
 
 h2 {
   font-size: 20px;
-  letter-spacing: -0.01em;
   font-weight: 800;
   margin: 0;
 }
