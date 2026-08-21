@@ -8,11 +8,12 @@
 #   (例外的な変換は adapter-interface.md の「config の受け渡し」参照)。
 #   棋譜JSONの players[].config にもそのまま転記される。
 #
-# 新モデルの追加は末尾に1エントリ追記するだけでよい(未実施カードのみ実行される)。
+# 新モデルの追加は1エントリ追記するだけでよい(未実施カードのみ実行される)。
 #
-# 現在は「第1段階(最小コア9モデル)」の構成。各社とも
-# 旧世代/廉価アンカー・新世代中位・新世代最上位の3つに絞ってある。
-# 見送った候補・追加検討の観点は docs/engine/models.md の「第2段階候補」を参照。
+# 第1段階(最小コア9モデル、各社3層)に加え、結果を見て第2段階のモデルを追加した。
+# 選定経緯・見送った候補は docs/engine/models.md を参照。
+# GeminiのProティアはレート制限(150 req/min/model)が本プロジェクトの実行量に対して
+# 厳しすぎ反則負けが大半を占めたため不採用(同ドキュメント参照)。
 
 models:
   # --- OpenAI ---
@@ -38,11 +39,32 @@ models:
       reasoning_effort: low
       max_completion_tokens: 3072
 
+  - id: gpt-5.6-terra
+    provider: openai
+    model: gpt-5.6-terra
+    display_name: "GPT-5.6 Terra"
+    config:
+      reasoning_effort: low
+      max_completion_tokens: 3072
+
+  - id: gpt-4o
+    provider: openai
+    model: gpt-4o-2024-08-06
+    display_name: "GPT-4o"
+    config: {}
+
   # --- Anthropic ---
   - id: claude-haiku-4-5
     provider: anthropic
     model: claude-haiku-4-5-20251001
     display_name: "Claude Haiku 4.5"
+    config:
+      max_tokens: 2048
+
+  - id: claude-sonnet-4-5
+    provider: anthropic
+    model: claude-sonnet-4-5-20250929
+    display_name: "Claude Sonnet 4.5"
     config:
       max_tokens: 2048
 
@@ -79,11 +101,10 @@ models:
       thinking_config:
         thinking_budget: 0
 
-  - id: gemini-2.5-pro
+  - id: gemini-2.5-flash
     provider: gemini
-    model: gemini-2.5-pro
-    display_name: "Gemini 2.5 Pro"
-    # thinkingを完全には無効化できないモデル。最小値で抑制する(要動作確認、docs/engine/models.md参照)。
+    model: gemini-2.5-flash
+    display_name: "Gemini 2.5 Flash"
     config:
       thinking_config:
-        thinking_budget: 128
+        thinking_budget: 0

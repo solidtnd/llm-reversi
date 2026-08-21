@@ -109,38 +109,35 @@ APIキーで`GET /v1/models`(OpenAI・Anthropic)・`ListModels`(Gemini)を実際
 | claude-sonnet-5 | claude-sonnet-5 | 新世代・中位、導入価格が魅力的 |
 | claude-opus-5 | claude-opus-5 | 新世代・最上位 |
 
-#### Gemini(3モデル)
+#### Gemini(2モデル)
 
 | id | model | 位置づけ |
 | --- | --- | --- |
 | gemini-3.1-flash-lite | gemini-3.1-flash-lite | 最安ティア(基準点) |
 | gemini-3.5-flash | gemini-3.5-flash | 新世代・中位 |
-| gemini-2.5-pro | gemini-2.5-pro | 旧世代・最上位ティア |
 
 **`gemini-2.5-flash-lite`→`gemini-3.1-flash-lite`への差し替え(2026-08-18)**: 当初選定した`gemini-2.5-flash-lite`は、`models.yaml`に反映した後の動作確認(`request_move`を1回実際に呼ぶ)で404エラーになった。`ListModels`のレスポンスには`generateContent`対応モデルとして今も載っており、Web上の情報でも有効に見えるが、実際に`generateContent`を呼ぶと`This model models/gemini-2.5-flash-lite is no longer available to new users. Please update your code to use models/gemini-3.5-flash-lite for the latest features and improvements.`という404が返ってくることを確認した。カタログ一覧(`ListModels`)と実際の呼び出し可否がAPIキー(プロジェクト)の作成時期等に応じて食い違うことがある、という実例。エラーメッセージが案内する代替は`gemini-3.5-flash-lite`だが、価格・位置づけの面では表中の投資調査結果(前節)にある`gemini-3.1-flash-lite`(旧世代寄りでより安価)を選び、実際に1手問い合わせて合法手が返ることを確認した上で採用した。これにより第1段階のGeminiラインナップは3モデルとも実質的に「Gemini 3系」となり、Anthropicと同様に「旧世代アンカー」を用意できていない状態になった(前節「「古くて弱いモデル」は3社とも用意できない」参照)。
 
-**`gemini-3.1-pro-preview`→`gemini-2.5-pro`への差し替え(2026-08-19)**: `gemini-3.1-pro-preview`はレート制限が本プロジェクトの検証には厳しすぎ、本番72局の実行で該当カードの多くがAPIエラーによる反則負けになった(`clear-forfeits`コマンドで該当局を`results.jsonl`・`games/`から除去し、差分実行で再戦させる運用については[rules.md](rules.md#リーグ運営)参照)。前節の調査結果にある`gemini-2.5-pro`(旧世代最上位、当初は第2段階候補)へ差し替えることで、この問題を回避する。`thinking_config.thinking_budget`はthinkingを無効化できない点も含めて`gemini-3.1-pro-preview`と同じ制約を持つため、同じ最小値(`128`)をそのまま採用し、実際に1手問い合わせて合法手が返ることを確認した(2026-08-19)。これにより第1段階のGeminiラインナップは「新世代2モデル(3.1系)+旧世代1モデル(2.5系)」となり、Anthropic同様に用意できなかった「旧世代アンカー」を実質的に確保できた。
+**GeminiのProティアは撤退・不採用に決定(2026-08-21)**: 当初`gemini-3.1-pro-preview`を選定していたが、レート制限が厳しく本番72局の実行で該当カードの多くがAPIエラーによる反則負けになったため、2026-08-19に`gemini-2.5-pro`(旧世代最上位)へ差し替えた。しかし差し替え後の本番実行でも改善せず、`gemini-2.5-pro`は16局中12局がAPIエラーによる反則負けとなり、スコアで決着した対局はわずか2局(いずれも敗け)に留まった。対局ログ(`data/games/`)のエラー詳細を確認したところ、原因は`generativelanguage.googleapis.com/generate_requests_per_model`のクォータ超過(`GenerateRequestsPerMinutePerProjectPerModel`、上限150 req/min/model)によるHTTP 429であり、`gemini-3.1-pro-preview`のときと同一種類の問題だった。[engine/reversi_engine/game.py](../../engine/reversi_engine/game.py)の`api_error`時リトライは待機なしで同一内容を即再送する実装であり、エラーメッセージが案内する「30秒待ってリトライ」を尊重できていない点も、反則負けが減らなかった一因と見られる。`concurrent_games`を4→20に引き上げた変更(`league.yaml`)も、Gemini Proへの同時リクエスト数を増やす方向に働いた可能性がある。
 
-### 第2段階候補(結果を見てから追加を検討)
+以上より、**Gemini Pro系ティアはこのプロジェクトの実行規模(同時実行数20・バックオフ無しリトライ)に対してレート制限が厳しすぎると判断し、`gemini-2.5-pro`を`models.yaml`から削除、対局データ(`data/games/`・`data/results.jsonl`)からも該当局を除去した**(残っていた非APIエラーの対局7局は実質的な対局数が少なすぎて統計的意味が薄いため合わせて除去)。`gemini-3.1-pro-preview`の対局データも同様の理由で既に除去済み。Gemini FlashティアはPro系ほど厳しいクォータ制限を受けておらず(`gemini-3.1-flash-lite`・`gemini-3.5-flash`はAPIエラーによる反則負けが0件)、この問題はProティア固有と判断している。リトライにバックオフを実装する、または`concurrent_games`を下げるなどの対応を行わない限り、Gemini Pro系モデルは今後も候補から除外する方針とする。
 
-第1段階の対局結果(勝率・反則負け率・実際のコスト)を踏まえて、以下の観点ごとに追加するかどうかを判断する。`claude-fable-5`は前回の判断通り、コスト超過のため引き続き対象外。
+### 第2段階: 追加(4モデル、2026-08-21)
 
-**観点A: 単純にモデル数(カバレッジ)を増やす意義があるか**
+第1段階の対局結果(勝率・反則負け率・実際のコスト)を踏まえて、以下の4モデルを追加した。`claude-fable-5`は前回の判断通り、コスト超過のため引き続き対象外。
 
-| 候補 | 追加する意義 |
-| --- | --- |
-| gpt-4o | gpt-4o-miniとの価格差(同世代内のティア差)がどの程度勝率に効くか |
-| claude-sonnet-4-5 | Anthropicで現存する最古世代。claude-haiku-4-5との世代内比較 |
-| gemini-2.5-flash | Gemini旧世代の中位ティア |
+| id | model | 追加理由(観点A・B) |
+| --- | --- | --- |
+| gpt-5.6-terra | gpt-5.6-terra | **観点B**: `gpt-5.6-luna`(bt_strength 0.071)と`gpt-5.6-sol`(同0.416)の差が大きすぎたため、中間ティアで補間する |
+| claude-sonnet-4-5 | claude-sonnet-4-5-20250929 | **観点A**: Anthropicで現存する最古世代。`claude-haiku-4-5`との世代内比較 |
+| gpt-4o | gpt-4o-2024-08-06 | **観点A**: `gpt-4o-mini`との価格差(同世代内のティア差)がどの程度勝率に効くか |
+| gemini-2.5-flash | gemini-2.5-flash | **観点A**: Gemini旧世代の中位ティア。Proティア撤退(前節参照)によりGeminiの層が2つに減っていたための補充 |
 
-**観点B: 同世代内に複数ティアを持たせる意義があるか**
+いずれも`models.yaml`への追記後、`request_move`を1回実際に呼んで合法手が返ることを確認済み(2026-08-21)。`gpt-4o`のsnapshot IDは構造化出力対応が確認されている`gpt-4o-2024-08-06`を採用した(「モデルIDの固定方針」参照)。`claude-sonnet-4-5`は無日付エイリアスが日付付きIDへの互換ポインタのため、`GET /v1/models`で実際に確認した`claude-sonnet-4-5-20250929`を明示した。
 
-第1段階は各社・各世代につき1モデルのみ(価格帯の異なる代表選手)。「同じ世代でもモデルサイズが違うと強さが変わるか」を見たいなら:
+### 見送った候補(引き続き未決定)
 
-| 候補 | 追加する意義 |
-| --- | --- |
-| gpt-5-nano / gpt-5.6-terra | gpt-5.6-lunaとの世代内・世代間の中間ティア比較 |
-| claude-opus-4-8 | claude-opus-5と同価格帯($5/$25)での世代差のみの比較 |
+**観点B(その他)**: `claude-opus-4-8`(`claude-opus-5`と同価格帯($5/$25)での世代差のみの比較)は今回見送り。優先度は`gpt-5.6-terra`より低いと判断した。
 
 **観点C: 設定のバリエーション(config違い)を持たせる意義があるか**
 
@@ -188,6 +185,8 @@ Geminiの`thinking_config`のキー名(google-genai SDKのスネークケース�
 - 1局あたりの平均手数を仮に58手とすると、総API呼び出し回数は約4,200回
 
 対局数は18モデル時点の試算(306局)の約1/4であり、費用も比例して1/4程度(数ドル未満〜数ドル程度)に収まる見込み。正確な金額は実際のトークン消費量に強く依存するため、この数字はあくまで「オーダー感」の参考値。第2段階でモデルを追加する際は、対局数がモデル数のほぼ2乗で増える(`n×(n-1)`)点に留意する。
+
+**第2段階適用後(12モデル、2026-08-21)**: Proティア撤退で9→8モデルに減った後、4モデル追加して12モデルとなった。カード数は12×11÷2 = 66、総対局数は66×2 = 132局(第1段階の72局の約1.8倍)。
 
 コストが気になる場合の調整案:
 - モデル数自体を絞る(このドキュメントの表から一部を`models.yaml`にコピーしない)。
