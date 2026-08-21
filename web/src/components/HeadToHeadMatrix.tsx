@@ -11,7 +11,10 @@ import { Link } from "react-router-dom";
 import type { HeadToHead, ModelStats } from "../lib/types";
 
 interface Props {
-  models: ModelStats[];
+  /** 行(その視点から勝ち越し/負け越しを読むモデル)。絞り込みはここだけに効かせる */
+  rows: ModelStats[];
+  /** 列(対戦相手)。絞り込んでも他社モデルとの成績が見えるよう常に全モデルを渡す */
+  columns: ModelStats[];
   headToHead: HeadToHead[];
 }
 
@@ -54,10 +57,10 @@ function buildLookup(headToHead: HeadToHead[]): Map<string, CellData> {
   return lookup;
 }
 
-export function HeadToHeadMatrix({ models, headToHead }: Props) {
+export function HeadToHeadMatrix({ rows, columns, headToHead }: Props) {
   const lookup = buildLookup(headToHead);
 
-  if (models.length < 2) {
+  if (rows.length < 1 || columns.length < 2) {
     return <div className="table-wrap empty">対戦表を出すには2モデル以上必要です。</div>;
   }
 
@@ -71,7 +74,7 @@ export function HeadToHeadMatrix({ models, headToHead }: Props) {
           <thead>
             <tr>
               <th scope="col">行 \ 列</th>
-              {models.map((model) => (
+              {columns.map((model) => (
                 <th key={model.id} scope="col">
                   {model.display_name}
                 </th>
@@ -79,10 +82,10 @@ export function HeadToHeadMatrix({ models, headToHead }: Props) {
             </tr>
           </thead>
           <tbody>
-            {models.map((row) => (
+            {rows.map((row) => (
               <tr key={row.id}>
                 <th scope="row">{row.display_name}</th>
-                {models.map((column) => {
+                {columns.map((column) => {
                   if (row.id === column.id) {
                     return (
                       <td key={column.id} className="matrix__cell matrix__self" aria-label="自分自身" />

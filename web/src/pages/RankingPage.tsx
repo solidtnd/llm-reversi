@@ -3,36 +3,39 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { HeadToHeadMatrix } from "../components/HeadToHeadMatrix";
-import { ModelSearchBox } from "../components/ModelSearchBox";
-import { RankingTable, type SortKey } from "../components/RankingTable";
-import { providerLabel } from "../components/ProviderBadge";
+import {
+  RankingTable,
+  SORT_COLUMNS,
+  sortModels,
+  sortName,
+  type Sort,
+  type SortKey,
+} from "../components/RankingTable";
+import { ProviderBadge, providerLabel } from "../components/ProviderBadge";
 import { useRanking } from "../lib/api";
 import { dateTime, percent, points as formatPoints } from "../lib/format";
 import type { ModelStats } from "../lib/types";
 
-const SORT_LABELS: Record<SortKey, string> = {
-  points: "勝点方式",
-  bt_strength: "Bradley-Terry強さ推定",
-};
-
 export function RankingPage() {
   const { data, error, loading } = useRanking();
-  const [sortKey, setSortKey] = useState<SortKey>("points");
-  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<Sort>({ key: "points", dir: "desc" });
+  const [provider, setProvider] = useState<string | null>(null);
 
   const models = data?.models ?? [];
-  const filtered = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    const matched = needle
-      ? models.filter((model) =>
-          [model.display_name, model.id, model.provider, providerLabel(model.provider)]
-            .join(" ")
-            .toLowerCase()
-            .includes(needle),
-        )
-      : models;
-    return [...matched].sort((a, b) => b[sortKey] - a[sortKey]);
-  }, [models, query, sortKey]);
+
+  /** provider → モデル数。絞り込みの選択肢はデータから作る(providerを決め打ちしない)。 */
+  const providers = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const model of models) {
+      counts.set(model.provider, (counts.get(model.provider) ?? 0) + 1);
+    }
+    return [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  }, [models]);
+
+  const visible = useMemo(() => {
+    const matched = provider ? models.filter((model) => model.provider === provider) : models;
+    return sortModels(matched, sort);
+  }, [models, provider, sort]);
 
   if (loading) return <p className="state">読み込み中…</p>;
   if (error || !data) {
@@ -48,7 +51,7 @@ export function RankingPage() {
   }
 
   const forfeitGames = data.games.filter((game) => game.reason === "forfeit").length;
-  const leaders = [...models].sort((a, b) => b[sortKey] - a[sortKey]).slice(0, 3);
+  const leaders = visible.slice(0, 3);
 
   return (
     <>
@@ -80,9 +83,13 @@ export function RankingPage() {
         </div>
 
         <div className="leaders">
-          <p className="leaders__caption">上位3モデル · {SORT_LABELS[sortKey]}</p>
+          <p className="leaders__caption">
+            上位3モデル · {sortName(sort.key)}
+            {sort.dir === "asc" ? "(小さい順)" : ""}
+            {provider ? ` · ${providerLabel(provider)}のみ` : ""}
+          </p>
           {leaders.map((model, index) => (
-            <LeaderRow key={model.id} model={model} rank={index + 1} sortKey={sortKey} />
+            <LeaderRow key={model.id} model={model} rank={index + 1} sortKey={sort.key} />
           ))}
         </div>
       </section>
@@ -91,16 +98,37 @@ export function RankingPage() {
         <div className="section__head">
           <h2>ランキング</h2>
           <span className="section__note">
-            勝点方式とBradley-Terry強さ推定を併記(列見出しで切り替え)
+            列見出しを選ぶとその項目で並べ替え(同じ見出しをもう一度選ぶと昇降が反転)
           </span>
         </div>
-        <ModelSearchBox
-          value={query}
-          onChange={setQuery}
-          resultCount={filtered.length}
-          totalCount={models.length}
-        />
-        <RankingTable models={filtered} sortKey={sortKey} onSortKeyChange={setSortKey} />
+
+        <div className="filters">
+          <span className="field__label">プロバイダ</span>
+          <div className="chips">
+            <button
+              type="button"
+              className="chip"
+              aria-pressed={!provider}
+              onClick={() => setProvider(null)}
+            >
+              すべて<span className="chip__count">{models.length}</span>
+            </button>
+            {providers.map(([id, modelCount]) => (
+              <button
+                key={id}
+                type="button"
+                className="chip"
+                aria-pressed={provider === id}
+                onClick={() => setProvider(id)}
+              >
+                {providerLabel(id)}
+                <span className="chip__count">{modelCount}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <RankingTable models={visible} sort={sort} onSortChange={setSort} />
       </section>
 
       <section className="section">
@@ -108,7 +136,9 @@ export function RankingPage() {
           <h2>対戦表</h2>
           <span className="section__note">セルを選ぶとそのカードの対局一覧へ</span>
         </div>
-        <HeadToHeadMatrix models={filtered} headToHead={data.head_to_head} />
+        {/* 絞り込みは行(見る側のモデル)だけに効かせる。列を絞ると同じproviderの
+            組み合わせしか残らず、「他社モデルにどう勝ったか」が見えなくなるため。 */}
+        <HeadToHeadMatrix rows={visible} columns={models} headToHead={data.head_to_head} />
       </section>
 
       <p className="muted" style={{ marginTop: 32, fontSize: 12 }}>
@@ -121,6 +151,7 @@ export function RankingPage() {
 /**
  * 上位モデルの勝点を石の数で表す。リバーシの「終局後に石を数える」動作をそのまま
  * 指標の読み方に持ち込む、この画面の signature 要素。数値も併記する。
+ * 勝点以外の並べ替え軸では石を並べる意味がないため、値だけを見せる。
  */
 function LeaderRow({
   model,
@@ -139,17 +170,19 @@ function LeaderRow({
       <a className="leader__name" href={`#/models/${encodeURIComponent(model.id)}`}>
         {model.display_name}
       </a>
-      <span className="leader__points">
-        {sortKey === "points" ? `${formatPoints(model.points)}点` : model.bt_strength.toFixed(3)}
-      </span>
-      <span className="discs" aria-hidden="true">
-        {Array.from({ length: whole }, (_, index) => (
-          <span key={index} className="discs__disc" />
-        ))}
-        {hasHalf && <span className="discs__disc discs__disc--half" />}
-      </span>
+      <span className="leader__points">{SORT_COLUMNS[sortKey].format(model)}</span>
+      {sortKey === "points" && (
+        <span className="discs" aria-hidden="true">
+          {Array.from({ length: whole }, (_, index) => (
+            <span key={index} className="discs__disc" />
+          ))}
+          {hasHalf && <span className="discs__disc discs__disc--half" />}
+        </span>
+      )}
       <span className="leader__rank" style={{ gridColumn: "2 / -1", fontSize: 12 }}>
-        勝率 {percent(model.win_rate, 1)} · {model.games}局
+        <ProviderBadge provider={model.provider} /> 勝率 {percent(model.win_rate, 1)} ·{" "}
+        {model.games}局
+        {sortKey === "points" ? "" : ` · 勝点 ${formatPoints(model.points)}`}
       </span>
     </div>
   );
