@@ -172,6 +172,8 @@ Geminiは`gemini-2.5-flash`のようなID自体は固定だが、内部的にpoi
 
 thinkingを一切無効化・抑制できないモデル(`claude-fable-5`)は、上記の抑制策が効かずコストが突出する見込みだったため、今回は候補から除外した(前節参照)。
 
+**`claude-fable-5`は実際に対戦させてみて、コストだけでなく機能面でも不採用と判断した(2026-08-21)**。`gpt-5.6-sol`の実績(22局・543手、1手平均で入力273/出力986トークン)を基にfable導入時の単価($10/$50)で見積もると、同程度の使用量でも1.7倍程度のコスト(既存ロースターに追加した場合で1周あたり概算$30前後)になる計算だった。実際に`gpt-5.6-sol`・`claude-opus-5`の2モデルとだけ対戦させる限定構成で検証したところ、**6戦全て`claude-fable-5`側のタイムアウトで反則負け**になった(60秒設定で2回、90秒に伸ばしても4回)。タイムアウト時の応答時間はいずれも設定値ちょうど(60000ms/90000ms)で、発生した手数も38〜55手目とばらついており、特定の局面が原因ではなく思考が散発的に長引く挙動と見られる。`gpt-5.6-sol`(reasoning_effort: low)は同じ対局中に30秒程度で応答できている手もあり、fableだけが極端に遅い。thinkingを抑制する手段が無い以上、**タイムアウトをさらに伸ばしても安定して完走する保証がなく**、これ以上の追加検証はコスト対効果が悪いと判断して打ち切った。この検証で生成した対局データ(`claude-fable-5`が絡む4局、全てタイムアウト反則負け)は`models.yaml`に含めない方針と合わせて`data/games/`・`data/results.jsonl`から除去済み。
+
 **Anthropicの`effort`制御について**: 当初`engine/reversi_engine/adapters/anthropic.py`の`request_move`は`output_config`を`params.update(extra)`で丸ごと上書きしており、`config`に`output_config: {effort: "low"}`を書くと構造化出力用の`format`ごと消えてしまう不具合があったが、`output_config`をマージするように修正済み(`format`は常にAdapter側の値が優先される、[adapter-interface.md](adapter-interface.md#configの受け渡し)参照)。これにより`config: {output_config: {effort: "low"}}`のような形でAnthropicモデルの`effort`もコスト制御に使えるようになったが、今回の選定では`thinking`の有効/無効のみで制御しており、`effort`は未使用のまま(必要になれば追加で調整可能)。
 
 Geminiの`thinking_config`のキー名(google-genai SDKのスネークケース表記に合わせた想定)は、2026-08-18に`gemini-3.1-flash-lite`・`gemini-3.5-flash`(`thinking_budget: 0`)、2026-08-19に`gemini-2.5-pro`(`thinking_budget: 128`)へ実際に1手ずつ問い合わせて動作確認済み。いずれも合法手を含む構造化出力が返ってきている。
