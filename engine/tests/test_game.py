@@ -325,14 +325,39 @@ def test_summary_matches_results_jsonl_schema():
         "winner",
         "reason",
         "forfeit_reason",
+        "score",
         "ended_at",
     }
-    assert set(summary["black"]) == {"id", "provider", "display_name", "avg_response_time_ms"}
+    assert set(summary["black"]) == {
+        "id",
+        "provider",
+        "display_name",
+        "avg_response_time_ms",
+        "tokens",
+    }
     assert summary["black"]["id"] == "black-model"
     # 集計をmodels.yamlから独立させるため、表示用メタデータも要約に持たせる
     assert summary["black"]["provider"] == "fake"
     assert summary["black"]["display_name"] == "black-model"
     assert summary["forfeit_reason"] is None
+    # 石数決着局なので石数が入る(反則決着局はnull)
+    assert summary["score"] == record.result.score
+    assert set(summary["black"]["tokens"]) == {"prompt", "completion"}
+
+
+def test_total_tokens_sums_only_that_players_usage():
+    record = _game(FakeAdapter(random_seed=24), FakeAdapter(random_seed=25), timeout_seconds=5).play()
+    record.moves = [
+        MoveRecord(1, "black", "move", "d3", "x" * 64, [], usage={"prompt_tokens": 10, "completion_tokens": 1}),
+        MoveRecord(2, "white", "move", "c3", "x" * 64, [], usage={"prompt_tokens": 20, "completion_tokens": 2}),
+        MoveRecord(3, "black", "move", "e6", "x" * 64, [], usage={"prompt_tokens": 30, "completion_tokens": 3}),
+        # usageがnull(レスポンスにトークン数が含まれないプロバイダ・応答前の失敗)の手は加算しない
+        MoveRecord(4, "black", "forfeit", None, "x" * 64, [], forfeit_reason="api_error"),
+        MoveRecord(5, "white", "pass", None, "x" * 64, []),
+    ]
+
+    assert record.total_tokens("black") == {"prompt": 40, "completion": 4}
+    assert record.total_tokens("white") == {"prompt": 20, "completion": 2}
 
 
 def test_average_response_time_excludes_pass_moves():

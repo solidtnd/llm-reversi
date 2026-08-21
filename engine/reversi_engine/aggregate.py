@@ -38,6 +38,10 @@ class _ModelStats:
         default_factory=lambda: {reason: 0 for reason in FORFEIT_REASONS}
     )
     response_times: list[float] = field(default_factory=list)
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    #: 石数決着局での石数差(自分 - 相手)。反則決着局は石数を持たないため入らない
+    stone_diffs: list[int] = field(default_factory=list)
 
 
 def aggregate(
@@ -77,6 +81,9 @@ def aggregate(
         white.games_as_white += 1
         _add_response_time(black, row["black"].get("avg_response_time_ms"))
         _add_response_time(white, row["white"].get("avg_response_time_ms"))
+        _add_tokens(black, row["black"].get("tokens"))
+        _add_tokens(white, row["white"].get("tokens"))
+        _add_stone_diff(black, white, row.get("score"))
 
         if winner == "black":
             black.wins += 1
@@ -107,6 +114,7 @@ def aggregate(
                 "winner": winner,
                 "reason": reason,
                 "forfeit_reason": forfeit_reason,
+                "score": _clean_score(row.get("score")),
                 "ended_at": row.get("ended_at"),
             }
         )
@@ -132,6 +140,9 @@ def aggregate(
                 "forfeit_loss_rate": _ratio(entry.forfeit_losses, entry.games),
                 "forfeit_reasons": dict(entry.forfeit_reasons),
                 "avg_response_time_ms": _average(entry.response_times),
+                "prompt_tokens": entry.prompt_tokens,
+                "completion_tokens": entry.completion_tokens,
+                "avg_stone_diff": _mean(entry.stone_diffs),
                 "points": round(
                     entry.wins * weights.win
                     + entry.draws * weights.draw
@@ -183,6 +194,43 @@ def _update_metadata(stats: _ModelStats, entry: dict[str, Any]) -> None:
 def _add_response_time(stats: _ModelStats, value: Any) -> None:
     if isinstance(value, (int, float)) and not isinstance(value, bool):
         stats.response_times.append(float(value))
+
+
+def _add_tokens(stats: _ModelStats, tokens: Any) -> None:
+    """`tokens: {prompt, completion}`を合計に足す(持たない行は0扱いで無視する)。"""
+    if not isinstance(tokens, dict):
+        return
+    for key, attribute in (("prompt", "prompt_tokens"), ("completion", "completion_tokens")):
+        value = tokens.get(key)
+        if isinstance(value, int) and not isinstance(value, bool) and value > 0:
+            setattr(stats, attribute, getattr(stats, attribute) + value)
+
+
+def _add_stone_diff(
+    black: _ModelStats,
+    white: _ModelStats,
+    score: Any,
+) -> None:
+    """石数決着局の石数差を両者に記録する(反則決着局は`score`がnullなので対象外)。"""
+    cleaned = _clean_score(score)
+    if cleaned is None:
+        return
+    diff = cleaned["black"] - cleaned["white"]
+    black.stone_diffs.append(diff)
+    white.stone_diffs.append(-diff)
+
+
+def _clean_score(score: Any) -> dict[str, int] | None:
+    """`score`が黒白そろった整数の組なら正規化して返す(それ以外はNone)。"""
+    if not isinstance(score, dict):
+        return None
+    values: dict[str, int] = {}
+    for color in ("black", "white"):
+        value = score.get(color)
+        if not isinstance(value, int) or isinstance(value, bool):
+            return None
+        values[color] = value
+    return values
 
 
 def _accumulate_head_to_head(
@@ -263,6 +311,12 @@ def _ratio(numerator: int, denominator: int) -> float:
     if denominator <= 0:
         return 0.0
     return round(numerator / denominator, 4)
+
+
+def _mean(values: Sequence[float]) -> float:
+    if not values:
+        return 0.0
+    return round(sum(values) / len(values), 2)
 
 
 def _average(values: Sequence[float]) -> int:

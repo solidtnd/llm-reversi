@@ -12,13 +12,14 @@ META = {
 }
 
 
-def player(model_id: str, ms: int) -> dict:
+def player(model_id: str, ms: int, tokens: dict | None = None) -> dict:
     provider, display_name = META.get(model_id, ("openai", model_id))
     return {
         "id": model_id,
         "provider": provider,
         "display_name": display_name,
         "avg_response_time_ms": ms,
+        "tokens": tokens if tokens is not None else {"prompt": 100, "completion": 10},
     }
 
 
@@ -32,14 +33,19 @@ def row(
     forfeit_reason: str | None = None,
     black_ms: int = 1000,
     white_ms: int = 2000,
+    black_tokens: dict | None = None,
+    white_tokens: dict | None = None,
+    score: dict | None = None,
 ):
     return {
         "game_id": game_id,
-        "black": player(black, black_ms),
-        "white": player(white, white_ms),
+        "black": player(black, black_ms, black_tokens),
+        "white": player(white, white_ms, white_tokens),
         "winner": winner,
         "reason": reason,
         "forfeit_reason": forfeit_reason,
+        # 石数決着局は石数を持ち、反則決着局はnull(docs/shared/log-schema.md)
+        "score": score if reason == "score" else None,
         "ended_at": f"2026-01-01T00:00:0{game_id[-1]}+00:00",
     }
 
@@ -65,6 +71,9 @@ def test_aggregate_shape():
         "forfeit_loss_rate",
         "forfeit_reasons",
         "avg_response_time_ms",
+        "prompt_tokens",
+        "completion_tokens",
+        "avg_stone_diff",
         "points",
         "bt_strength",
     }
@@ -76,6 +85,7 @@ def test_aggregate_shape():
         "winner",
         "reason",
         "forfeit_reason",
+        "score",
         "ended_at",
     }
 
@@ -109,6 +119,45 @@ def test_model_metrics():
     weak = _model(ranking, "weak")
     assert (weak["wins"], weak["losses"], weak["draws"]) == (1, 2, 1)
     assert weak["forfeit_reasons"]["illegal_move"] == 0  # 反則したのはstrong側
+
+
+def test_tokens_are_summed_per_model():
+    rows = [
+        row("g1", "strong", "weak", "black", black_tokens={"prompt": 100, "completion": 10}),
+        row("g2", "weak", "strong", "white", white_tokens={"prompt": 250, "completion": 25}),
+    ]
+    strong = _model(aggregate(rows), "strong")
+    assert strong["prompt_tokens"] == 350
+    assert strong["completion_tokens"] == 35
+
+
+def test_tokens_default_to_zero_for_rows_without_them():
+    """トークン数を持たない古い形式の行があっても集計対象から落とさない。"""
+    old_row = row("g1", "strong", "weak", "black")
+    del old_row["black"]["tokens"]
+    strong = _model(aggregate([old_row]), "strong")
+    assert strong["prompt_tokens"] == 0
+
+
+def test_avg_stone_diff_uses_only_score_decided_games():
+    rows = [
+        # strongが黒で +10、白で +4 → 平均 +7。反則決着局(石数なし)は母数に入らない
+        row("g1", "strong", "weak", "black", score={"black": 37, "white": 27}),
+        row("g2", "weak", "strong", "white", score={"black": 30, "white": 34}),
+        row("g3", "strong", "weak", "white", reason="forfeit", forfeit_reason="illegal_move"),
+    ]
+    ranking = aggregate(rows)
+    assert _model(ranking, "strong")["avg_stone_diff"] == 7.0
+    assert _model(ranking, "weak")["avg_stone_diff"] == -7.0
+    # 石数は対局一覧用にgames[]へも転記され、反則決着局はnullのまま
+    scores = {game["game_id"]: game["score"] for game in ranking["games"]}
+    assert scores["g1"] == {"black": 37, "white": 27}
+    assert scores["g3"] is None
+
+
+def test_avg_stone_diff_is_zero_without_score_decided_games():
+    rows = [row("g1", "strong", "weak", "black", reason="forfeit", forfeit_reason="timeout")]
+    assert _model(aggregate(rows), "strong")["avg_stone_diff"] == 0.0
 
 
 def test_avg_response_time_is_mean_of_game_averages():

@@ -141,6 +141,7 @@ class GameRecord:
 
         `provider`・`display_name`は指標計算には使わないが、集計を`models.yaml`から
         独立させるためここに含める(docs/shared/log-schema.md「対局結果ログ」)。
+        トークン数・石数も、集計が棋譜JSON本体を読まずに済むようここで要約する。
         """
         return {
             "game_id": self.game_id,
@@ -149,6 +150,7 @@ class GameRecord:
             "winner": self.result.winner,
             "reason": self.result.reason,
             "forfeit_reason": self._forfeit_reason(),
+            "score": dict(self.result.score) if self.result.score is not None else None,
             "ended_at": self.ended_at,
         }
 
@@ -159,7 +161,23 @@ class GameRecord:
             "provider": participant.provider,
             "display_name": participant.display_name,
             "avg_response_time_ms": self.average_response_time_ms(player),
+            "tokens": self.total_tokens(player),
         }
+
+    def total_tokens(self, player: Player) -> dict[str, int]:
+        """その対局で使ったトークン数の合計(`usage`がnullの手は加算しない)。
+
+        リトライで失敗した呼び出し分は`MoveRecord.usage`に残らない(最終レスポンス分のみ
+        記録する)ため、実際の課金対象より少なくなりうる概算値。
+        """
+        prompt = 0
+        completion = 0
+        for move in self.moves:
+            if move.player != player or move.usage is None:
+                continue
+            prompt += int(move.usage.get("prompt_tokens", 0))
+            completion += int(move.usage.get("completion_tokens", 0))
+        return {"prompt": prompt, "completion": completion}
 
     def average_response_time_ms(self, player: Player) -> int:
         """LLMに問い合わせた手の応答時間の単純平均(ミリ秒)。

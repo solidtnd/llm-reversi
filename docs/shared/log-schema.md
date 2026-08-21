@@ -80,7 +80,7 @@
   - `parse_failure` / `api_error`: 反則負けを確定させた例外の`message`(`api_error`の場合は`original_exception`も)を記録する。
   - `timeout`: この手の処理中(初回またはリトライ時)に例外が1件でも発生していれば、直近に発生した例外の`message`(`AdapterAPIError`なら`original_exception`も)を記録する。何の例外も発生せずに(単に応答が遅く)予算超過した場合は`null`とする。
   - この規則は[../engine/rules.md](../engine/rules.md#1手ごとの処理)の`retried`(リトライの引き金)と整合する。`retried`が「どの例外でリトライしたか」を示す一方、`error_detail`はその例外(または最終的に反則負けを確定させた例外)の詳細メッセージを示す。
-- `usage`は、LLMのAPIレスポンスに含まれるトークン数(input/output)をそのまま記録する。ほとんどのプロバイダのレスポンスに標準で含まれており記録の手間がないため。**コスト(金額)はここには記録しない**。プロバイダによってはレスポンスに金額が含まれず、含める場合は別途モデル別の単価テーブルをどこかに持つ必要が生じ、単価改定のたびにドキュメント・コードの更新が必要になる。金額が必要な場合は`data/`集計時に`usage`とモデル別単価表から都度算出する(単価表自体は本スキーマの対象外、集計スクリプト側の関心事)。レスポンスにトークン数が含まれないプロバイダの場合は`usage`全体を`null`とする。
+- `usage`は、LLMのAPIレスポンスに含まれるトークン数(input/output)をそのまま記録する。ほとんどのプロバイダのレスポンスに標準で含まれており記録の手間がないため。**コスト(金額)はここには記録しない**。プロバイダによってはレスポンスに金額が含まれず、含める場合は別途モデル別の単価テーブルをどこかに持つ必要が生じ、単価改定のたびにドキュメント・コードの更新が必要になる。金額が必要な場合は`usage`とモデル別単価表から都度算出する。**本プロジェクトでは単価表をWeb側(`web/src/lib/pricing.ts`)に置き、`data/`配下のJSONには金額を一切持たせない**方針とした(engine側で算出すると、単価改定のたびに集計をやり直して`data/`をコミットし直すことになる。`data/`はリポジトリにコミットする運用のため、表示のための数値は表示側で掛けるのが軽い)。レスポンスにトークン数が含まれないプロバイダの場合は`usage`全体を`null`とする。
 - `board_before`は持たない。前の手の`board_after`(1手目の場合は標準初期配置)と常に同一で冗長なため。Web側では`board_after`を先頭から並べるだけで盤面推移を再現でき、独自にリバーシの反転ロジックを実装する必要がない。
 
 ## 対局結果ログ(`data/results.jsonl`)
@@ -90,20 +90,29 @@
 ```json
 {
   "game_id": "string",
-  "black": { "id": "string", "provider": "string", "display_name": "string", "avg_response_time_ms": 1234 },
-  "white": { "id": "string", "provider": "string", "display_name": "string", "avg_response_time_ms": 1500 },
+  "black": {
+    "id": "string",
+    "provider": "string",
+    "display_name": "string",
+    "avg_response_time_ms": 1234,
+    "tokens": { "prompt": 12345, "completion": 678 }
+  },
+  "white": { "...": "同上" },
   "winner": "black | white | draw",
   "reason": "score | forfeit",
   "forfeit_reason": "illegal_move | timeout | parse_failure | api_error | null",
+  "score": { "black": 33, "white": 31 } | null,
   "ended_at": "ISO8601 string"
 }
 ```
 
-- 対局本体の棋譜JSON(上記[トップレベル構造](#トップレベル構造))から、[metrics.md](metrics.md)の指標計算・表示に必要な値だけを抜き出した要約。`black`/`white`はそれぞれ`players`の`id`・`provider`・`display_name`と、その対局における平均応答時間(`Move.response_time_ms`の単純平均)を持つ。**パス(`type: "pass"`)の手は平均から除外する**(LLMを呼ばず応答時間を持たない手を0msとして混ぜると、パスが多い対局ほど平均が不当に短くなるため)。
+- 対局本体の棋譜JSON(上記[トップレベル構造](#トップレベル構造))から、[metrics.md](metrics.md)の指標計算・表示に必要な値だけを抜き出した要約。`black`/`white`はそれぞれ`players`の`id`・`provider`・`display_name`と、その対局における平均応答時間(`Move.response_time_ms`の単純平均)・トークン数の合計を持つ。**パス(`type: "pass"`)の手は平均から除外する**(LLMを呼ばず応答時間を持たない手を0msとして混ぜると、パスが多い対局ほど平均が不当に短くなるため)。
+- `tokens`は、その対局でそのプレイヤーが使ったトークン数の合計(`Move.usage`の`prompt_tokens`/`completion_tokens`をそれぞれ合計したもの。`usage`がnullの手は加算しない)。**要約の側で合計しておくのは、Webがモデル単位のトークン数を表示するため。** Webが自力で合計するには全対局の棋譜JSON(1局あたり数十KB、LLMの生応答を含む)を全件fetchすることになり、モデル一覧を開くだけで数MBを読み込む構成になってしまう。ここで合計しておけば`ranking.json`に集計でき、Webは対局詳細を開いたときだけ棋譜JSON本体を読めばよい。
+  - **リトライで失敗した呼び出し分のトークンは含まれない**(`Move.usage`が最終レスポンス分のみを記録する仕様のため。上記[Move](#move1手ごとの記録)参照)。プロバイダによって`completion_tokens`に思考(reasoning/thinking)トークンが含まれるかどうかも異なる。したがってこの値は課金額の概算にしか使えず、請求額と一致することは保証しない。
 - **`provider`・`display_name`を指標計算に使わないにもかかわらずこの要約に含めるのは、集計を`models.yaml`から独立させるため。** これらを持たせないと、集計時に表示名を`models.yaml`(設定ファイル)から引く必要が生じ、「APIエラーで対戦をやめたモデルを`models.yaml`から削除する」といった通常の運用をしただけで、そのモデルの過去の対局の表示名が失われてしまう(`models.yaml`は「今後どのモデルを対戦させるか」を宣言する設定であり、過去に何が対戦したかの記録ではない)。棋譜JSON本体(`data/games/*.json`)も同じ値を持つが、集計時にそちらを読みには行かない([ファイル形式](#ファイル形式json--jsonl)の「集計スクリプトはこのJSONLのみを読み込む」方針を維持するため。表示名という小さな文字列のために、全手・LLMの生応答を含む重いファイルを対局数分開くのは本末転倒)。要約行なので`id`と同様に対局ごとに値が重複するが、正規化はしない。
 - `provider`・`display_name`には**その対局を行った時点の値**が入る。同一`id`のまま`display_name`を後から変更した場合、`ranking.json`の`models[]`は1モデル1エントリなので代表値を1つ選ぶ必要があり、**行を読み進めた順で後勝ち**(=最後に対戦した時点の値)とする。`results.jsonl`は追記専用でファイル内が時系列順に並ぶため、単純に上書きしていくだけで最新の表示名になる。手数による加重平均は行わない(平均応答時間は[metrics.md](metrics.md#安定性の指標)の通り参考情報の位置づけであり、そこまでの精度を必要としないと判断したため)。
 - `Move.retried`(リトライ)に関する集計値は持たない。リトライは最終的に成功すれば対局結果に影響しない一時的な事象であり、モデルの安定性は`forfeit_reason`の集計だけで測れると判断したため([metrics.md](metrics.md#安定性の指標)参照)。特定の対局でリトライが起きたかどうかを確認したい場合は、棋譜JSON本体の`Move.retried`を見る(この要約には出てこない)。
-- `score`(石数)は持たない。[metrics.md](metrics.md)で定義する指標に石数差は含まれないため。
+- `score`(石数)は、棋譜JSON本体の`result.score`をそのまま転記する(反則決着局は`null`)。当初は「[metrics.md](metrics.md)の指標に石数差が含まれないため持たない」としていたが、**勝敗だけの指標(勝点・Bradley-Terry)では順位がほぼ入れ替わらず、「どの程度の差で勝ったか」という別視点が必要になったため追加した**([metrics.md](metrics.md#モデル単位の指標)の平均石数差)。Web側の対局履歴一覧で「僅差だったのか圧倒的だったのか」を示すのにも使う。
 - この1行は、そのまま`ranking.json`の`games`配列の要素(の一部)になる([metrics.md](metrics.md)参照)。
 
 ## 未決定事項
